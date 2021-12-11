@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend.Dockerfile
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    entrypoint: ["npm", "start"]
+    volumes:
+      - ./frontend:/app
+    ports:
+      - 3000:3000
+      - 35729:35729
