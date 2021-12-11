@@ -2,8 +2,32 @@
   text-align: center;
   border: 3px dashed #000;
 
+  p {
+    width: 100%;
+  }
+
+  .label-title {
+    font-weight: bold;
+    font-size: 1.2em;
+  }
+  .product-weight {
+  }
+  .anchor-bottom {
+    align-self: flex-end;
+  }
+  .business-address,
+  .business-name,
+  .business-telephone {
+    font-size: 0.9em;
+  }
+
+  .batch {
+    margin-right: 40px;
+  }
+
   &.round {
     display: flex;
+    padding: 20px;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;

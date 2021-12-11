@@ -1,7 +1,30 @@
 @import "scss/reset";
 
+* {
+  box-sizing: border-box;
+}
+
+.ens-icon,
+.square-icon,
+.circle-icon {
+  width: 50px;
+  height: 50px;
+}
+.square-icon,
+.circle-icon {
+  border: 1px solid #000;
+  background: #ddd;
+}
+.circle-icon {
+  border-radius: 50%;
+}
+
 .mb-0 {
   margin-bottom: 0;
+}
+
+.w-100 {
+  width: 100%;
 }
 
 .App {
