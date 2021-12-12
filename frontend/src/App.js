@@ -3,12 +3,14 @@ import "./App.scss";
 import { useState } from "react";
 import LabelDisplay from "./LabelDisplay/LabelDisplay";
 import IterableOptions from "./IterableOptions/IterableOptions";
-import ens15494_1 from "./images/1.png";
-import ens15494_2 from "./images/2.png";
-import ens15494_3 from "./images/3.png";
-import ens15494_4 from "./images/4.png";
-import ens15494_5 from "./images/5.png";
-import ens15494_6 from "./images/6.png";
+import en15494_1 from "./images/1.png";
+import en15494_2 from "./images/2.png";
+import en15494_3 from "./images/3.png";
+import en15494_4 from "./images/4.png";
+import en15494_5 from "./images/5.png";
+import en15494_6 from "./images/6.png";
+import { PDFViewer, StyleSheet } from "@react-pdf/renderer";
+import En15494Display from "./En15494Display/En15494Display";
 
 function App() {
   const [form, updateForm] = useState({
@@ -16,6 +18,7 @@ function App() {
     fragrance: "Fragrance Name",
     product: "Product Name",
     mass: "200",
+    en15494: [],
     display_product: "Display Product Name",
     business_name: "Devonwick",
     business_address: "Unit C Armada Point, Estover Trading Estate PL6 7PY",
@@ -27,79 +30,118 @@ function App() {
   /**
    * Update internal state of form to the value of the changed input
    */
-  const handleChange = (name, val) => {
+  const handleChange = (options) => {
+    // this will crash a browser lol
+    if (displayFormat !== "single") {
+      setDisplayFormat("single");
+    }
+    let value = options.value;
+    // Checkboxes are automatically assumed its an array
+    if (options.type === "checkbox") {
+      if (options.checked) {
+        // Push to the array
+        value = [...(form[options.name] || []), options.value];
+      } else {
+        // Remove from the array
+        value = (form[options.name] || []).filter(
+          (val) => val !== options.value
+        );
+      }
+    }
+
     updateForm({
       ...form,
-      [name]: val,
+      [options.name]: value,
     });
-    console.log(form);
   };
 
   const SquareShapeRadioIcon = () => <div className="square-icon"></div>;
   const CircleShapeRadioIcon = () => <div className="circle-icon"></div>;
 
-  const En15494_1 = () => <img className="ens-icon" src={ens15494_1} />;
-  const En15494_2 = () => <img className="ens-icon" src={ens15494_2} />;
-  const En15494_3 = () => <img className="ens-icon" src={ens15494_3} />;
-  const En15494_4 = () => <img className="ens-icon" src={ens15494_4} />;
-  const En15494_5 = () => <img className="ens-icon" src={ens15494_5} />;
-  const En15494_6 = () => <img className="ens-icon" src={ens15494_6} />;
+  const [displayFormat, setDisplayFormat] = useState("single");
 
   return (
     <section className="App">
+      <header style={{ width: "100%" }}>
+        <h1>Design Controls</h1>
+        <div className="form-control">
+          <label>Page Type</label>
+          <select onChange={(e) => setDisplayFormat(e.target.value)}>
+            <option value="single">Single</option>
+            <option value="multiple">Multiple</option>
+          </select>
+        </div>
+      </header>
       <article>
-        <LabelDisplay form={form} />
+        <PDFViewer>
+          <LabelDisplay
+            wrapperStyles={
+              displayFormat === "single"
+                ? {}
+                : {
+                    flexDirection: "row",
+                    flexWrap: "wrap",
+                  }
+            }
+            labelCount={displayFormat === "single" ? 1 : 12}
+            orientation={displayFormat === "single" ? "portrait" : "landscape"}
+            size={displayFormat === "single" ? [180, 180] : "A4"}
+            form={form}
+          />
+        </PDFViewer>
       </article>
       <aside>
         <IterableOptions
+          title="EN15494"
           handleChange={handleChange}
           options={[
             {
-              name: "en15494[]",
+              name: "en15494",
               value: 1,
               type: "checkbox",
-              checked: form.labelStyle === "square",
-              icon: <En15494_1 />,
+              checked: form.en15494.includes(1),
+              icon: <En15494Display images={[1]} />,
             },
             {
-              name: "en15494[]",
+              name: "en15494",
               value: 2,
               type: "checkbox",
-              checked: form.labelStyle === "square",
-              icon: <En15494_2 />,
+              checked: form.en15494.includes(2),
+              icon: <En15494Display images={[2]} />,
             },
             {
-              name: "en15494[]",
+              name: "en15494",
               value: 3,
               type: "checkbox",
-              checked: form.labelStyle === "square",
-              icon: <En15494_3 />,
+              checked: form.en15494.includes(3),
+              icon: <En15494Display images={[3]} />,
             },
             {
-              name: "en15494[]",
+              name: "en15494",
               value: 4,
               type: "checkbox",
-              checked: form.labelStyle === "square",
-              icon: <En15494_4 />,
+              checked: form.en15494.includes(4),
+              icon: <En15494Display images={[4]} />,
             },
             {
-              name: "en15494[]",
+              name: "en15494",
               value: 5,
               type: "checkbox",
-              checked: form.labelStyle === "square",
-              icon: <En15494_5 />,
+              checked: form.en15494.includes(5),
+              icon: <En15494Display images={[5]} />,
             },
             {
-              name: "en15494[]",
+              name: "en15494",
               value: 6,
               type: "checkbox",
-              checked: form.labelStyle === "square",
-              icon: <En15494_6 />,
+              checked: form.en15494.includes(6),
+              icon: <En15494Display images={[6]} />,
             },
           ]}
         />
         <IterableOptions
           handleChange={handleChange}
+          title="Label Style"
           options={[
             {
               name: "labelStyle",

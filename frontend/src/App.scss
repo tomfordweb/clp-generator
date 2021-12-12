@@ -4,7 +4,7 @@
   box-sizing: border-box;
 }
 
-.ens-icon,
+.en-icon,
 .square-icon,
 .circle-icon {
   width: 50px;
@@ -27,11 +27,36 @@
   width: 100%;
 }
 
+.form-control {
+  margin-bottom: 20px;
+
+  &.text {
+    label {
+      width: 100%;
+    }
+    input {
+      width: 100%;
+    }
+  }
+}
+
 .App {
   display: flex;
+  flex-wrap: wrap;
+  header {
+    width: 100%;
+  }
 
   article {
-    width: 75%;
+    width: 70%;
     margin-right: 20px;
+    > * {
+      height: 500px;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+  }
+  aside {
+    width: 25%;
   }
 }

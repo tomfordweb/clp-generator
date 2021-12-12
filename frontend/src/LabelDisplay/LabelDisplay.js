@@ -1,45 +1,44 @@
 import React from "react";
 import PropTypes from "prop-types";
+import En15494Display from "../En15494Display/En15494Display";
 import "./LabelDisplay.scss";
-import caution from "../images/caution.png";
+import {
+  Page,
+  Image,
+  Text,
+  View,
+  Document,
+  Font,
+  StyleSheet,
+} from "@react-pdf/renderer";
+import Label from "../Label/Label";
 
-const LabelDisplay = ({ form }) => (
-  <div className={"LabelDisplay " + form.labelStyle}>
-    <p className="label-title">{form.fragrance}</p>
-    <div>
-      <img className="caution" className="caution" src={caution} />
-      <p className="warning-text">
-        Harmful to aquatic life with long lasting effects. Keep out of reach of
-        children. Dispose of contents/container to approved disposal site in
-        accordance with local regulations. Contains Iso E-Super, Coumarin,
-        Linalool, Linalyl acetate, d-Limonene, omega-Pentadecalactone. May
-        produce an allergic reaction.
-      </p>
-    </div>
-    <div>
-      <span className="batch">
-        <strong>BN:</strong>
-        {form.batch}
-      </span>
-      <span className="ufi">
-        <strong>UFI:</strong>
-        {form.ufi}
-      </span>
-    </div>
-    <div className="anchor-bottom">
-      <p className="business-name mb-0">{form.business_name}</p>
-      <p className="business-address mb-0">{form.business_address}</p>
-      <p className="business-telephone mb-0">{form.business_telephone}</p>
-      <p className="product-weight mb-0">~{form.mass}g Net</p>
-    </div>
-  </div>
-);
+const LabelDisplay = ({
+  form,
+  labelCount,
+  size,
+  orientation,
+  wrapperStyles,
+}) => {
+  const labels = Array.from(Array(labelCount)).map((i) => (
+    <Label key={i} form={form} />
+  ));
+  return (
+    <Document>
+      <Page size={size} orientation={orientation} style={wrapperStyles}>
+        {labels}
+      </Page>
+    </Document>
+  );
+};
 
 LabelDisplay.propTypes = {
+  orientation: PropTypes.oneOf(["landscape", "portrait"]),
   form: PropTypes.object,
 };
 
 LabelDisplay.defaultProps = {
+  orientation: "portrait",
   form: {},
 };
 

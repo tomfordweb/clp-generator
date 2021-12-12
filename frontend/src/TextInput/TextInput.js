@@ -3,11 +3,17 @@ import PropTypes from "prop-types";
 
 const TextInput = ({ label, name, type, handleChange }) => {
   return (
-    <div>
+    <div className="form-control text">
       <label htmlFor={name}>{label}</label>
       <input
         data-testid={"form-control-" + name}
-        onChange={(e) => handleChange(name, e.target.value)}
+        onChange={(e) =>
+          handleChange({
+            name: name,
+            value: e.target.value,
+            type: type,
+          })
+        }
         name={name}
         id={name}
         type={type}
