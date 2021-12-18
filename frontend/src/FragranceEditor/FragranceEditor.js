@@ -1,5 +1,7 @@
 import { useState } from "react";
+
 import FragranceEditForm from "../FragranceEditForm/FragranceEditForm";
+import SelectInput from "../SelectInput/SelectInput";
 
 const FragranceEditor = ({ fragrances }) => {
   const [activeFragrance, setActiveFragrance] = useState(null);
@@ -8,26 +10,29 @@ const FragranceEditor = ({ fragrances }) => {
       <header className="col-12">
         <h2>Fragrance Editor</h2>
       </header>
-      <article className="col-2">
-        <ul>
-          {fragrances &&
-            fragrances.map((fragrance) => (
-              <li
-                key={fragrance.id}
-                onClick={() =>
-                  setActiveFragrance(
-                    fragrances.filter((f) => f.id == fragrance.id)[0]
-                  )
-                }
-              >
-                {fragrance.supplierName} - {fragrance.products.length} Products!
-              </li>
-            ))}
-        </ul>
+      <article className="col-12 col-sm-4 col-md-2">
+        <SelectInput
+          options={fragrances.map((fragrance) => ({
+            value: fragrance.id,
+            label: `${fragrance.supplierName} - ${fragrance.fragrance}`,
+            key: fragrance.id,
+          }))}
+          handleChange={(val) => {
+            setActiveFragrance(
+              fragrances.filter((f) => parseInt(f.id) === parseInt(val))[0]
+            );
+          }}
+        />
+        <button type="button" className="btn btn-success">
+          Create Fragrance
+        </button>
       </article>
       {activeFragrance && (
-        <article className="col-10">
+        <article className="col-12 col-sm-8 col-md-10">
           <FragranceEditForm fragrance={activeFragrance} />
+          <button type="button" className="btn btn-success">
+            Add product
+          </button>
         </article>
       )}
     </section>

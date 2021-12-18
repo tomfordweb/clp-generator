@@ -17,7 +17,7 @@ const IterableOptions = ({ title, options, handleChange }) => {
           value={option.value}
           handleChange={(e) =>
             handleChange({
-              type: "checkbox-group",
+              type: option.type === "checkbox" ? "checkbox-group" : option.type,
               name: e.name,
               value: e.value,
               checked: e.checked,
@@ -32,7 +32,7 @@ const IterableOptions = ({ title, options, handleChange }) => {
 
   return (
     <div data-testid="IterableOptions" className="IterableOptions">
-      <h4 className="title">{title}</h4>
+      <label>{title}</label>
       <div className="d-flex">{radioHtml}</div>
     </div>
   );

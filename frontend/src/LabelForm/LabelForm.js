@@ -1,27 +1,15 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
-import PictogramDisplay from "../PictogramDisplay/PictogramDisplay";
-import IterableOptions from "../IterableOptions/IterableOptions";
-import TextInput from "../TextInput/TextInput";
 import CheckInput from "../CheckInput/CheckInput";
+import IterableOptions from "../IterableOptions/IterableOptions";
+import PictogramDisplay from "../PictogramDisplay/PictogramDisplay";
 import SelectInput from "../SelectInput/SelectInput";
-import { useDebouncedCallback } from "use-debounce";
+import TextInput from "../TextInput/TextInput";
 
 function LabelForm({ products, propagateFormChange }) {
-  const [product, setProduct] = useState(null);
   const [fragrance, setFragrance] = useState(null);
   const SquareShapeRadioIcon = () => <div className="square-icon"></div>;
   const CircleShapeRadioIcon = () => <div className="circle-icon"></div>;
-
-  /**
-   * To prevent the app from behaving poorly
-   * the changes to the form are only emitted
-   * every X ms
-   */
-  const debouncedFormProgagate = useDebouncedCallback(
-    (value) => propagateFormChange(value),
-    1000
-  );
 
   /**
    * After selecting a product of a specific fragrance
@@ -29,15 +17,22 @@ function LabelForm({ products, propagateFormChange }) {
    */
   const selectProduct = (productKey) => {
     const product = fragrance.products.filter(
-      (product) => product.id == productKey
+      (product) => parseInt(product.id) === parseInt(productKey)
     )[0];
-    updateForm({
-      pictograms: product.pictograms,
-      fragrance: fragrance.fragrance,
-      product: product.name,
-      mass: product.mass,
-      productText: product.text,
-    });
+
+    if (product) {
+      const finalValue = {
+        ...form,
+        pictograms: product.pictograms,
+        fragrance: fragrance.fragrance,
+        product: product.name,
+        mass: product.mass,
+        productText: product.text,
+      };
+
+      updateForm(finalValue);
+      propagateFormChange(finalValue);
+    }
   };
 
   /**
@@ -60,9 +55,6 @@ function LabelForm({ products, propagateFormChange }) {
     ufi: "1234567890",
     batch: "12345",
   });
-  useEffect(() => {
-    debouncedFormProgagate(form);
-  }, [form]);
 
   /**
    * Update internal state of form to the value of the changed input
@@ -79,10 +71,13 @@ function LabelForm({ products, propagateFormChange }) {
       }
     }
 
-    updateForm({
+    const finalValue = {
       ...form,
       [name]: returnValue,
-    });
+    };
+
+    updateForm(finalValue);
+    propagateFormChange(finalValue);
   };
 
   return (
@@ -211,7 +206,9 @@ function LabelForm({ products, propagateFormChange }) {
           name="showBorder"
           value={form.showBorder}
           checked={form.showBorder}
-          handleChange={handleChange}
+          handleChange={(data) =>
+            handleChange({ name: "showBorder", value: data.checked })
+          }
           label="Show Trim lines"
         />
       </div>

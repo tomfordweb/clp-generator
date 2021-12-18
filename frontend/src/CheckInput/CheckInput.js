@@ -8,8 +8,9 @@ const CheckInput = ({ type, label, value, name, checked, handleChange }) => (
       onChange={(e) =>
         handleChange({
           name: name,
+          type: type,
           value: value,
-          checked: type == "radio" ? value : e.target.checked,
+          checked: type === "radio" ? value : !value,
         })
       }
       name={name}

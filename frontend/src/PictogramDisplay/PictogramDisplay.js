@@ -53,7 +53,12 @@ const PictogramDisplay = ({ type, images, imageStyles, containerStyles }) => {
   ) : null;
 };
 
-PictogramDisplay.propTypes = {};
+PictogramDisplay.propTypes = {
+  type: PropTypes.string,
+  images: PropTypes.array,
+  imageStyles: PropTypes.array,
+  containerStyles: PropTypes.object,
+};
 
 PictogramDisplay.defaultProps = {
   containerStyles: {},

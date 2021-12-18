@@ -3,13 +3,16 @@ import "./App.scss";
 import { PDFViewer } from "@react-pdf/renderer";
 import { useEffect, useState } from "react";
 
+import FragranceEditor from "./FragranceEditor/FragranceEditor";
 import LabelDisplay from "./LabelDisplay/LabelDisplay";
 import LabelForm from "./LabelForm/LabelForm";
-import FragranceEditor from "./FragranceEditor/FragranceEditor";
+import { useDebounce } from "use-debounce/lib";
 
 function App() {
   const [fragrances, updateFragranceList] = useState([]);
   const [form, setForm] = useState(null);
+  const [formValue] = useDebounce(form, 1000);
+
   const getAllFragrances = () => {
     fetch("products.json", {
       headers: {
@@ -35,31 +38,36 @@ function App() {
         <header className="col-12">
           <h1>CLP Generator</h1>
         </header>
-        <article className="PdfViewer col-8">
-          {form && (
+        <article className="PdfViewer col-12 col-md-8">
+          {formValue ? (
             <PDFViewer>
               <LabelDisplay
                 labelCount={1}
                 orientation="portrait"
                 size={[180, 180]}
-                form={form}
+                form={formValue}
               />
             </PDFViewer>
+          ) : (
+            <div className="alert alert-secondary" role="alert">
+              Selct a Fragrance and product!
+            </div>
           )}
         </article>
-        <aside className="col-4">
+        <aside className="col-12 col-md-4">
           <LabelForm
             products={fragrances}
-            propagateFormChange={(value) => {
+            propagateFormChange={(value) =>
               setForm({
                 ...value,
-              });
-              console.log("propagateFormChange", value);
-            }}
+              })
+            }
           />
         </aside>
+        <div className="col-12">
+          <FragranceEditor fragrances={fragrances} />
+        </div>
       </section>
-      <FragranceEditor fragrances={fragrances} />
     </main>
   );
 }

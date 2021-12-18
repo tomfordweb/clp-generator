@@ -1,19 +1,10 @@
-import {
-  Document,
-  Font,
-  Image,
-  StyleSheet,
-  Text,
-  View,
-} from "@react-pdf/renderer";
-import PropTypes from "prop-types";
+import { Font, StyleSheet, Text, View } from "@react-pdf/renderer";
 import React from "react";
 
 import PictogramDisplay from "../PictogramDisplay/PictogramDisplay";
 import sourceSansProBold from "../fonts/SourceSansPro-Bold.ttf";
 import sourceSansProItalic from "../fonts/SourceSansPro-Italic.ttf";
 import sourceSansProRegular from "../fonts/SourceSansPro-Regular.ttf";
-import caution from "../images/caution.png";
 
 Font.register({
   family: "SourceSansPro",
@@ -47,7 +38,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: "14px",
     fontFamily: "SourceSansPro",
-    fontWeight: "bold",
   },
   batchContainer: {
     textAlign: "center",
