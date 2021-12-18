@@ -22,5 +22,7 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v2
         with:
+          context: ./frontend
+          dockerfile: frontend.Dockerfile
           push: true
-          tags: user/app:latest
+          tags: tomfordweb/devonwick-clp:latest
