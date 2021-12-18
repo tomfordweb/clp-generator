@@ -62,6 +62,9 @@ function App() {
 
   return (
     <section className="App">
+      <header>
+        <h1>CLP Generator</h1>
+      </header>
       <article>
         <PDFViewer>
           <LabelDisplay
