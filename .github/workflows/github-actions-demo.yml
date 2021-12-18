@@ -7,25 +7,36 @@ on:
       - "ci"
 
 jobs:
-  docker:
+  # docker:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Set up QEMU
+  #       uses: docker/setup-qemu-action@v1
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v1
+  #     - name: Login to DockerHub
+  #       uses: docker/login-action@v1
+  #       with:
+  #         username: ${{ secrets.DOCKERHUB_USERNAME }}
+  #         password: ${{ secrets.DOCKERHUB_TOKEN }}
+  #     - name: Checkout the repo
+  #       uses: actions/checkout@v2
+  #     - name: Build and push
+  #       id: docker_build
+  #       uses: docker/build-push-action@v2
+  #       with:
+  #         context: ./frontend
+  #         file: ./frontend/frontend.Dockerfile
+  #         push: true
+  #         tags: tomfordweb/devonwick-clp:latest
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
+      - name: Setup SSH Key
+        uses: kielabokkie/ssh-key-and-known-hosts-action@v1
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Checkout the repo
-        uses: actions/checkout@v2
-      - name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          context: ./frontend
-          file: ./frontend/frontend.Dockerfile
-          push: true
-          tags: tomfordweb/devonwick-clp:latest
+          ssh-private-key: ${{ secrets.DEV_SERVER_SSH_KEY }}
+          ssh-host: ${{ secrets.DEV_SERVER }}
+
+      - name: Execute test Script
+        run: ssh ${{ secrets.DEV_SERVER_USER }}${{ secrets.DEV_SERVER}} echo "Hello world"
