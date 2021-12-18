@@ -41,7 +41,6 @@ jobs:
           context: ./frontend
           file: ./frontend/frontend.Dockerfile
           push: true
-          tagged_with_ref: true
           tags: tomfordweb/devonwick-clp:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
