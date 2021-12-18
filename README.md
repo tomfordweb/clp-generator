@@ -1,4 +1,4 @@
-![deployment](https://github.com/<OWNER>/<REPOSITORY>/actions/workflows/build-and-deploy.yml/badge.svg)
+![deployment](https://github.com/tomfordweb/devonwick-clp/actions/workflows/build-and-deploy.yml/badge.svg)
 
 # Getting Started
 
