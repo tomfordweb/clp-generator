@@ -41,7 +41,7 @@ jobs:
           context: ./frontend
           file: ./frontend/frontend.Dockerfile
           push: true
-          tags: ${GITHUB_REPOSITORY}:${GITHUB_REF_NAME}
+          tags: ${{GITHUB_REPOSITORY}}:${{GITHUB_REF_NAME}}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
 
