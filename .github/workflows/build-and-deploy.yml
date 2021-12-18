@@ -49,5 +49,7 @@ jobs:
         run: ssh ${{ secrets.DEV_SERVER_USER }}@${{ secrets.DEV_SERVER}} "docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}"
       - name: Pull latest image
         run: ssh ${{ secrets.dev_server_user }}@${{ secrets.dev_server}} "docker pull tomfordweb/devonwick-clp"
-      - name: Run the image
-        run: ssh ${{ secrets.dev_server_user }}@${{ secrets.dev_server}} "docker run -p 8080:80 tomfordweb/devonwick-clp"
+      - name: Stop the image if it exists
+        run: ssh ${{ secrets.dev_server_user }}@${{ secrets.dev_server}} "docker stop devonwick-clp_dev || true"
+      - name: Run the image in detached mode
+        run: ssh ${{ secrets.dev_server_user }}@${{ secrets.dev_server}} "docker run -d -rm --name devonwick-clp_dev -p 8080:80 tomfordweb/devonwick-clp:latest"
