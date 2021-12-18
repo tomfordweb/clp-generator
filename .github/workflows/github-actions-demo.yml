@@ -38,5 +38,9 @@ jobs:
           ssh-private-key: ${{ secrets.DEV_SERVER_SSH_KEY }}
           ssh-host: ${{ secrets.DEV_SERVER }}
 
+      - name: debug
+        run: ssh ${{ secrets.DEV_SERVER_USER }}@${{ secrets.DEV_SERVER}} whoami
+      - name: debug 2
+        run: ssh ${{ secrets.DEV_SERVER_USER }}@${{ secrets.DEV_SERVER}} pwd
       - name: Execute test Script
-        run: ssh ${{ secrets.DEV_SERVER_USER }}@${{ secrets.DEV_SERVER}} echo "Hello world" > ~/tom-test.txt
+        run: ssh ${{ secrets.DEV_SERVER_USER }}@${{ secrets.DEV_SERVER}} echo date > tom-test.txt
