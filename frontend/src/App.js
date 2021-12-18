@@ -1,16 +1,18 @@
-import TextInput from "./TextInput/TextInput";
 import "./App.scss";
+
+import { PDFViewer, StyleSheet } from "@react-pdf/renderer";
 import { useState } from "react";
-import LabelDisplay from "./LabelDisplay/LabelDisplay";
-import IterableOptions from "./IterableOptions/IterableOptions";
+
+import En15494Display from "./En15494Display/En15494Display";
 import en15494_1 from "./images/1.png";
 import en15494_2 from "./images/2.png";
 import en15494_3 from "./images/3.png";
 import en15494_4 from "./images/4.png";
 import en15494_5 from "./images/5.png";
 import en15494_6 from "./images/6.png";
-import { PDFViewer, StyleSheet } from "@react-pdf/renderer";
-import En15494Display from "./En15494Display/En15494Display";
+import IterableOptions from "./IterableOptions/IterableOptions";
+import LabelDisplay from "./LabelDisplay/LabelDisplay";
+import TextInput from "./TextInput/TextInput";
 
 function App() {
   const [form, updateForm] = useState({
@@ -32,9 +34,6 @@ function App() {
    */
   const handleChange = (options) => {
     // this will crash a browser lol
-    if (displayFormat !== "single") {
-      setDisplayFormat("single");
-    }
     let value = options.value;
     // Checkboxes are automatically assumed its an array
     if (options.type === "checkbox") {
@@ -53,12 +52,13 @@ function App() {
       ...form,
       [options.name]: value,
     });
+    console.log(form);
   };
 
   const SquareShapeRadioIcon = () => <div className="square-icon"></div>;
   const CircleShapeRadioIcon = () => <div className="circle-icon"></div>;
 
-  const [displayFormat, setDisplayFormat] = useState("single");
+  const [useDevonwickInfo, setUseDevonwickInfo] = useState(true);
 
   return (
     <section className="App">
@@ -74,7 +74,37 @@ function App() {
             form={form}
           />
         </PDFViewer>
-      </article>
+
+        <En15494Display
+          images={[1, 2, 3]}
+          containerStyles={{
+            position: "relative",
+            width: "180px",
+            height: "180px",
+          }}
+          imageStyles={[
+            {
+              width: "90px",
+              left: "0",
+              height: "90px",
+              position: "absolute",
+            },
+            {
+              width: "90px",
+              right: "-4%",
+              height: "90px",
+              position: "absolute",
+            },
+            {
+              width: "90px",
+              bottom: "22%",
+              left: "27%",
+              height: "90px",
+              position: "absolute",
+            },
+          ]}
+        />
+      </article>{" "}
       <aside>
         <IterableOptions
           title="EN15494"
@@ -100,27 +130,6 @@ function App() {
               type: "checkbox",
               checked: form.en15494.includes(3),
               icon: <En15494Display images={[3]} />,
-            },
-            {
-              name: "en15494",
-              value: 4,
-              type: "checkbox",
-              checked: form.en15494.includes(4),
-              icon: <En15494Display images={[4]} />,
-            },
-            {
-              name: "en15494",
-              value: 5,
-              type: "checkbox",
-              checked: form.en15494.includes(5),
-              icon: <En15494Display images={[5]} />,
-            },
-            {
-              name: "en15494",
-              value: 6,
-              type: "checkbox",
-              checked: form.en15494.includes(6),
-              icon: <En15494Display images={[6]} />,
             },
           ]}
         />
@@ -162,6 +171,7 @@ function App() {
           handleChange={handleChange}
           label="Product Name"
         />
+
         <TextInput
           name="business_name"
           handleChange={handleChange}

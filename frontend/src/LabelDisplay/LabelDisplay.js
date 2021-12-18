@@ -21,7 +21,7 @@ const LabelDisplay = ({
   wrapperStyles,
 }) => {
   const labels = Array.from(Array(labelCount)).map((i) => (
-    <Label key={i} form={form} />
+    <Label key={i} pictogramContainerSize={size[0] / 3} form={form} />
   ));
   return (
     <Document>

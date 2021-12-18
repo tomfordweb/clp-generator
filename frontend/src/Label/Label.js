@@ -1,19 +1,19 @@
-import React from "react";
-import PropTypes from "prop-types";
-import caution from "../images/caution.png";
-import sourceSansProRegular from "../fonts/SourceSansPro-Regular.ttf";
-import sourceSansProBold from "../fonts/SourceSansPro-Bold.ttf";
-import sourceSansProItalic from "../fonts/SourceSansPro-Italic.ttf";
-
 import {
-  Image,
-  Text,
-  View,
   Document,
   Font,
+  Image,
   StyleSheet,
+  Text,
+  View,
 } from "@react-pdf/renderer";
+import PropTypes from "prop-types";
+import React from "react";
+
 import En15494Display from "../En15494Display/En15494Display";
+import sourceSansProBold from "../fonts/SourceSansPro-Bold.ttf";
+import sourceSansProItalic from "../fonts/SourceSansPro-Italic.ttf";
+import sourceSansProRegular from "../fonts/SourceSansPro-Regular.ttf";
+import caution from "../images/caution.png";
 
 Font.register({
   family: "SourceSansPro",
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
 });
-const Label = ({ form }) => (
+const Label = ({ form, pictogramContainerSize, pictogramGutter }) => (
   <View
     style={
       form.labelStyle === "round"
@@ -81,40 +81,63 @@ const Label = ({ form }) => (
     <View
       style={{
         display: "flex",
-        alignItems: "center",
+        justifyContent: "space-between",
         marginBottom: styles.bottomMargin.marginBottom,
       }}
     >
-      <Image
-        className="caution"
-        style={{
-          height: "30px",
-          width: "30px",
+      <En15494Display
+        containerStyles={{
+          position: "relative",
+          width: `${pictogramContainerSize}px`,
+          height: `${pictogramContainerSize}px`,
         }}
-        className="caution"
-        src={caution}
+        imageStyles={[
+          {
+            left: "0",
+            height: `${pictogramContainerSize / 2 - pictogramGutter}px`,
+            width: `${pictogramContainerSize / 2 - pictogramGutter}px`,
+            position: "absolute",
+          },
+          {
+            height: `${pictogramContainerSize / 2 - pictogramGutter}px`,
+            width: `${pictogramContainerSize / 2 - pictogramGutter}px`,
+            top: "32%",
+            left: "26%",
+            position: "absolute",
+          },
+          {
+            height: `${pictogramContainerSize / 2 - pictogramGutter}px`,
+            width: `${pictogramContainerSize / 2 - pictogramGutter}px`,
+            right: "0",
+            position: "absolute",
+          },
+        ]}
+        type="pdf"
+        images={form.en15494}
       />
     </View>
     <Text style={styles.bottomMargin}>
       Harmful to aquatic life with long lasting effects. Keep out of reach of
       children. Dispose of contents/container to approved disposal site in
-      accordance with local regulations. Contains Iso E-Super, Coumarin,
-      Linalool, Linalyl acetate, d-Limonene, omega-Pentadecalactone. May produce
-      an allergic reaction.
+      accordance with local regulations.Contains Iso E - Super, Coumarin,
+      Linalool, Linalyl acetate, d - Limonene, omega - Pentadecalactone.May
+      produce an allergic reaction.
     </Text>
-    <View style={styles.bottomMargin}>
-      <En15494Display
-        imageStyles={{ width: "20px", marginRight: "5px", height: "20px" }}
-        type="pdf"
-        images={form.en15494}
-      />
-    </View>
+    <View style={styles.bottomMargin}></View>
     <View style={styles.batchContainer}>
-      <Text style={{ marginRight: "10px" }}>
+      <Text
+        style={{
+          marginRight: "10px",
+        }}
+      >
         <strong>BN:</strong>
         {form.batch}
       </Text>
-      <Text style={{ marginLeft: "10px" }}>
+      <Text
+        style={{
+          marginLeft: "10px",
+        }}
+      >
         <strong>UFI:</strong>
         {form.ufi}
       </Text>
@@ -128,6 +151,9 @@ const Label = ({ form }) => (
 
 Label.propTypes = {};
 
-Label.defaultProps = {};
+Label.defaultProps = {
+  pictogramContainerSize: 200,
+  pictogramGutter: 1,
+};
 
 export default Label;
