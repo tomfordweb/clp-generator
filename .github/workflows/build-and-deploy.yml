@@ -41,7 +41,7 @@ jobs:
           context: ./frontend
           file: ./frontend/frontend.Dockerfile
           push: true
-          tags: ${{GITHUB_REPOSITORY}}:${{GITHUB_REF_NAME}}
+          tags: tomfordweb/devonwick-clp:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
 
@@ -69,8 +69,8 @@ jobs:
       - name: Login to docker registry
         run: ssh ${{ secrets.DEV_SERVER_USER }}@${{ secrets.DEV_SERVER}} "docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}"
       - name: Pull latest image
-        run: ssh ${{ secrets.dev_server_user }}@${{ secrets.dev_server}} "docker pull ${{ env.GITHUB_REPOSITORY }}:${{ env.GITHUB_REF_NAME }}"
+        run: ssh ${{ secrets.dev_server_user }}@${{ secrets.dev_server}} "docker pull tomfordweb/devonwick-clp"
       - name: Stop the image if it exists
-        run: ssh ${{ secrets.dev_server_user }}@${{ secrets.dev_server}} "docker stop ${{ env.GITHUB_REPOSITORY }} || true"
+        run: ssh ${{ secrets.dev_server_user }}@${{ secrets.dev_server}} "docker stop devonwick-clp_dev || true"
       - name: Run the image in detached mode
-        run: ssh ${{ secrets.dev_server_user }}@${{ secrets.dev_server}} "docker run -d --rm --name ${{ env.GITHUB_REPOSITORY }} -p ${{ secrets.APP_EXPOSED_PORT }}:80 ${{ env.GITHUB_REPOSITORY }}:${{ env.GITHUB_REF_NAME }}"
+        run: ssh ${{ secrets.dev_server_user }}@${{ secrets.dev_server}} "docker run -d --rm --name devonwick-clp_dev -p 8080:80 tomfordweb/devonwick-clp:latest"
