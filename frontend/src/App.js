@@ -35,7 +35,7 @@ function App() {
     product: "Product Name",
     productText: "",
     mass: "200",
-    en15494: [],
+    pictograms: [],
     display_product: "Display Product Name",
     business_name: "Devonwick",
     business_address: "Unit C Armada Point, Estover Trading Estate PL6 7PY",

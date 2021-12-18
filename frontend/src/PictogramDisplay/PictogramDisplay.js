@@ -6,7 +6,7 @@ import fish from "../images/pictograms/fish.png";
 import flamable from "../images/pictograms/flamable.png";
 import warning from "../images/pictograms/warning.png";
 
-const En15494Display = ({ type, images, imageStyles, containerStyles }) => {
+const PictogramDisplay = ({ type, images, imageStyles, containerStyles }) => {
   const imageSrcs = {
     1: warning,
     2: flamable,
@@ -51,10 +51,10 @@ const En15494Display = ({ type, images, imageStyles, containerStyles }) => {
   ) : null;
 };
 
-En15494Display.propTypes = {};
+PictogramDisplay.propTypes = {};
 
-En15494Display.defaultProps = {
+PictogramDisplay.defaultProps = {
   containerStyles: {},
 };
 
-export default En15494Display;
+export default PictogramDisplay;

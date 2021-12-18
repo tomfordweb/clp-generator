@@ -9,7 +9,7 @@ import {
 import PropTypes from "prop-types";
 import React from "react";
 
-import En15494Display from "../En15494Display/En15494Display";
+import PictogramDisplay from "../PictogramDisplay/PictogramDisplay";
 import sourceSansProBold from "../fonts/SourceSansPro-Bold.ttf";
 import sourceSansProItalic from "../fonts/SourceSansPro-Italic.ttf";
 import sourceSansProRegular from "../fonts/SourceSansPro-Regular.ttf";
@@ -88,7 +88,7 @@ const Label = ({ form, pictogramContainerSize, pictogramGutter }) => {
           marginBottom: styles.bottomMargin.marginBottom,
         }}
       >
-        <En15494Display
+        <PictogramDisplay
           containerStyles={{
             position: "relative",
             width: `${pictogramContainerSize}px`,
@@ -116,7 +116,7 @@ const Label = ({ form, pictogramContainerSize, pictogramGutter }) => {
             },
           ]}
           type="pdf"
-          images={form.en15494}
+          images={form.pictograms}
         />
       </View>
       <Text style={{ fontSize: "4px" }}>{form.productText}</Text>

@@ -1,5 +1,5 @@
-import En15494Display from "../En15494Display/En15494Display";
 import IterableOptions from "../IterableOptions/IterableOptions";
+import PictogramDisplay from "../PictogramDisplay/PictogramDisplay";
 import TextInput from "../TextInput/TextInput";
 
 const FragranceEditForm = ({ fragrance }) => {
@@ -9,21 +9,25 @@ const FragranceEditForm = ({ fragrance }) => {
         label="Supplier"
         value={fragrance.supplierName}
         name="supplierName"
-      />
+      />{" "}
       <TextInput
         label="Fragrance Name"
         value={fragrance.fragrance}
         name="fragrance"
-      />
+      />{" "}
       <TextInput
         label="Supplier Code"
         value={fragrance.supplierCode}
         name="supplierCode"
       />
-
       <div>
         {fragrance.products.map((product, index) => (
-          <div key={index} style={{ border: "1px solid #ddd" }}>
+          <div
+            key={index}
+            style={{
+              border: "1px solid #ddd",
+            }}
+          >
             <TextInput
               label="Product Name"
               value={product.name}
@@ -41,25 +45,25 @@ const FragranceEditForm = ({ fragrance }) => {
               title="Pictograms"
               options={[
                 {
-                  name: "en15494",
+                  name: "pictograms",
                   value: 1,
                   type: "checkbox",
                   checked: product.pictograms.includes(1),
-                  icon: <En15494Display images={[1]} />,
+                  icon: <PictogramDisplay images={[1]} />,
                 },
                 {
-                  name: "en15494",
+                  name: "pictograms",
                   value: 2,
                   type: "checkbox",
                   checked: product.pictograms.includes(2),
-                  icon: <En15494Display images={[2]} />,
+                  icon: <PictogramDisplay images={[2]} />,
                 },
                 {
-                  name: "en15494",
+                  name: "pictograms",
                   value: 3,
                   type: "checkbox",
                   checked: product.pictograms.includes(3),
-                  icon: <En15494Display images={[3]} />,
+                  icon: <PictogramDisplay images={[3]} />,
                 },
               ]}
             />
@@ -69,5 +73,4 @@ const FragranceEditForm = ({ fragrance }) => {
     </div>
   );
 };
-
 export default FragranceEditForm;

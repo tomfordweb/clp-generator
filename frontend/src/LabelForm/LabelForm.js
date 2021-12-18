@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 
-import En15494Display from "../En15494Display/En15494Display";
+import PictogramDisplay from "../PictogramDisplay/PictogramDisplay";
 import IterableOptions from "../IterableOptions/IterableOptions";
 import TextInput from "../TextInput/TextInput";
 import CheckInput from "../CheckInput/CheckInput";
+import SelectInput from "../SelectInput/SelectInput";
 
 function LabelForm({ products, updateForm, handleChange, form }) {
   const [product, setProduct] = useState(null);
@@ -12,20 +13,17 @@ function LabelForm({ products, updateForm, handleChange, form }) {
   const CircleShapeRadioIcon = () => <div className="circle-icon"></div>;
 
   const selectProduct = (productKey) => {
-    console.log(productKey);
     const product = fragrance.products.filter(
       (product) => product.id == productKey
     )[0];
 
     updateForm({
-      en15494: product.pictograms,
+      pictograms: product.pictograms,
       fragrance: fragrance.fragrance,
       product: product.name,
       mass: product.mass,
       productText: product.text,
     });
-
-    console.log(product);
   };
 
   return (
@@ -59,61 +57,56 @@ function LabelForm({ products, updateForm, handleChange, form }) {
           handleChange={handleChange}
           label="Show Trim lines"
         />
-        <div className="mb-3">
-          <label htmlFor="fragrance">Fragrance:</label>
-          <select
-            className="form-select"
-            defaultValue={0}
-            onChange={(e) =>
-              setFragrance(
-                products.filter((product) => product.id == e.target.value)[0]
-              )
-            }
-          >
-            <option value={0}>Select</option>
-            {products.map((product) => (
-              <option key={product.id} value={product.id}>
-                {product.supplierName} {product.fragrance}
-              </option>
-            ))}
-          </select>
-        </div>
+        <SelectInput
+          label="Fragrance"
+          value={null}
+          name="fragrance"
+          options={products.map((product) => ({
+            value: product.id,
+            label: `${product.supplierName} ${product.fragrance}`,
+            key: product.id,
+          }))}
+          handleChange={(value) =>
+            setFragrance(products.filter((product) => product.id == value)[0])
+          }
+        />
         {fragrance && (
-          <div className="form-control">
-            <label htmlFor="product">Product:</label>
-            <select onChange={(e) => selectProduct(e.target.value)}>
-              {fragrance.products.map((product) => (
-                <option key={product.id} value={product.id}>
-                  {product.name}
-                </option>
-              ))}
-            </select>
-          </div>
+          <SelectInput
+            label="Product"
+            value={null}
+            name="product"
+            options={fragrance.products.map((product) => ({
+              value: product.id,
+              label: product.name,
+              key: product.id,
+            }))}
+            handleChange={(value) => selectProduct(value)}
+          />
         )}
         <IterableOptions
           title="Pictograms"
           handleChange={handleChange}
           options={[
             {
-              name: "en15494",
+              name: "pictograms",
               value: 1,
               type: "checkbox",
-              checked: form.en15494.includes(1),
-              icon: <En15494Display images={[1]} />,
+              checked: form.pictograms.includes(1),
+              icon: <PictogramDisplay images={[1]} />,
             },
             {
-              name: "en15494",
+              name: "pictograms",
               value: 2,
               type: "checkbox",
-              checked: form.en15494.includes(2),
-              icon: <En15494Display images={[2]} />,
+              checked: form.pictograms.includes(2),
+              icon: <PictogramDisplay images={[2]} />,
             },
             {
-              name: "en15494",
+              name: "pictograms",
               value: 3,
               type: "checkbox",
-              checked: form.en15494.includes(3),
-              icon: <En15494Display images={[3]} />,
+              checked: form.pictograms.includes(3),
+              icon: <PictogramDisplay images={[3]} />,
             },
           ]}
         />

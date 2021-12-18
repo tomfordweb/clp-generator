@@ -1,25 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import En15494Display from "../En15494Display/En15494Display";
 import "./LabelDisplay.scss";
-import {
-  Page,
-  Image,
-  Text,
-  View,
-  Document,
-  Font,
-  StyleSheet,
-} from "@react-pdf/renderer";
+import { Page, Document } from "@react-pdf/renderer";
 import Label from "../Label/Label";
 
-const LabelDisplay = ({
-  form,
-  labelCount,
-  size,
-  orientation,
-  wrapperStyles,
-}) => {
+const LabelDisplay = ({ form, size, orientation, wrapperStyles }) => {
   return (
     <Document>
       <Page size={size} orientation={orientation} style={wrapperStyles}>

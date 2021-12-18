@@ -1,9 +1,10 @@
+import PropTypes from "prop-types";
 const CheckInput = ({ type, label, value, name, checked, handleChange }) => (
   <div className="form-check">
     <input
       className="form-check-input"
       type={type}
-      checked={checked}
+      defaultChecked={checked}
       onChange={(e) =>
         handleChange({
           name: name,
@@ -19,5 +20,15 @@ const CheckInput = ({ type, label, value, name, checked, handleChange }) => (
     </label>
   </div>
 );
+
+CheckInput.prototypes = {
+  label: PropTypes.string,
+  checked: PropTypes.bool,
+  type: PropTypes.oneOf(["radio", "checkbox"]),
+};
+CheckInput.defaultProps = {
+  type: "checkbox",
+  checked: false,
+};
 
 export default CheckInput;
