@@ -1,4 +1,4 @@
-![deployment](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
+![deployment](https://github.com/<OWNER>/<REPOSITORY>/actions/workflows/build-and-deploy.yml/badge.svg)
 
 # Getting Started
 
