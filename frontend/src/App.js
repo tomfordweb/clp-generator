@@ -1,24 +1,39 @@
 import "./App.scss";
 
-import { PDFViewer, StyleSheet } from "@react-pdf/renderer";
-import { useState } from "react";
+import { PDFViewer } from "@react-pdf/renderer";
+import { useEffect, useState } from "react";
 
-import En15494Display from "./En15494Display/En15494Display";
-import en15494_1 from "./images/1.png";
-import en15494_2 from "./images/2.png";
-import en15494_3 from "./images/3.png";
-import en15494_4 from "./images/4.png";
-import en15494_5 from "./images/5.png";
-import en15494_6 from "./images/6.png";
-import IterableOptions from "./IterableOptions/IterableOptions";
 import LabelDisplay from "./LabelDisplay/LabelDisplay";
-import TextInput from "./TextInput/TextInput";
+import LabelForm from "./LabelForm";
 
 function App() {
+  const [products, updateProducts] = useState([]);
+  const getAllProducts = () => {
+    fetch("products.json", {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    })
+      .then(function (response) {
+        console.log(response);
+        return response.json();
+      })
+      .then(function (myJson) {
+        updateProducts(myJson.payload);
+      });
+  };
+
+  useEffect(() => {
+    getAllProducts();
+  }, []);
+
   const [form, updateForm] = useState({
     labelStyle: "round",
+    showBorder: false,
     fragrance: "Fragrance Name",
     product: "Product Name",
+    productText: "",
     mass: "200",
     en15494: [],
     display_product: "Display Product Name",
@@ -52,13 +67,8 @@ function App() {
       ...form,
       [options.name]: value,
     });
-    console.log(form);
+    console.log("form updated", form);
   };
-
-  const SquareShapeRadioIcon = () => <div className="square-icon"></div>;
-  const CircleShapeRadioIcon = () => <div className="circle-icon"></div>;
-
-  const [useDevonwickInfo, setUseDevonwickInfo] = useState(true);
 
   return (
     <section className="App">
@@ -74,121 +84,19 @@ function App() {
             form={form}
           />
         </PDFViewer>
-
-        <En15494Display
-          images={[1, 2, 3]}
-          containerStyles={{
-            position: "relative",
-            width: "180px",
-            height: "180px",
-          }}
-          imageStyles={[
-            {
-              width: "90px",
-              left: "0",
-              height: "90px",
-              position: "absolute",
-            },
-            {
-              width: "90px",
-              right: "-4%",
-              height: "90px",
-              position: "absolute",
-            },
-            {
-              width: "90px",
-              bottom: "22%",
-              left: "27%",
-              height: "90px",
-              position: "absolute",
-            },
-          ]}
-        />
-      </article>{" "}
+      </article>
       <aside>
-        <IterableOptions
-          title="EN15494"
+        <LabelForm
+          products={products}
+          form={form}
           handleChange={handleChange}
-          options={[
-            {
-              name: "en15494",
-              value: 1,
-              type: "checkbox",
-              checked: form.en15494.includes(1),
-              icon: <En15494Display images={[1]} />,
-            },
-            {
-              name: "en15494",
-              value: 2,
-              type: "checkbox",
-              checked: form.en15494.includes(2),
-              icon: <En15494Display images={[2]} />,
-            },
-            {
-              name: "en15494",
-              value: 3,
-              type: "checkbox",
-              checked: form.en15494.includes(3),
-              icon: <En15494Display images={[3]} />,
-            },
-          ]}
+          updateForm={(value) =>
+            updateForm({
+              ...form,
+              ...value,
+            })
+          }
         />
-        <IterableOptions
-          handleChange={handleChange}
-          title="Label Style"
-          options={[
-            {
-              name: "labelStyle",
-              value: "square",
-              type: "radio",
-              checked: form.labelStyle === "square",
-              icon: <SquareShapeRadioIcon />,
-              label: "Square",
-            },
-            {
-              name: "labelStyle",
-              value: "round",
-              checked: form.labelStyle === "round",
-              type: "radio",
-              icon: <CircleShapeRadioIcon />,
-              label: "Circle",
-            },
-          ]}
-        />
-        <TextInput
-          name="fragrance"
-          handleChange={handleChange}
-          label="Fragrance"
-        />
-        <TextInput name="product" handleChange={handleChange} label="Product" />
-        <TextInput
-          name="mass"
-          handleChange={handleChange}
-          label="Mass/Volume"
-        />
-        <TextInput
-          name="display_product"
-          handleChange={handleChange}
-          label="Product Name"
-        />
-
-        <TextInput
-          name="business_name"
-          handleChange={handleChange}
-          label="Business Name"
-        />
-        <TextInput
-          name="business_address"
-          handleChange={handleChange}
-          label="Business Address"
-        />
-        <TextInput
-          name="business_telephone"
-          handleChange={handleChange}
-          label="Business Telephone"
-        />
-        <TextInput name="ufi" handleChange={handleChange} label="UFI#" />
-        <TextInput name="batch" handleChange={handleChange} label="Batch#" />
       </aside>
     </section>
   );
