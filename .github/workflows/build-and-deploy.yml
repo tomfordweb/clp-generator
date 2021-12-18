@@ -69,7 +69,7 @@ jobs:
       - name: Login to docker registry
         run: ssh ${{ secrets.DEV_SERVER_USER }}@${{ secrets.DEV_SERVER}} "docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}"
       - name: Pull latest image
-        run: ssh ${{ secrets.dev_server_user }}@${{ secrets.dev_server}} "docker pull ${{ env.GITHUB_REPOSITORY }}:${{ envGITHUB_REF_NAME }}"
+        run: ssh ${{ secrets.dev_server_user }}@${{ secrets.dev_server}} "docker pull ${{ env.GITHUB_REPOSITORY }}:${{ env.GITHUB_REF_NAME }}"
       - name: Stop the image if it exists
         run: ssh ${{ secrets.dev_server_user }}@${{ secrets.dev_server}} "docker stop ${{ env.GITHUB_REPOSITORY }} || true"
       - name: Run the image in detached mode
