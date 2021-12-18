@@ -6,7 +6,6 @@ on:
   push:
     branches:
       - "main"
-      - "ci"
 jobs:
   build-docker:
     runs-on: ubuntu-latest
@@ -63,14 +62,19 @@ jobs:
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.DEV_SERVER_SSH_KEY }}
-          known_hosts: "just-a-placeholder-so-we-dont-get-errors"
+          known_hosts: "a-placeholder"
+
       - name: Add Dev server to known hosts
         run: ssh-keyscan -H ${{ secrets.DEV_SERVER }} >> ~/.ssh/known_hosts
+
       - name: Login to docker registry
         run: ssh ${{ secrets.DEV_SERVER_USER }}@${{ secrets.DEV_SERVER}} "docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}"
+
       - name: Pull latest image
         run: ssh ${{ secrets.dev_server_user }}@${{ secrets.dev_server}} "docker pull tomfordweb/devonwick-clp"
+
       - name: Stop the image if it exists
         run: ssh ${{ secrets.dev_server_user }}@${{ secrets.dev_server}} "docker stop devonwick-clp_dev || true"
+
       - name: Run the image in detached mode
         run: ssh ${{ secrets.dev_server_user }}@${{ secrets.dev_server}} "docker run -d --rm --name devonwick-clp_dev -p 8080:80 tomfordweb/devonwick-clp:latest"
