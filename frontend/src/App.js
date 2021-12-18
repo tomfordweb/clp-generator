@@ -4,11 +4,12 @@ import { PDFViewer } from "@react-pdf/renderer";
 import { useEffect, useState } from "react";
 
 import LabelDisplay from "./LabelDisplay/LabelDisplay";
-import LabelForm from "./LabelForm";
+import LabelForm from "./LabelForm/LabelForm";
+import FragranceEditor from "./FragranceEditor/FragranceEditor";
 
 function App() {
-  const [products, updateProducts] = useState([]);
-  const getAllProducts = () => {
+  const [fragrances, updateFragranceList] = useState([]);
+  const getAllFragrances = () => {
     fetch("products.json", {
       headers: {
         "Content-Type": "application/json",
@@ -16,16 +17,15 @@ function App() {
       },
     })
       .then(function (response) {
-        console.log(response);
         return response.json();
       })
       .then(function (myJson) {
-        updateProducts(myJson.payload);
+        updateFragranceList(myJson.payload);
       });
   };
 
   useEffect(() => {
-    getAllProducts();
+    getAllFragrances();
   }, []);
 
   const [form, updateForm] = useState({
@@ -71,34 +71,37 @@ function App() {
   };
 
   return (
-    <section className="App">
-      <header>
-        <h1>CLP Generator</h1>
-      </header>
-      <article>
-        <PDFViewer>
-          <LabelDisplay
-            labelCount={1}
-            orientation="portrait"
-            size={[180, 180]}
+    <main className="App">
+      <section className="row">
+        <header className="col-12">
+          <h1>CLP Generator</h1>
+        </header>
+        <article className="PdfViewer col-8">
+          <PDFViewer>
+            <LabelDisplay
+              labelCount={1}
+              orientation="portrait"
+              size={[180, 180]}
+              form={form}
+            />
+          </PDFViewer>
+        </article>
+        <aside className="col-4">
+          <LabelForm
+            products={fragrances}
             form={form}
+            handleChange={handleChange}
+            updateForm={(value) =>
+              updateForm({
+                ...form,
+                ...value,
+              })
+            }
           />
-        </PDFViewer>
-      </article>
-      <aside>
-        <LabelForm
-          products={products}
-          form={form}
-          handleChange={handleChange}
-          updateForm={(value) =>
-            updateForm({
-              ...form,
-              ...value,
-            })
-          }
-        />
-      </aside>
-    </section>
+        </aside>
+      </section>
+      <FragranceEditor fragrances={fragrances} />
+    </main>
   );
 }
 

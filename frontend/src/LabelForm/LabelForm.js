@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 
-import En15494Display from "./En15494Display/En15494Display";
-import IterableOptions from "./IterableOptions/IterableOptions";
-import TextInput from "./TextInput/TextInput";
+import En15494Display from "../En15494Display/En15494Display";
+import IterableOptions from "../IterableOptions/IterableOptions";
+import TextInput from "../TextInput/TextInput";
+import CheckInput from "../CheckInput/CheckInput";
 
 function LabelForm({ products, updateForm, handleChange, form }) {
   const [product, setProduct] = useState(null);
@@ -52,24 +53,16 @@ function LabelForm({ products, updateForm, handleChange, form }) {
             },
           ]}
         />
-        <label htmlFor="show-border">
-          <input
-            checked={form.showBorder}
-            onChange={(e) =>
-              handleChange({
-                name: "showBorder",
-                value: e.target.checked,
-              })
-            }
-            type="checkbox"
-            id="show-border"
-            name="showborder"
-          />{" "}
-          & nbsp; Show Border
-        </label>
-        <div className="form-control">
+        <CheckInput
+          name="showBorder"
+          value={form.showBorder}
+          handleChange={handleChange}
+          label="Show Trim lines"
+        />
+        <div className="mb-3">
           <label htmlFor="fragrance">Fragrance:</label>
           <select
+            className="form-select"
             defaultValue={0}
             onChange={(e) =>
               setFragrance(

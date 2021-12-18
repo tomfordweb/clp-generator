@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-const TextInput = ({ label, name, type, handleChange }) => {
+const TextInput = ({ value, label, name, type, handleChange }) => {
   return (
-    <div className="form-control text">
-      <label htmlFor={name}>{label}</label>
+    <div className="mb-3">
+      <label className="form-label" htmlFor={name}>
+        {label}
+      </label>
       <input
+        defaultValue={value}
+        className="form-control"
         data-testid={"form-control-" + name}
         onChange={(e) =>
           handleChange({

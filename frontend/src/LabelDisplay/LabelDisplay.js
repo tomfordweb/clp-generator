@@ -20,13 +20,10 @@ const LabelDisplay = ({
   orientation,
   wrapperStyles,
 }) => {
-  const labels = Array.from(Array(labelCount)).map((i) => (
-    <Label key={i} pictogramContainerSize={size[0] / 3} form={form} />
-  ));
   return (
     <Document>
       <Page size={size} orientation={orientation} style={wrapperStyles}>
-        {labels}
+        <Label pictogramContainerSize={size[0] / 3} form={form} />
       </Page>
     </Document>
   );
