@@ -5,7 +5,7 @@ WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
 RUN npm install react-scripts -g
-COPY ./frontend/package* ./ 
+COPY ./package* ./ 
 RUN npm install
 
-COPY ./frontend ./
+COPY ./ ./

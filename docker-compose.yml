@@ -3,7 +3,7 @@ version: "3"
 services:
   frontend:
     build:
-      context: .
+      context: ./frontend
       dockerfile: frontend.Dockerfile
     environment:
       - CHOKIDAR_USEPOLLING=true
@@ -11,6 +11,7 @@ services:
     volumes:
       - ./frontend/public:/app/public
       - ./frontend/src:/app/src
+      - ./frontend/package-lock.json:/app/package-lock.json
     ports:
       - 3000:3000
       - 35729:35729

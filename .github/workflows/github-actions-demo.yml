@@ -23,6 +23,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./frontend
-          file: frontend.Dockerfile
+          file: ./frontend/frontend.Dockerfile
           push: true
           tags: tomfordweb/devonwick-clp:latest
