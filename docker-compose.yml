@@ -4,7 +4,7 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: ./frontend/frontend.Dockerfile
+      dockerfile: frontend.Dockerfile
     environment:
       - CHOKIDAR_USEPOLLING=true
     entrypoint: ["npm", "start"]
