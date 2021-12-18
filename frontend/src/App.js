@@ -62,30 +62,12 @@ function App() {
 
   return (
     <section className="App">
-      <header style={{ width: "100%" }}>
-        <h1>Design Controls</h1>
-        <div className="form-control">
-          <label>Page Type</label>
-          <select onChange={(e) => setDisplayFormat(e.target.value)}>
-            <option value="single">Single</option>
-            <option value="multiple">Multiple</option>
-          </select>
-        </div>
-      </header>
       <article>
         <PDFViewer>
           <LabelDisplay
-            wrapperStyles={
-              displayFormat === "single"
-                ? {}
-                : {
-                    flexDirection: "row",
-                    flexWrap: "wrap",
-                  }
-            }
-            labelCount={displayFormat === "single" ? 1 : 12}
-            orientation={displayFormat === "single" ? "portrait" : "landscape"}
-            size={displayFormat === "single" ? [180, 180] : "A4"}
+            labelCount={1}
+            orientation="portrait"
+            size={[180, 180]}
             form={form}
           />
         </PDFViewer>
