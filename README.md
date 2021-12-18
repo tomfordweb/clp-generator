@@ -1,3 +1,5 @@
+![deployment](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
+
 # Getting Started
 
 Local development build, accessible at `http://localhost:3000`
