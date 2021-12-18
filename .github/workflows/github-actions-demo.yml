@@ -29,7 +29,7 @@ jobs:
   #         file: ./frontend/frontend.Dockerfile
   #         push: true
   #         tags: tomfordweb/devonwick-clp:latest
-  Deploy to development server:
+  deploy-development:
     runs-on: ubuntu-latest
     steps:
       - name: Install SSH Key for DEV_SERVER
