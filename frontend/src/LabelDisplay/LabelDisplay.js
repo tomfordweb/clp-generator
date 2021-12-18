@@ -1,32 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
-import En15494Display from "../En15494Display/En15494Display";
-import "./LabelDisplay.scss";
-import {
-  Page,
-  Image,
-  Text,
-  View,
-  Document,
-  Font,
-  StyleSheet,
-} from "@react-pdf/renderer";
+import { Page, Document } from "@react-pdf/renderer";
 import Label from "../Label/Label";
 
-const LabelDisplay = ({
-  form,
-  labelCount,
-  size,
-  orientation,
-  wrapperStyles,
-}) => {
-  const labels = Array.from(Array(labelCount)).map((i) => (
-    <Label key={i} form={form} />
-  ));
+const LabelDisplay = ({ form, size, orientation, wrapperStyles }) => {
   return (
     <Document>
       <Page size={size} orientation={orientation} style={wrapperStyles}>
-        {labels}
+        <Label pictogramContainerSize={size[0] / 3} form={form} />
       </Page>
     </Document>
   );

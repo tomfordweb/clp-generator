@@ -1,0 +1,48 @@
+{
+  "payload": [
+    {
+      "id": 1,
+      "supplierName": "Candle Shack",
+      "fragrance": "Fresh Linen",
+      "supplierCode": null,
+      "products": [
+        {
+          "id": 1,
+          "name": "Wax",
+          "text": "(4-tert-Butylcyclohexyl acetate) Warning. May cause an allergic skin reaction. Harmful to aquatic life with long lasting effects. Keep out of reach of children. IF ON SKIN: Wash with plenty of soap and water. If skin irritation or rash occurs: Get medical advice/attention. Dispose of contents/container to approved disposal site in accordance with local regulations. Contains Iso E-Super, 3-(o-Ethylphenyl)-2,2-dimethylpropionaldehyde, Hexyl salicylate, Linalyl acetate, [3R-(3a,3a,6ab,7b,8aa)]-octahydro-6-methoxy-3,6,8,8-tetramethyl-1H-3a,7-methanoazulene, alpha-Hexylcinnamaldehyde, alpha-iso-Methylionone, d-Limonene.",
+          "pictograms": [1],
+          "mass": "100g"
+        },
+        {
+          "id": 2,
+          "name": "Diffuser",
+          "text": "(4-tert-Butylcyclohexyl acetate) Warning. May cause an allergic skin reaction. Causes serious eye irritation. Harmful to aquatic life with long lasting effects. Keep out of reach of children. IF ON SKIN: Wash with plenty of soap and water. IF IN EYES: Rinse cautiously with water for several minutes. Remove contact lenses, if present and easy to do. Continue rinsing. If skin irritation or rash occurs: Get medical advice/attention. If eye irritation persists: Get medical advice/attention. Dispose of contents/container to approved disposal site in accordance with local regulations. Contains Iso E-Super, 3-(o-Ethylphenyl)-2,2-dimethylpropionaldehyde, Hexyl salicylate, Linalyl acetate, [3R-(3a,3a,6ab,7b,8aa)]-octahydro-6-methoxy-3,6,8,8-tetramethyl-1H-3a,7-methanoazulene, alpha-Hexylcinnamaldehyde, alpha-iso-Methylionone, d-Limonene.",
+          "pictograms": [1, 2],
+          "mass": "400g"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "supplierName": "Testing",
+      "fragrance": "New Car Scent",
+      "supplierCode": null,
+      "products": [
+        {
+          "id": 3,
+          "name": "Wax",
+          "text": "(4-tert-Butylcyclohexyl acetate) Warning. May cause an allergic skin reaction. Harmful to aquatic life with long lasting effects. Keep out of reach of children. IF ON SKIN: Wash with plenty of soap and water. If skin irritation or rash occurs: Get medical advice/attention. Dispose of contents/container to approved disposal site in accordance with local regulations. Contains Iso E-Super, 3-(o-Ethylphenyl)-2,2-dimethylpropionaldehyde, Hexyl salicylate, Linalyl acetate, [3R-(3a,3a,6ab,7b,8aa)]-octahydro-6-methoxy-3,6,8,8-tetramethyl-1H-3a,7-methanoazulene, alpha-Hexylcinnamaldehyde, alpha-iso-Methylionone, d-Limonene.",
+          "pictograms": [1, 3],
+          "mass": "100g"
+        },
+        {
+          "id": 4,
+          "name": "Diffuser",
+          "text": "(4-tert-Butylcyclohexyl acetate) Warning. May cause an allergic skin reaction. Causes serious eye irritation. Harmful to aquatic life with long lasting effects. Keep out of reach of children. IF ON SKIN: Wash with plenty of soap and water. IF IN EYES: Rinse cautiously with water for several minutes. Remove contact lenses, if present and easy to do. Continue rinsing. If skin irritation or rash occurs: Get medical advice/attention. If eye irritation persists: Get medical advice/attention. Dispose of contents/container to approved disposal site in accordance with local regulations. Contains Iso E-Super, 3-(o-Ethylphenyl)-2,2-dimethylpropionaldehyde, Hexyl salicylate, Linalyl acetate, [3R-(3a,3a,6ab,7b,8aa)]-octahydro-6-methoxy-3,6,8,8-tetramethyl-1H-3a,7-methanoazulene, alpha-Hexylcinnamaldehyde, alpha-iso-Methylionone, d-Limonene.",
+          "pictograms": [1, 2, 3],
+          "mass": "400g"
+        }
+      ]
+    }
+  ]
+}
