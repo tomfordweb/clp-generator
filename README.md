@@ -12,3 +12,7 @@ Or to test the production build...
 docker-compose -f docker-compose.yml up --build
 
 ```
+
+# CI/CD
+
+This is performed via github actions. You can view details via the actions tab.
