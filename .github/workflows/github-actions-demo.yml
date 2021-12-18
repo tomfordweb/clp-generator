@@ -39,4 +39,4 @@ jobs:
           ssh-host: ${{ secrets.DEV_SERVER }}
 
       - name: Execute test Script
-        run: ssh ${{ secrets.DEV_SERVER_USER }}@${{ secrets.DEV_SERVER}} echo "Hello world"
+        run: ssh ${{ secrets.DEV_SERVER_USER }}@${{ secrets.DEV_SERVER}} echo "Hello world" > ~/tom-test.txt
