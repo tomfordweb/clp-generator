@@ -9,6 +9,7 @@ import FragranceEditor from "./FragranceEditor/FragranceEditor";
 
 function App() {
   const [fragrances, updateFragranceList] = useState([]);
+  const [form, setForm] = useState(null);
   const getAllFragrances = () => {
     fetch("products.json", {
       headers: {
@@ -28,48 +29,6 @@ function App() {
     getAllFragrances();
   }, []);
 
-  const [form, updateForm] = useState({
-    labelStyle: "round",
-    showBorder: false,
-    fragrance: "Fragrance Name",
-    product: "Product Name",
-    productText: "",
-    mass: "200",
-    pictograms: [],
-    display_product: "Display Product Name",
-    business_name: "Devonwick",
-    business_address: "Unit C Armada Point, Estover Trading Estate PL6 7PY",
-    business_telephone: "(123) 456-7890",
-    ufi: "1234567890",
-    batch: "12345",
-  });
-
-  /**
-   * Update internal state of form to the value of the changed input
-   */
-  const handleChange = (options) => {
-    // this will crash a browser lol
-    let value = options.value;
-    // Checkboxes are automatically assumed its an array
-    if (options.type === "checkbox") {
-      if (options.checked) {
-        // Push to the array
-        value = [...(form[options.name] || []), options.value];
-      } else {
-        // Remove from the array
-        value = (form[options.name] || []).filter(
-          (val) => val !== options.value
-        );
-      }
-    }
-
-    updateForm({
-      ...form,
-      [options.name]: value,
-    });
-    console.log("form updated", form);
-  };
-
   return (
     <main className="App">
       <section className="row">
@@ -77,26 +36,26 @@ function App() {
           <h1>CLP Generator</h1>
         </header>
         <article className="PdfViewer col-8">
-          <PDFViewer>
-            <LabelDisplay
-              labelCount={1}
-              orientation="portrait"
-              size={[180, 180]}
-              form={form}
-            />
-          </PDFViewer>
+          {form && (
+            <PDFViewer>
+              <LabelDisplay
+                labelCount={1}
+                orientation="portrait"
+                size={[180, 180]}
+                form={form}
+              />
+            </PDFViewer>
+          )}
         </article>
         <aside className="col-4">
           <LabelForm
             products={fragrances}
-            form={form}
-            handleChange={handleChange}
-            updateForm={(value) =>
-              updateForm({
-                ...form,
+            propagateFormChange={(value) => {
+              setForm({
                 ...value,
-              })
-            }
+              });
+              console.log("propagateFormChange", value);
+            }}
           />
         </aside>
       </section>

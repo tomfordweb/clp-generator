@@ -8,7 +8,7 @@ const TextInput = ({ value, label, name, type, handleChange }) => {
         {label}
       </label>
       <input
-        defaultValue={value}
+        value={value}
         className="form-control"
         data-testid={"form-control-" + name}
         onChange={(e) =>

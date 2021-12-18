@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./LabelDisplay.scss";
 import { Page, Document } from "@react-pdf/renderer";
 import Label from "../Label/Label";
 

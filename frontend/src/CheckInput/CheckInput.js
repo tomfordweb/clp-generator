@@ -4,12 +4,12 @@ const CheckInput = ({ type, label, value, name, checked, handleChange }) => (
     <input
       className="form-check-input"
       type={type}
-      defaultChecked={checked}
+      checked={checked}
       onChange={(e) =>
         handleChange({
           name: name,
-          value: value || e.target.checked,
-          checked: e.target.checked,
+          value: value,
+          checked: type == "radio" ? value : e.target.checked,
         })
       }
       name={name}

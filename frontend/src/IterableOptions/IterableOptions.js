@@ -1,5 +1,3 @@
-import "./IterableOptions.scss";
-
 import PropTypes from "prop-types";
 import React from "react";
 
@@ -8,7 +6,10 @@ import CheckInput from "../CheckInput/CheckInput";
 const IterableOptions = ({ title, options, handleChange }) => {
   const radioHtml = options.map((option, i) => {
     return (
-      <div className="IterableOptions" key={i}>
+      <div
+        className="IterableOption d-flex flex-column align-items-center me-3"
+        key={i}
+      >
         <CheckInput
           checked={option.checked}
           name={option.name}
@@ -23,7 +24,6 @@ const IterableOptions = ({ title, options, handleChange }) => {
             })
           }
         />
-        <br />
         {option.icon}
         <span>{option.label}</span>
       </div>
@@ -31,14 +31,18 @@ const IterableOptions = ({ title, options, handleChange }) => {
   });
 
   return (
-    <div data-testid="RadioOptions" className="IterableOptions">
-      <h3 className="title">{title}</h3>
-      {radioHtml}
+    <div data-testid="IterableOptions" className="IterableOptions">
+      <h4 className="title">{title}</h4>
+      <div className="d-flex">{radioHtml}</div>
     </div>
   );
 };
 
-IterableOptions.propTypes = {};
+IterableOptions.propTypes = {
+  title: PropTypes.string,
+  options: PropTypes.any,
+  handleChange: PropTypes.func,
+};
 
 IterableOptions.defaultProps = {};
 

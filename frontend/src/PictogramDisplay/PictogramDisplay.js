@@ -25,20 +25,22 @@ const PictogramDisplay = ({ type, images, imageStyles, containerStyles }) => {
     return {};
   };
 
-  const displayImages = images.map((image, index) =>
-    type === "pdf" ? (
-      <Image key={image} src={imageSrcs[image]} style={imageHelper(index)} />
-    ) : (
-      <img
-        style={imageHelper(index)}
-        key={image}
-        src={imageSrcs[image]}
-        className="en-icon"
-      />
-    )
-  );
+  const displayImages =
+    images &&
+    images.map((image, index) =>
+      type === "pdf" ? (
+        <Image key={image} src={imageSrcs[image]} style={imageHelper(index)} />
+      ) : (
+        <img
+          style={imageHelper(index)}
+          key={image}
+          src={imageSrcs[image]}
+          className="en-icon"
+        />
+      )
+    );
 
-  return images.length ? (
+  return images && images.length ? (
     type === "pdf" ? (
       <View
         style={{ display: "flex", flexDirection: "row", ...containerStyles }}
