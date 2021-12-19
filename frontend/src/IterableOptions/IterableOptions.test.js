@@ -1,13 +1,12 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
-import RadioOptions from './RadioOptions';
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import "@testing-library/jest-dom/extend-expect";
+import IterableOptions from "./IterableOptions";
+describe("<IiterableOptions />", () => {
+  test("it should mount", () => {
+    render(<IterableOptions />);
 
-describe('<RadioOptions />', () => {
-  test('it should mount', () => {
-    render(<RadioOptions />);
-    
-    const radioOptions = screen.getByTestId('RadioOptions');
+    const radioOptions = screen.getByTestId("IterableOptions");
 
     expect(radioOptions).toBeInTheDocument();
   });

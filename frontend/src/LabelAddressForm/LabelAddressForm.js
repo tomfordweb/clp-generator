@@ -29,45 +29,44 @@ const LabelAddressForm = ({
         business_telephone: "",
       };
     }
-
-    console.log(addressData);
-
     handleFormChange(addressData);
   };
   return (
-    <div data-testid="LabelAddressForm">
-      <CheckInput
-        name="use_devonwick"
-        value={useDefaultAddress}
-        checked={useDefaultAddress}
-        label="Use Devonwick Address"
-        handleChange={(e) => changeAddress(e.checked)}
-      />
-      <TextInput
-        name="business_name"
-        value={form.business_name}
-        handleChange={handleChange}
-        label="Business Name"
-      />
-      <TextInput
-        name="business_address_1"
-        value={form.business_address_1}
-        handleChange={handleChange}
-        label="Address Line 1"
-      />
-      <TextInput
-        name="business_address_2"
-        value={form.business_address_2}
-        handleChange={handleChange}
-        label="Address Line 2"
-      />
-      <TextInput
-        name="business_telephone"
-        value={form.business_telephone}
-        handleChange={handleChange}
-        label="Business Telephone"
-      />
-    </div>
+    form && (
+      <div data-testid="LabelAddressForm">
+        <CheckInput
+          name="use_devonwick"
+          value={useDefaultAddress}
+          checked={useDefaultAddress}
+          label="Use Devonwick Address"
+          handleChange={(e) => changeAddress(e.checked)}
+        />
+        <TextInput
+          name="business_name"
+          value={form.business_name}
+          handleChange={handleChange}
+          label="Business Name"
+        />
+        <TextInput
+          name="business_address_1"
+          value={form.business_address_1}
+          handleChange={handleChange}
+          label="Address Line 1"
+        />
+        <TextInput
+          name="business_address_2"
+          value={form.business_address_2}
+          handleChange={handleChange}
+          label="Address Line 2"
+        />
+        <TextInput
+          name="business_telephone"
+          value={form.business_telephone}
+          handleChange={handleChange}
+          label="Business Telephone"
+        />
+      </div>
+    )
   );
 };
 

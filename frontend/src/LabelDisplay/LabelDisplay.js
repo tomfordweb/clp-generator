@@ -5,9 +5,9 @@ import Label from "../Label/Label";
 
 const LabelDisplay = ({ form, size, orientation, wrapperStyles }) => {
   return (
-    <Document>
+    <Document data-testid="LabelDisplay">
       <Page size={size} orientation={orientation} style={wrapperStyles}>
-        <Label pictogramContainerSize={size[0] / 3} form={form} />
+        {form && <Label pictogramContainerSize={size[0] / 3} form={form} />}
       </Page>
     </Document>
   );
@@ -16,11 +16,13 @@ const LabelDisplay = ({ form, size, orientation, wrapperStyles }) => {
 LabelDisplay.propTypes = {
   orientation: PropTypes.oneOf(["landscape", "portrait"]),
   form: PropTypes.object,
+  size: PropTypes.arrayOf(PropTypes.number),
 };
 
 LabelDisplay.defaultProps = {
   orientation: "portrait",
   form: {},
+  size: [180, 180],
 };
 
 export default LabelDisplay;

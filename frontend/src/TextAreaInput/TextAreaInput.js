@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 
 const TextAreaInput = ({ name, value, handleChange, height, label }) => (
-  <div className="mb-3">
+  <div className="mb-3" data-testid="TextAreaInput">
     <label className="form-label" htmlFor={name}>
       {label}
     </label>
@@ -10,7 +10,7 @@ const TextAreaInput = ({ name, value, handleChange, height, label }) => (
       id={name}
       defaultValue={value}
       onChange={(e) =>
-        console.log({
+        handleChange({
           name: name,
           value: e.target.value,
         })

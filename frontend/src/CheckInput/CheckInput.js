@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 const CheckInput = ({ type, label, value, name, checked, handleChange }) => (
-  <div className="form-check">
+  <div className="form-check" data-testid="CheckInput">
     <input
       className="form-check-input"
       type={type}
@@ -30,7 +30,7 @@ CheckInput.prototypes = {
 };
 CheckInput.defaultProps = {
   type: "checkbox",
-  handleChange: (e) => console.log(e),
+  handleChange: (e) => console.warn("unhandled change event", e),
   checked: false,
 };
 

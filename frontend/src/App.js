@@ -58,7 +58,6 @@ function App() {
           <LabelForm
             products={fragrances}
             propagateFormChange={(value) => {
-              console.log("new form", value);
               setForm({
                 ...value,
               });

@@ -3,7 +3,7 @@ import TextInput from "../TextInput/TextInput";
 
 const FragranceEditForm = ({ fragrance }) => {
   return (
-    <div className="row">
+    <div className="row" data-testid="FragranceEditForm">
       <TextInput
         label="Supplier"
         value={fragrance.supplierName}

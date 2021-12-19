@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 
 const SelectInput = ({ name, value, handleChange, label, options }) => (
-  <div className="mb-3">
+  <div className="mb-3" data-testid="SelectInput">
     <label htmlFor={name}>{label}</label>
     <select
       className="form-select"

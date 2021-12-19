@@ -2,14 +2,15 @@ import IterableOptions from "../IterableOptions/IterableOptions";
 import PictogramDisplay from "../PictogramDisplay/PictogramDisplay";
 import TextAreaInput from "../TextAreaInput/TextAreaInput";
 import TextInput from "../TextInput/TextInput";
+import PropTypes from "prop-types";
 
 const FragranceProductEditor = ({ product }) => {
   return (
     <div
       className="card col-12 col-md-6 mb-4"
+      data-testid="FragranceProductEditor"
       style={{ border: "1px solid #ddd" }}
     >
-      {" "}
       <div className="card-body">
         <TextInput
           label="Product Name"
@@ -54,4 +55,9 @@ const FragranceProductEditor = ({ product }) => {
     </div>
   );
 };
+
+FragranceProductEditor.prototype = {
+  product: PropTypes.object,
+};
+
 export default FragranceProductEditor;

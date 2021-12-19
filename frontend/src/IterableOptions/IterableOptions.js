@@ -16,7 +16,6 @@ const IterableOptions = ({ title, options, handleChange }) => {
           type={option.type}
           value={option.value}
           handleChange={(e) => {
-            console.log(e);
             handleChange({
               type: option.type === "checkbox" ? "checkbox-group" : option.type,
               name: e.name,
@@ -41,12 +40,13 @@ const IterableOptions = ({ title, options, handleChange }) => {
 
 IterableOptions.propTypes = {
   title: PropTypes.string,
-  options: PropTypes.any,
+  options: PropTypes.arrayOf(PropTypes.any),
   handleChange: PropTypes.func,
 };
 
 IterableOptions.defaultProps = {
   handleChange: (e) => console.warn("unhandled change", e),
+  options: [],
 };
 
 export default IterableOptions;
