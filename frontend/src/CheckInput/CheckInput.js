@@ -10,7 +10,7 @@ const CheckInput = ({ type, label, value, name, checked, handleChange }) => (
           name: name,
           type: type,
           value: value,
-          checked: type === "radio" ? value : !value,
+          checked: type === "radio" ? value : e.target.checked,
         })
       }
       name={name}

@@ -89,6 +89,8 @@ function LabelForm({ products, propagateFormChange }) {
         [name]: returnValue,
       };
 
+      console.log(finalValue, checked, value);
+
       updateForm(finalValue);
       propagateFormChange(finalValue);
     },
@@ -140,9 +142,7 @@ function LabelForm({ products, propagateFormChange }) {
         />
         <IterableOptions
           title="Pictograms"
-          handleChange={(value) => {
-            handleChange(value);
-          }}
+          handleChange={handleChange}
           options={[
             {
               name: "pictograms",

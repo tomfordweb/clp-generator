@@ -44,7 +44,7 @@ function App() {
               <LabelDisplay
                 labelCount={1}
                 orientation="portrait"
-                size={[180, 180]}
+                size={[190, 190]}
                 form={formValue}
               />
             </PDFViewer>

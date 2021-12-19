@@ -15,14 +15,15 @@ const IterableOptions = ({ title, options, handleChange }) => {
           name={option.name}
           type={option.type}
           value={option.value}
-          handleChange={(e) =>
+          handleChange={(e) => {
+            console.log(e);
             handleChange({
               type: option.type === "checkbox" ? "checkbox-group" : option.type,
               name: e.name,
               value: e.value,
               checked: e.checked,
-            })
-          }
+            });
+          }}
         />
         {option.icon}
         <span>{option.label}</span>
