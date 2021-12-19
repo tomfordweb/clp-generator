@@ -49,20 +49,25 @@ const PictogramDisplay = ({ type, images, imageStyles, containerStyles }) => {
         {displayImages}
       </View>
     ) : (
-      <div style={containerStyles}>{displayImages}</div>
+      <div data-testid="PictogramDisplay" style={containerStyles}>
+        {displayImages}
+      </div>
     )
   ) : null;
 };
 
 PictogramDisplay.propTypes = {
   type: PropTypes.string,
-  images: PropTypes.array,
+  images: PropTypes.arrayOf(PropTypes.number),
   imageStyles: PropTypes.array,
   containerStyles: PropTypes.object,
 };
 
 PictogramDisplay.defaultProps = {
   containerStyles: {},
+  images: [],
+  imageStyles: [],
+  type: "image",
 };
 
 export default PictogramDisplay;
