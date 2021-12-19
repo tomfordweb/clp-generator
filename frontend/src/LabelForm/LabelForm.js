@@ -25,7 +25,7 @@ export const DEFAULT_FORM_STATE = {
   mass: "",
   pictograms: [],
   display_product: "Display Product Name",
-  custom_text: "foo",
+  custom_text: "Follow me on instagram",
   ean: "1234567890",
   ufi: "1234567890",
   batch: "12345",
