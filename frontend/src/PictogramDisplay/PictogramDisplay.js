@@ -33,6 +33,7 @@ const PictogramDisplay = ({ type, images, imageStyles, containerStyles }) => {
       ) : (
         <img
           style={imageHelper(index)}
+          alt={index}
           key={image}
           src={imageSrcs[image]}
           className="en-icon"

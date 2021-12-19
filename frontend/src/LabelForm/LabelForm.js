@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 import CheckInput from "../CheckInput/CheckInput";
 import IterableOptions from "../IterableOptions/IterableOptions";
@@ -94,7 +94,7 @@ function LabelForm({ products, propagateFormChange }) {
       updateForm(finalValue);
       propagateFormChange(finalValue);
     },
-    [form]
+    [form, propagateFormChange]
   );
 
   const setForm = useCallback(
@@ -106,7 +106,7 @@ function LabelForm({ products, propagateFormChange }) {
       updateForm(finalValue);
       propagateFormChange(finalValue);
     },
-    [form]
+    [form, propagateFormChange]
   );
 
   return (
@@ -122,7 +122,11 @@ function LabelForm({ products, propagateFormChange }) {
             key: product.id,
           }))}
           handleChange={(value) =>
-            setFragrance(products.filter((product) => product.id == value)[0])
+            setFragrance(
+              products.filter(
+                (product) => parseInt(product.id) === parseInt(value)
+              )[0]
+            )
           }
         />
         <SelectInput
