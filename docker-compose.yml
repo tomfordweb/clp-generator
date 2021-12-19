@@ -5,5 +5,7 @@ services:
     build:
       context: ./frontend
       dockerfile: frontend.Dockerfile
+      args:
+        REACT_APP_CI_BUILD: 'production'
     ports:
       - 80:80
