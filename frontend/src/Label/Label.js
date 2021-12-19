@@ -1,65 +1,65 @@
-import { Font, StyleSheet, Text, View } from "@react-pdf/renderer";
+import {Font, StyleSheet, Text, View} from "@react-pdf/renderer";
 import React from "react";
 
-import PictogramDisplay from "../PictogramDisplay/PictogramDisplay";
 import sourceSansProBold from "../fonts/SourceSansPro-Bold.ttf";
 import sourceSansProItalic from "../fonts/SourceSansPro-Italic.ttf";
 import sourceSansProRegular from "../fonts/SourceSansPro-Regular.ttf";
+import PictogramDisplay from "../PictogramDisplay/PictogramDisplay";
 
 Font.register({
-  family: "SourceSansPro",
-  fonts: [
+  family : "SourceSansPro",
+  fonts : [
     {
-      src: sourceSansProRegular,
+      src : sourceSansProRegular,
     },
     {
-      src: sourceSansProBold,
-      fontWeight: "bold",
+      src : sourceSansProBold,
+      fontWeight : "bold",
     },
     {
-      src: sourceSansProItalic,
-      fontWeight: "normal",
-      fontStyle: "italic",
+      src : sourceSansProItalic,
+      fontWeight : "normal",
+      fontStyle : "italic",
     },
   ],
 });
 
 const styles = StyleSheet.create({
-  bottomMargin: {
-    marginBottom: "5px",
+  bottomMargin : {
+    marginBottom : "5px",
   },
-  roundContainer: {
-    borderRadius: "50%",
-    padding: "20px",
-    height: "180px",
+  roundContainer : {
+    borderRadius : "50%",
+    padding : "20px",
+    height : "180px",
   },
-  container: {},
-  title: {
-    fontWeight: "bold",
-    fontSize: "14px",
-    fontFamily: "SourceSansPro",
+  container : {},
+  title : {
+    fontWeight : "bold",
+    fontSize : "14px",
+    fontFamily : "SourceSansPro",
   },
-  batchContainer: {
-    textAlign: "center",
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "space-between",
+  batchContainer : {
+    textAlign : "center",
+    display : "flex",
+    flexDirection : "row",
+    alignItems : "space-between",
   },
-  section: {
-    margin: 10,
-    padding: 10,
-    flexGrow: 1,
+  section : {
+    margin : 10,
+    padding : 10,
+    flexGrow : 1,
   },
 });
-const Label = ({ form, pictogramContainerSize, pictogramGutter }) => {
+const Label = ({form, pictogramContainerSize, pictogramGutter}) => {
   const containerStyles = {
-    width: "180px",
-    display: "flex",
-    alignItems: "center",
-    overflow: "hidden",
-    border: form.showBorder ? "3px dashed #000" : "none",
-    padding: "5px",
-    fontSize: "5px",
+    width : "180px",
+    display : "flex",
+    alignItems : "center",
+    overflow : "hidden",
+    border : form.showBorder ? "3px dashed #000" : "none",
+    padding : "5px",
+    fontSize : "5px",
   };
 
   return (
@@ -126,7 +126,8 @@ const Label = ({ form, pictogramContainerSize, pictogramGutter }) => {
         </Text>
       </View>
       <Text>{form.business_name}</Text>
-      <Text>{form.business_address}</Text>
+      <Text>{form.business_address_1}</Text>
+      <Text>{form.business_address_2}</Text>
       <Text>{form.business_telephone}</Text>
       <Text>~{form.mass}g Net</Text>
     </View>
@@ -136,8 +137,8 @@ const Label = ({ form, pictogramContainerSize, pictogramGutter }) => {
 Label.propTypes = {};
 
 Label.defaultProps = {
-  pictogramContainerSize: 200,
-  pictogramGutter: 1,
+  pictogramContainerSize : 200,
+  pictogramGutter : 1,
 };
 
 export default Label;

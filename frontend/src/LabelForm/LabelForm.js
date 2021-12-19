@@ -5,7 +5,32 @@ import IterableOptions from "../IterableOptions/IterableOptions";
 import PictogramDisplay from "../PictogramDisplay/PictogramDisplay";
 import SelectInput from "../SelectInput/SelectInput";
 import TextInput from "../TextInput/TextInput";
+import TextAreaInput from "../TextAreaInput/TextAreaInput";
+import LabelAddressForm from "../LabelAddressForm/LabelAddressForm";
 
+/**
+ * TODO: move to the environment or something
+ */
+const DEFAULT_BUSINESS_ADDRESS = {
+  business_name: "Devonwick",
+  business_address_1: "Unit C Armada Point",
+  business_address_2: "Estover Trading Estate PL6 7PY",
+  business_telephone: "(123) 456-7890",
+};
+const DEFAULT_FORM_STATE = {
+  labelStyle: "round",
+  showBorder: false,
+  fragrance: "",
+  product: "",
+  mass: "",
+  pictograms: [],
+  display_product: "Display Product Name",
+  custom_text: "foo",
+  ean: "1234567890",
+  ufi: "1234567890",
+  batch: "12345",
+  ...DEFAULT_BUSINESS_ADDRESS,
+};
 function LabelForm({ products, propagateFormChange }) {
   const [fragrance, setFragrance] = useState(null);
   const SquareShapeRadioIcon = () => <div className="square-icon"></div>;
@@ -41,44 +66,46 @@ function LabelForm({ products, propagateFormChange }) {
    * Whenever the form is updated we
    * fire a debounced event to propagate the change to the app
    */
-  const [form, updateForm] = useState({
-    labelStyle: "round",
-    showBorder: false,
-    fragrance: "",
-    product: "",
-    mass: "",
-    pictograms: [],
-    display_product: "Display Product Name",
-    business_name: "Devonwick",
-    business_address: "Unit C Armada Point, Estover Trading Estate PL6 7PY",
-    business_telephone: "(123) 456-7890",
-    ufi: "1234567890",
-    batch: "12345",
-  });
+  const [form, updateForm] = useState(DEFAULT_FORM_STATE);
 
   /**
    * Update internal state of form to the value of the changed input
    */
-  const handleChange = ({ value, name, checked, type }) => {
-    let returnValue = value;
-    if (type === "checkbox-group") {
-      if (checked) {
-        // Push to the array
-        returnValue = [...(form[name] || []), value];
-      } else {
-        // Remove from the array
-        returnValue = (form[name] || []).filter((val) => val !== value);
+  const handleChange = useCallback(
+    ({ value, name, checked, type }) => {
+      let returnValue = value;
+      if (type === "checkbox-group") {
+        if (checked) {
+          // Push to the array
+          returnValue = [...(form[name] || []), value];
+        } else {
+          // Remove from the array
+          returnValue = (form[name] || []).filter((val) => val !== value);
+        }
       }
-    }
 
-    const finalValue = {
-      ...form,
-      [name]: returnValue,
-    };
+      const finalValue = {
+        ...form,
+        [name]: returnValue,
+      };
 
-    updateForm(finalValue);
-    propagateFormChange(finalValue);
-  };
+      updateForm(finalValue);
+      propagateFormChange(finalValue);
+    },
+    [form]
+  );
+
+  const setForm = useCallback(
+    (data) => {
+      const finalValue = {
+        ...form,
+        ...data,
+      };
+      updateForm(finalValue);
+      propagateFormChange(finalValue);
+    },
+    [form]
+  );
 
   return (
     products.length && (
@@ -149,35 +176,43 @@ function LabelForm({ products, propagateFormChange }) {
           handleChange={handleChange}
           label="Mass/Volume"
         />
-        <TextInput
-          name="business_name"
-          value={form.business_name}
+        <TextAreaInput
+          name="custom_text"
+          value={form.custom_text}
           handleChange={handleChange}
-          label="Business Name"
+          label="Custom Text"
+          height="50px"
         />
+
+        <div className="row">
+          <div className="col-6">
+            <TextInput
+              name="batch"
+              value={form.batch}
+              handleChange={handleChange}
+              label="Batch#"
+            />
+          </div>
+          <div className="col-6">
+            <TextInput
+              name="ufi"
+              value={form.ufi}
+              handleChange={handleChange}
+              label="UFI#"
+            />
+          </div>
+        </div>
         <TextInput
-          name="business_address"
-          value={form.business_address}
+          name="ean"
+          value={form.ean}
           handleChange={handleChange}
-          label="Business Address"
+          label="EAN"
         />
-        <TextInput
-          name="business_telephone"
-          value={form.business_telephone}
+        <LabelAddressForm
+          form={form}
           handleChange={handleChange}
-          label="Business Telephone"
-        />
-        <TextInput
-          name="ufi"
-          value={form.ufi}
-          handleChange={handleChange}
-          label="UFI#"
-        />
-        <TextInput
-          name="batch"
-          value={form.batch}
-          handleChange={handleChange}
-          label="Batch#"
+          defaultValues={DEFAULT_BUSINESS_ADDRESS}
+          handleFormChange={setForm}
         />
         <h1>Design Options</h1>
         <IterableOptions

@@ -57,11 +57,12 @@ function App() {
         <aside className="col-12 col-md-4">
           <LabelForm
             products={fragrances}
-            propagateFormChange={(value) =>
+            propagateFormChange={(value) => {
+              console.log("new form", value);
               setForm({
                 ...value,
-              })
-            }
+              });
+            }}
           />
         </aside>
         <div className="col-12">

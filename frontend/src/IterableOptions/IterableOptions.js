@@ -31,7 +31,7 @@ const IterableOptions = ({ title, options, handleChange }) => {
   });
 
   return (
-    <div data-testid="IterableOptions" className="IterableOptions">
+    <div data-testid="IterableOptions" className="IterableOptions mb-3">
       <label>{title}</label>
       <div className="d-flex">{radioHtml}</div>
     </div>
