@@ -44,6 +44,8 @@ IterableOptions.propTypes = {
   handleChange: PropTypes.func,
 };
 
-IterableOptions.defaultProps = {};
+IterableOptions.defaultProps = {
+  handleChange: (e) => console.warn("unhandled change", e),
+};
 
 export default IterableOptions;
