@@ -8,6 +8,7 @@ services:
     entrypoint: ["npm", "start"]
     environment:
       - CHOKIDAR_USEPOLLING=true
+      - REACT_APP_CI_BUILD=local
     volumes:
       - ./frontend/public:/app/public
       - ./frontend/src:/app/src

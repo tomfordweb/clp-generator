@@ -15,14 +15,14 @@ const IterableOptions = ({ title, options, handleChange }) => {
           name={option.name}
           type={option.type}
           value={option.value}
-          handleChange={(e) =>
+          handleChange={(e) => {
             handleChange({
               type: option.type === "checkbox" ? "checkbox-group" : option.type,
               name: e.name,
               value: e.value,
               checked: e.checked,
-            })
-          }
+            });
+          }}
         />
         {option.icon}
         <span>{option.label}</span>
@@ -31,7 +31,7 @@ const IterableOptions = ({ title, options, handleChange }) => {
   });
 
   return (
-    <div data-testid="IterableOptions" className="IterableOptions">
+    <div data-testid="IterableOptions" className="IterableOptions mb-3">
       <label>{title}</label>
       <div className="d-flex">{radioHtml}</div>
     </div>
@@ -40,10 +40,13 @@ const IterableOptions = ({ title, options, handleChange }) => {
 
 IterableOptions.propTypes = {
   title: PropTypes.string,
-  options: PropTypes.any,
+  options: PropTypes.arrayOf(PropTypes.any),
   handleChange: PropTypes.func,
 };
 
-IterableOptions.defaultProps = {};
+IterableOptions.defaultProps = {
+  handleChange: (e) => console.warn("unhandled change", e),
+  options: [],
+};
 
 export default IterableOptions;

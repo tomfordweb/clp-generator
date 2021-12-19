@@ -44,7 +44,7 @@ function App() {
               <LabelDisplay
                 labelCount={1}
                 orientation="portrait"
-                size={[180, 180]}
+                size={[190, 190]}
                 form={formValue}
               />
             </PDFViewer>
@@ -57,11 +57,11 @@ function App() {
         <aside className="col-12 col-md-4">
           <LabelForm
             products={fragrances}
-            propagateFormChange={(value) =>
+            propagateFormChange={(value) => {
               setForm({
                 ...value,
-              })
-            }
+              });
+            }}
           />
         </aside>
         <div className="col-12">

@@ -3,12 +3,10 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import PictogramDisplay from "./PictogramDisplay";
 
-describe("<PictogramDisplay />", () => {
-  test("it should mount", () => {
-    render(<PictogramDisplay />);
+test("it should mount", () => {
+  render(<PictogramDisplay images={[1]} />);
 
-    const PictogramDisplay = screen.getByTestId("PictogramDisplay");
+  const pd = screen.getByTestId("PictogramDisplay");
 
-    expect(PictogramDisplay).toBeInTheDocument();
-  });
+  expect(pd).toBeInTheDocument();
 });

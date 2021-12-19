@@ -2,11 +2,12 @@ import { useState } from "react";
 
 import FragranceEditForm from "../FragranceEditForm/FragranceEditForm";
 import SelectInput from "../SelectInput/SelectInput";
+import PropTypes from "prop-types";
 
 const FragranceEditor = ({ fragrances }) => {
   const [activeFragrance, setActiveFragrance] = useState(null);
   return (
-    <section className="row">
+    <section className="row" data-testid="FragranceEditor">
       <header className="col-12">
         <h2>Fragrance Editor</h2>
       </header>
@@ -37,6 +38,13 @@ const FragranceEditor = ({ fragrances }) => {
       )}
     </section>
   );
+};
+
+FragranceEditor.prototypes = {
+  fragrances: PropTypes.arrayOf(PropTypes.any),
+};
+FragranceEditor.defaultProps = {
+  fragrances: [],
 };
 
 export default FragranceEditor;

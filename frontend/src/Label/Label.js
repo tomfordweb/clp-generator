@@ -1,10 +1,10 @@
 import { Font, StyleSheet, Text, View } from "@react-pdf/renderer";
 import React from "react";
 
-import PictogramDisplay from "../PictogramDisplay/PictogramDisplay";
 import sourceSansProBold from "../fonts/SourceSansPro-Bold.ttf";
 import sourceSansProItalic from "../fonts/SourceSansPro-Italic.ttf";
 import sourceSansProRegular from "../fonts/SourceSansPro-Regular.ttf";
+import PictogramDisplay from "../PictogramDisplay/PictogramDisplay";
 
 Font.register({
   family: "SourceSansPro",
@@ -64,6 +64,7 @@ const Label = ({ form, pictogramContainerSize, pictogramGutter }) => {
 
   return (
     <View
+      data-testid="Label"
       style={
         form.labelStyle === "round"
           ? { ...containerStyles, ...styles.roundContainer }
@@ -126,9 +127,10 @@ const Label = ({ form, pictogramContainerSize, pictogramGutter }) => {
         </Text>
       </View>
       <Text>{form.business_name}</Text>
-      <Text>{form.business_address}</Text>
+      <Text>{form.business_address_1}</Text>
+      <Text>{form.business_address_2}</Text>
       <Text>{form.business_telephone}</Text>
-      <Text>~{form.mass}g Net</Text>
+      <Text>~{form.mass} Net</Text>
     </View>
   );
 };

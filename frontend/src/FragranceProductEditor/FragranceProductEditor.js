@@ -1,14 +1,15 @@
 import IterableOptions from "../IterableOptions/IterableOptions";
 import PictogramDisplay from "../PictogramDisplay/PictogramDisplay";
+import TextAreaInput from "../TextAreaInput/TextAreaInput";
 import TextInput from "../TextInput/TextInput";
+import PropTypes from "prop-types";
 
 const FragranceProductEditor = ({ product }) => {
   return (
     <div
       className="card col-12 col-md-6 mb-4"
-      style={{
-        border: "1px solid #ddd",
-      }}
+      data-testid="FragranceProductEditor"
+      style={{ border: "1px solid #ddd" }}
     >
       <div className="card-body">
         <TextInput
@@ -17,17 +18,12 @@ const FragranceProductEditor = ({ product }) => {
           name={`product.name`}
         />
 
-        <div>
-          <label className="form-label" htmlFor={`product-${product.id}-text`}>
-            Description
-          </label>
-          <textarea
-            id={`product-${product.id}-text`}
-            style={{ minHeight: "200px" }}
-            className="form-control"
-            defaultValue={product.text}
-          ></textarea>
-        </div>
+        <TextAreaInput
+          name={`product-${product.id}-text`}
+          value={product.text}
+          handleChange={(data) => {}}
+          label="Description"
+        />
 
         <IterableOptions
           title="Pictograms"
@@ -59,4 +55,9 @@ const FragranceProductEditor = ({ product }) => {
     </div>
   );
 };
+
+FragranceProductEditor.prototype = {
+  product: PropTypes.object,
+};
+
 export default FragranceProductEditor;

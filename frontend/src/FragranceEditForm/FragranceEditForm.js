@@ -1,11 +1,9 @@
-import IterableOptions from "../IterableOptions/IterableOptions";
-import PictogramDisplay from "../PictogramDisplay/PictogramDisplay";
 import FragranceProductEditor from "../FragranceProductEditor/FragranceProductEditor";
 import TextInput from "../TextInput/TextInput";
 
 const FragranceEditForm = ({ fragrance }) => {
   return (
-    <div className="row">
+    <div className="row" data-testid="FragranceEditForm">
       <TextInput
         label="Supplier"
         value={fragrance.supplierName}
