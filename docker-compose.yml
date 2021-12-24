@@ -10,7 +10,8 @@ services:
     networks:
       - app-network
     ports:
-      - 8081:80
+      - 3000:3000
+
   backend:
     networks:
       - app-network
