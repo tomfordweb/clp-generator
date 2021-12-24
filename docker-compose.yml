@@ -1,4 +1,4 @@
-version: "3"
+version: "3.7"
 
 services:
   frontend:
@@ -6,6 +6,35 @@ services:
       context: ./frontend
       dockerfile: frontend.Dockerfile
       args:
-        REACT_APP_CI_BUILD: 'production'
+        REACT_APP_CI_BUILD: "production"
+    networks:
+      - app-network
     ports:
-      - 80:80
+      - 8081:80
+  backend:
+    networks:
+      - app-network
+    entrypoint:
+      [
+        "uvicorn",
+        "app.main:app",
+        "--proxy-headers",
+        "--reload",
+        "--host",
+        "0.0.0.0",
+        "--root-path",
+        "/api/v1",
+      ]
+    ports:
+      - 8000:8000
+
+  proxy:
+    image: nginx:stable-alpine
+    networks:
+      - app-network
+    ports:
+      - 8080:80
+
+networks:
+  app-network:
+    driver: bridge
