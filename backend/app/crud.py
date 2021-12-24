@@ -20,6 +20,8 @@ def get_fragrances(db: Session, skip: int = 0, limit: int = 100):
 def update_fragrance(db: Session, fragrance_id: int, fragrance: schemas.FragranceCreate):
     frag = get_fragrance(db, fragrance_id)
     frag.name = fragrance.name
+    frag.supplier = fragrance.supplier
+    frag.supplier_code = fragrance.supplier_code
     db.commit()
     db.refresh(frag)
     return frag
@@ -52,6 +54,9 @@ def get_product(db: Session, fragrance_id:int, product_id: int):
 def update_fragrance_product(db:Session, fragrance_id:int, product_id:int, product_data:schemas.ProductCreate):
     product = get_product(db, fragrance_id, product_id)
     product.name = product_data.name
+    product.description = product_data.description
+    product.pictograms = product_data.pictograms
+    product.mass = product_data.mass
     db.commit()
     db.refresh(product)
 
