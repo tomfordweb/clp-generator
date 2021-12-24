@@ -11,7 +11,7 @@ class FragranceCreate(FragranceBase):
 
 class Fragrance(FragranceBase):
     id: int
-    name: int
+    name: str
 
     class Config:
         orm_mode = True

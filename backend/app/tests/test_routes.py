@@ -34,132 +34,156 @@ client = TestClient(app)
 @pytest.fixture
 def truncate_database():
     session = TestingSessionLocal()
-    session.execute('''DELETE FROM users''')
-    session.execute('''DELETE FROM workouts''')
+    session.execute('''DELETE FROM fragrances''')
+    session.execute('''DELETE FROM products''')
     session.commit()
     session.close()
 
 
-def test_create_user(truncate_database):
+def test_create_fragrance(truncate_database):
     response = client.post(
-        "/users",
-        json={"email": "deadpool@example.com", "username": "deadpool", "password1": "chimichangas4life", "password2": "chimichangas4life"},
+        "/fragrances",
+        json={"name":"New car scent"},
     )
     assert response.status_code == 200, response.text
     data = response.json()
-    assert data["email"] == "deadpool@example.com"
     assert "id" in data
-    assert "password" not in response.text
-    user_id = data["id"]
+    assert "New car scent" in response.text
 
-def test_create_user_rejects_duplicate_username(truncate_database):
-    username="deadpool2"
+
+def test_create_fragrance_product_and_get_list(truncate_database):
     response = client.post(
-        "/users",
-        json={"email": "deadpool@example.com", "username": username, "password1": "chimichangas4life", "password2": "chimichangas4life"},
+        "/fragrances",
+        json={"name":"New car scent"},
     )
     assert response.status_code == 200, response.text
     data = response.json()
-    assert data["email"] == "deadpool@example.com"
+    fragrance_id = data.get('id')
     assert "id" in data
+    assert "New car scent" in response.text
 
     response = client.post(
-        "/users",
-        json={"email": "deadpool+alternate@example.com", "username": username, "password1": "chimichangas4life", "password2": "chimichangas4life"},
+        f"/fragrances/{fragrance_id}/products",
+        json={"name":"My Product"},
     )
-    assert response.status_code == 400
-    assert "username" in response.text
 
-
-def test_create_user_only_accepts_alphanumeric_username(truncate_database):
-    response = client.post(
-        "/users",
-        json={"email": "john@example.com", "username": "!@#$**#*#(", "password1": "chimichangas4life", "password2": "chimichangas4life"},
-    )
-    assert response.status_code == 422
-    assert "alphanumeric" in response.text
-
-def test_create_user_rejects_emails_that_are_not_emails(truncate_database):
-    response = client.post(
-        "/users",
-        json={"email": "asdf", "username": "tomtom", "password1": "chimichangas4life", "password2": "chimichangas4life"},
-    )
-    assert response.status_code == 422
-    assert "value_error.emailsyntax" in response.text
-
-
-def test_you_can_get_a_token(truncate_database):
-    username="deadpool"
-    password="secret"
-    response = client.post(
-        "/users",
-        json={"email": "deadpool@example.com", "username": username, "password1": password, "password2": password},
-    )
     assert response.status_code == 200, response.text
+    data = response.json()
+    assert "id" in data
+    assert "My Product" in response.text
 
-    response = client.post(
-            '/token',
-            data={"username": username, "password": password},
-            headers={'Content-Type': 'application/x-www-form-urlencoded'}
-    )
-    assert response.status_code == 200
-    assert "token" in response.text
-
-
-def test_you_can_hit_the_user_healthcheck_route(truncate_database):
-    username="deadpool"
-    password="secret"
-    response = client.post(
-        "/users",
-        json={"email": "deadpool@example.com", "username": username, "password1": password, "password2": password},
-    )
-    assert response.status_code == 200, response.text
-
-    response = client.post(
-            '/token',
-            data={"username": username, "password": password},
-            headers={'Content-Type': 'application/x-www-form-urlencoded'}
-    )
-    assert response.status_code == 200
-    token = response.json().get('access_token')
-    assert token is not None
+    print(fragrance_id)
 
     response = client.get(
-            '/users/me',
-            headers={'Authorization': f"Bearer {token}"}
+        f"/fragrances/{fragrance_id}/products"
     )
+    print(response.text)
+    assert response.status_code == 200, response.text
 
-    assert "deadpool@example.com" in response.text
-    assert "password" not in response.text
+    assert "My Product" in response.text
 
-
-
-
-
-def test_create_user_rejects_duplicate_email(truncate_database):
-    email="deadpool@example.com"
+def test_you_can_update_a_fragrance(truncate_database):
     response = client.post(
-        "/users",
-        json={"email": email, "username": "test1", "password1": "chimichangas4life", "password2": "chimichangas4life"},
+        "/fragrances",
+        json={"name":"New car scent"},
     )
     assert response.status_code == 200, response.text
     data = response.json()
-    assert data["email"] == "deadpool@example.com"
+    fragrance_id = data.get('id')
     assert "id" in data
-
-    response = client.post(
-        "/users",
-        json={"email": email, "username": "test2", "password1": "chimichangas4life", "password2": "chimichangas4life"},
+    assert "New car scent" in response.text
+    response = client.put(
+        f"/fragrances/1",
+        json={"name":"Newer car scent"},
     )
-    assert response.status_code == 400
-    assert "email" in response.text
+    print(response.text)
+    assert response.status_code == 200, response.text
+    assert "Newer car scent" in response.text
 
 
-def test_that_an_unauthenticated_user_cannot_create_a_workout():
+
+def test_you_can_update_a_product(truncate_database):
     response = client.post(
-            "/workouts",
-            headers={"X-Token": "someToken"},
-            json={"name": "My test workout", "description": "Test Workout Descriptoin"}
+        "/fragrances",
+        json={"name":"New car scent"},
     )
+    assert response.status_code == 200, response.text
+    data = response.json()
+    fragrance_id = data.get('id')
+    assert "id" in data
+    assert "New car scent" in response.text
+    response = client.post(
+        f"/fragrances/{fragrance_id}/products",
+        json={"name":"Cooking Spray"},
+    )
+    assert response.status_code == 200
+    assert "Cooking Spray" in response.text
+    data = response.json()
+    product_id = data.get('id')
+    response = client.put(
+        f"/fragrances/{fragrance_id}/products/{product_id}",
+        json={"name":"Diffuser"},
+    )
+    assert response.status_code == 200
+    assert "Diffuser" in response.text
 
-    assert response.status_code == 401
+def test_you_can_delete_a_fragrance(truncate_database):
+    response = client.post(
+        "/fragrances",
+        json={"name":"New car scent"},
+    )
+    assert response.status_code == 200
+    data = response.json()
+    fragrance_id = data.get('id')
+    assert "id" in data
+    assert "New car scent" in response.text
+
+
+    response = client.get(
+        f"/fragrances/{fragrance_id}",
+    )
+    assert response.status_code == 200
+
+    response = client.delete(
+        f"/fragrances/{fragrance_id}"
+    )
+    assert response.status_code == 200
+
+    response = client.get(
+        f"/fragrances/{fragrance_id}",
+    )
+    assert response.status_code == 404
+    pass
+
+def test_you_can_delete_a_product(truncate_database):
+    response = client.post(
+        "/fragrances",
+        json={"name":"New car scent"},
+    )
+    assert response.status_code == 200
+    data = response.json()
+    fragrance_id = data.get('id')
+    assert "id" in data
+    assert "New car scent" in response.text
+    response = client.post(
+        f"/fragrances/{fragrance_id}/products",
+        json={"name":"Cooking Spray"},
+    )
+    data = response.json()
+    product_id = data.get('id')
+    assert response.status_code == 200
+    assert "Cooking Spray" in response.text
+
+    response = client.get(
+        f"/fragrances/{fragrance_id}/products/{product_id}",
+    )
+    assert response.status_code == 200
+    response = client.delete(
+        f"/fragrances/{fragrance_id}/products/{product_id}",
+    )
+    assert response.status_code == 200
+
+    response = client.get(
+        f"/fragrances/{fragrance_id}/products/{product_id}",
+    )
+    assert response.status_code == 404

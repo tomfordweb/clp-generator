@@ -10,7 +10,7 @@ class Fragrance(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
 
-    products = relationship("Product", back_populates="fragrance")
+    products = relationship("Product", back_populates="fragrance", cascade="all, delete-orphan")
 
 class Product(Base):
     __tablename__ = "products"
