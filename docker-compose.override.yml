@@ -23,7 +23,7 @@ services:
       # DO NOT USE THIS IN ANYWHERE OTHER THAN A TESTING OR DEVELOPMENT ENVIRONMENT
       SECRET_KEY: "7880a54f2e77f3d7cac9c6d5387e0821b2a4b8a1c6429adaa1d534ad6f6a7120"
     volumes:
-      - ./backend:/pumps
+      - ./backend:/clp
     # restart: unless-stopped
 
   proxy:
