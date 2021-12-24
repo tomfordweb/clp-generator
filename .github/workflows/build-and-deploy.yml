@@ -7,7 +7,7 @@ on:
     branches:
       - "main"
 jobs:
-  build-docker:
+  build-frontend:
     runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU
@@ -40,14 +40,36 @@ jobs:
       - name: Print short sha
         run: echo ${{ steps.vars.outputs.sha_short }}
 
-      - name: Build and push
+      - name: Build and push proxy
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: ./proxy
+          file: ./proxy/Dockerfile
+          push: true
+          tags: tomfordweb/devonwick-clp-proxy:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new
+
+      - name: Build and push backend
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: true
+          tags: tomfordweb/devonwick-clp-backend:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new
+
+      - name: Build and push frontend
         id: docker_build
         uses: docker/build-push-action@v2
         with:
           context: ./frontend
           file: ./frontend/frontend.Dockerfile
           push: true
-          tags: tomfordweb/devonwick-clp:latest
+          tags: tomfordweb/devonwick-clp-frontend:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
           build-args: REACT_APP_CI_BUILD=${{ steps.vars.outputs.sha_short }}
@@ -78,11 +100,17 @@ jobs:
       - name: Login to docker registry
         run: ssh ${{ secrets.DEV_SERVER_USER }}@${{ secrets.DEV_SERVER}} "docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}"
 
-      - name: Pull latest image
-        run: ssh ${{ secrets.dev_server_user }}@${{ secrets.dev_server}} "docker pull tomfordweb/devonwick-clp"
+      - name: Pull latest frontend
+        run: ssh ${{ secrets.dev_server_user }}@${{ secrets.dev_server}} "docker pull tomfordweb/devonwick-clp-frontend"
+
+      - name: Pull latest backend
+        run: ssh ${{ secrets.dev_server_user }}@${{ secrets.dev_server}} "docker pull tomfordweb/devonwick-clp-backend"
+
+      - name: Pull latest proxy
+        run: ssh ${{ secrets.dev_server_user }}@${{ secrets.dev_server}} "docker pull tomfordweb/devonwick-clp-proxy"
 
       - name: Stop the image if it exists
-        run: ssh ${{ secrets.dev_server_user }}@${{ secrets.dev_server}} "docker stop devonwick-clp_dev || true"
+        run: ssh ${{ secrets.dev_server_user }}@${{ secrets.dev_server}} "docker stop devonwick-clp-frontend_dev || true"
 
       - name: Run the image in detached mode
-        run: ssh ${{ secrets.dev_server_user }}@${{ secrets.dev_server}} "docker run -d --rm --name devonwick-clp_dev -p 8080:80 tomfordweb/devonwick-clp:latest"
+        run: ssh ${{ secrets.dev_server_user }}@${{ secrets.dev_server}} "docker run -d --rm --name devonwick-clp-frontend_dev -p 8080:80 tomfordweb/devonwick-clp-frontend:latest"
