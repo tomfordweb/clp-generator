@@ -48,9 +48,11 @@ const FragranceEditor = ({ fragrances, onFormUpdate }) => {
               : fragrance.name,
             key: fragrance.id,
           }))}
-          handleChange={(val) => {
+          handleChange={(e) => {
             setActiveFragrance(
-              fragrances.filter((f) => parseInt(f.id) === parseInt(val))[0]
+              fragrances.filter(
+                (f) => parseInt(f.id) === parseInt(e.target.value)
+              )[0]
             );
           }}
         />

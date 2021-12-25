@@ -7,7 +7,7 @@ const SelectInput = ({ name, value, handleChange, label, options }) => (
     <select
       className="form-select"
       defaultValue={value}
-      onChange={(e) => handleChange(e.target.value)}
+      onChange={handleChange}
     >
       <option value={null}>Select</option>
       {options &&

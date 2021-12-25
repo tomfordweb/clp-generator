@@ -23,7 +23,6 @@ function App() {
     getFragrances();
   }, []);
 
-  console.log("frag", fragrances);
   return (
     <main className="App">
       <section className="row">
@@ -72,7 +71,7 @@ function App() {
             </article>
             <aside className="col-12 col-md-4">
               <LabelForm
-                products={fragrances}
+                fragrances={fragrances}
                 propagateFormChange={(value) => {
                   setForm({
                     ...value,

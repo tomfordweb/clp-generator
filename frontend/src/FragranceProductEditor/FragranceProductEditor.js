@@ -14,7 +14,6 @@ const FragranceProductEditor = ({ onFormUpdate, fragranceId, product }) => {
       <Formik
         initialValues={product}
         validate={(values) => {
-          console.log(values);
           let errors = [];
           return errors;
         }}
@@ -27,7 +26,6 @@ const FragranceProductEditor = ({ onFormUpdate, fragranceId, product }) => {
           values.pictograms = values.pictograms.filter(
             (v, i, a) => a.indexOf(parseInt(v)) === i
           );
-          console.log("submitting values", values);
 
           fetch(url, {
             method: method,

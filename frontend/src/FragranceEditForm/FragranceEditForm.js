@@ -17,7 +17,6 @@ const FragranceEditForm = ({ fragrance, onFormUpdate }) => {
             ? `/api/v1/fragrances/${values.id}`
             : "/api/v1/fragrances";
           const method = values.id ? "PUT" : "POST";
-          console.log("submitting values");
           fetch(url, {
             method: method,
             headers: { "Content-Type": "application/json" },

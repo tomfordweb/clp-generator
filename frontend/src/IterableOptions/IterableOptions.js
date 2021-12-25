@@ -3,14 +3,6 @@ import React from "react";
 
 import CheckInput from "../CheckInput/CheckInput";
 
-// handleChange={(e) => {
-//   handleChange({
-//     type: option.type === "checkbox" ? "checkbox-group" : option.type,
-//     name: e.name,
-//     value: e.value,
-//     checked: e.checked,
-//   });
-// }}
 const IterableOptions = ({ title, options }) => {
   const radioHtml = options.map((option, i) => {
     return (
