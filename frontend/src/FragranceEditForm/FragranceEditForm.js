@@ -1,7 +1,6 @@
 import { Formik } from "formik";
 
 const FragranceEditForm = ({ fragrance, onFormUpdate }) => {
-  console.log("form", fragrance);
   return (
     <div className="row" data-testid="FragranceEditForm">
       <Formik
@@ -11,7 +10,6 @@ const FragranceEditForm = ({ fragrance, onFormUpdate }) => {
           if (!values.name) {
             errors.name = "Required";
           }
-          console.error(errors);
           return errors;
         }}
         onSubmit={(values, { setSubmitting }) => {

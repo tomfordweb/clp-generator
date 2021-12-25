@@ -1,6 +1,12 @@
 import PropTypes from "prop-types";
 import React from "react";
 
+// onChange={(e) =>
+//   handleChange({
+//     name: name,
+//     value: e.target.value,
+//   })
+// }
 const TextAreaInput = ({ name, value, handleChange, height, label }) => (
   <div className="mb-3" data-testid="TextAreaInput">
     <label className="form-label" htmlFor={name}>
@@ -8,13 +14,9 @@ const TextAreaInput = ({ name, value, handleChange, height, label }) => (
     </label>
     <textarea
       id={name}
+      name={name}
+      onChange={handleChange}
       defaultValue={value}
-      onChange={(e) =>
-        handleChange({
-          name: name,
-          value: e.target.value,
-        })
-      }
       style={{ minHeight: height }}
       className="form-control"
     ></textarea>

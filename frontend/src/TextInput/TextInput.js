@@ -11,13 +11,7 @@ const TextInput = ({ value, label, name, type, handleChange }) => {
         value={value}
         className="form-control"
         data-testid={"form-control-" + name}
-        onChange={(e) =>
-          handleChange({
-            name: name,
-            value: e.target.value,
-            type: type,
-          })
-        }
+        onChange={handleChange}
         name={name}
         id={name}
         type={type}
@@ -25,6 +19,13 @@ const TextInput = ({ value, label, name, type, handleChange }) => {
     </div>
   );
 };
+// onChange={(e) =>
+//   handleChange({
+//     name: name,
+//     value: e.target.value,
+//     type: type,
+//   })
+// }
 
 TextInput.propTypes = {
   name: PropTypes.string,

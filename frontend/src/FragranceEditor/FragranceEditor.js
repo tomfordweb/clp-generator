@@ -1,20 +1,39 @@
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
+import Modal from "react-modal";
 
 import FragranceEditForm from "../FragranceEditForm/FragranceEditForm";
+import FragranceProductEditor from "../FragranceProductEditor/FragranceProductEditor";
 import SelectInput from "../SelectInput/SelectInput";
 
+import { useEffect, useState } from "react";
+import { fetchFragranceProductList } from "../utility";
+
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+  },
+};
 const FragranceEditor = ({ fragrances, onFormUpdate }) => {
   const [activeFragrance, setActiveFragrance] = useState(null);
-  const [creatorMode, setCreatorMode] = useState(false);
+  const [activeFragranceProducts, setActiveFragranceProducts] = useState([]);
+  const [fragranceModalIsOpen, setFragranceModalIsOpen] = useState(false);
+  const [productModalIsOpen, setProductModalIsOpen] = useState(false);
 
+  const updateProductList = () =>
+    fetchFragranceProductList(activeFragrance.id).then((data) => {
+      setActiveFragranceProducts(data);
+    });
   useEffect(() => {
     activeFragrance &&
       activeFragrance.id &&
-      fetch(`/api/v1/fragrances/${activeFragrance.id}/products`).then((data) =>
-        console.log(data.json())
-      );
+      updateProductList(activeFragrance.id);
   }, [activeFragrance]);
+
   return (
     <section className="row" data-testid="FragranceEditor">
       <header className="col-12">
@@ -38,25 +57,13 @@ const FragranceEditor = ({ fragrances, onFormUpdate }) => {
         <button
           type="button"
           className="btn btn-success"
-          onClick={() => setCreatorMode(true)}
+          onClick={() => setFragranceModalIsOpen(true)}
         >
           Create Fragrance
         </button>
       </article>
 
-      {creatorMode && (
-        <article className="col-12 col-sm-8 col-md-10">
-          <FragranceEditForm
-            fragrance={{ name: "", supplier: "", supplier_code: "" }}
-            onFormUpdate={(values) => {
-              onFormUpdate(values);
-              setActiveFragrance(null);
-              setCreatorMode(false);
-            }}
-          />
-        </article>
-      )}
-      {activeFragrance && !creatorMode && (
+      {activeFragrance && (
         <article className="col-12 col-sm-8 col-md-10">
           <FragranceEditForm
             fragrance={activeFragrance}
@@ -65,20 +72,63 @@ const FragranceEditor = ({ fragrances, onFormUpdate }) => {
           <h4>Product List</h4>
           <div className="row">
             {activeFragrance &&
-              activeFragrance.products &&
-              activeFragrance.products.map((product, index) => (
-                <FragranceProductEditor product={product} key={index} />
+              activeFragranceProducts &&
+              activeFragranceProducts.map((product, index) => (
+                <FragranceProductEditor
+                  onFormUpdate={(e) => {
+                    onFormUpdate();
+                    updateProductList(activeFragrance.id);
+                  }}
+                  fragranceId={activeFragrance.id}
+                  product={product}
+                  key={index}
+                />
               ))}
           </div>
-          <button type="button" className="btn btn-success">
+          <button
+            onClick={() => setProductModalIsOpen(true)}
+            type="button"
+            className="btn btn-success"
+          >
             Add product
           </button>
+          <Modal
+            isOpen={productModalIsOpen}
+            onRequestClose={() => setProductModalIsOpen(false)}
+            style={customStyles}
+            contentLabel="Example Modal"
+          >
+            <FragranceProductEditor
+              onFormUpdate={onFormUpdate}
+              fragranceId={activeFragrance.id}
+              product={{
+                name: "",
+                description: "",
+                pictograms: [],
+                mass: "",
+              }}
+            />
+          </Modal>
         </article>
       )}
+      <Modal
+        isOpen={fragranceModalIsOpen}
+        onRequestClose={() => setFragranceModalIsOpen(false)}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <FragranceEditForm
+          fragrance={{ name: "", supplier: "", supplier_code: "" }}
+          onFormUpdate={(values) => {
+            onFormUpdate(values);
+            setActiveFragrance(null);
+            setFragranceModalIsOpen(false);
+          }}
+        />
+      </Modal>
     </section>
   );
 };
-
 FragranceEditor.prototypes = {
   fragrances: PropTypes.arrayOf(PropTypes.any),
 };
