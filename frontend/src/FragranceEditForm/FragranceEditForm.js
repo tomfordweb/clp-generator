@@ -1,30 +1,93 @@
-import FragranceProductEditor from "../FragranceProductEditor/FragranceProductEditor";
-import TextInput from "../TextInput/TextInput";
+import { Formik } from "formik";
 
-const FragranceEditForm = ({ fragrance }) => {
+const FragranceEditForm = ({ fragrance, onFormUpdate }) => {
+  console.log("form", fragrance);
   return (
     <div className="row" data-testid="FragranceEditForm">
-      <TextInput
-        label="Supplier"
-        value={fragrance.supplierName}
-        name="supplierName"
-      />{" "}
-      <TextInput
-        label="Fragrance Name"
-        value={fragrance.fragrance}
-        name="fragrance"
-      />{" "}
-      <TextInput
-        label="Supplier Code"
-        value={fragrance.supplierCode}
-        name="supplierCode"
-      />
-      <h4>Product List</h4>
-      <div className="row">
-        {fragrance.products.map((product, index) => (
-          <FragranceProductEditor product={product} key={index} />
-        ))}
-      </div>
+      <Formik
+        initialValues={fragrance}
+        validate={(values) => {
+          const errors = {};
+          if (!values.name) {
+            errors.name = "Required";
+          }
+          console.error(errors);
+          return errors;
+        }}
+        onSubmit={(values, { setSubmitting }) => {
+          const url = values.id
+            ? `/api/v1/fragrances/${values.id}`
+            : "/api/v1/fragrances";
+          const method = values.id ? "PUT" : "POST";
+          console.log("submitting values");
+          fetch(url, {
+            method: method,
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(values),
+          }).then((response) => setSubmitting(false), onFormUpdate());
+        }}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          isSubmitting,
+          /* and other goodies */
+        }) => (
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="supplier">Supplier</label>
+              <input
+                className="form-control"
+                type="text"
+                name="supplier"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.supplier}
+              />
+              {errors.supplier && touched.supplier && errors.supplier}
+            </div>
+            <div className="form-group">
+              <label htmlFor="name">Name</label>
+              <input
+                className="form-control"
+                type="text"
+                name="name"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.name}
+              />
+              {errors.name && touched.name && errors.name}
+            </div>
+            <div className="form-group">
+              <label htmlFor="supplier_code">Supplier Code</label>
+              <input
+                className="form-control"
+                type="text"
+                name="supplier_code"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.supplier_code}
+              />
+              {errors.supplier_code &&
+                touched.supplier_code &&
+                errors.supplier_code}
+            </div>
+            <div className="form-group">
+              <button
+                className="btn btn-primary"
+                type="submit"
+                disabled={isSubmitting}
+              >
+                {values.id ? "Update Fragrance Details" : "Create Fragrance"}
+              </button>
+            </div>
+          </form>
+        )}
+      </Formik>
     </div>
   );
 };

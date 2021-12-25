@@ -15,16 +15,15 @@ function App() {
   const [activeTab, setActiveTab] = useState("label");
   const [formValue] = useDebounce(form, 1000);
 
-  const getAllFragrances = () => {
+  const getFragrances = () =>
     fetchProductList().then(function (myJson) {
-      updateFragranceList(myJson.payload);
+      updateFragranceList(myJson);
     });
-  };
-
   useEffect(() => {
-    getAllFragrances();
+    getFragrances();
   }, []);
 
+  console.log("frag", fragrances);
   return (
     <main className="App">
       <section className="row">
@@ -84,7 +83,10 @@ function App() {
           </section>
         ) : (
           <div className="col-12">
-            <FragranceEditor fragrances={fragrances} />
+            <FragranceEditor
+              onFormUpdate={getFragrances}
+              fragrances={fragrances}
+            />
           </div>
         )}
       </section>
