@@ -71,16 +71,21 @@ const FragranceEditor = ({ fragrances, onFormUpdate }) => {
 
       {activeFragrance && (
         <article className="col-12 col-sm-8 col-md-10">
-          <FragranceEditForm
-            fragrance={activeFragrance}
-            onFormUpdate={onFormUpdate}
-          />
+          <div className="card">
+            <div className="card-body">
+              <FragranceEditForm
+                fragrance={activeFragrance}
+                onFormUpdate={onFormUpdate}
+              />
+            </div>
+          </div>
           <h4>Product List</h4>
           <div className="row">
             {activeFragrance &&
               activeFragranceProducts &&
               activeFragranceProducts.map((product, index) => (
                 <FragranceProductEditor
+                  wrapperClass="col-12 col-md-6 mb-3"
                   onFormUpdate={(e) => {
                     onFormUpdate();
                     updateProductList(activeFragrance.id);
@@ -105,7 +110,11 @@ const FragranceEditor = ({ fragrances, onFormUpdate }) => {
             contentLabel="Example Modal"
           >
             <FragranceProductEditor
-              onFormUpdate={onFormUpdate}
+              onFormUpdate={(e) => {
+                onFormUpdate();
+                updateProductList(activeFragrance.id);
+                setProductModalIsOpen(false);
+              }}
               fragranceId={activeFragrance.id}
               product={{
                 name: "",

@@ -73,7 +73,7 @@ const FragranceEditForm = ({ fragrance, onFormUpdate }) => {
                 touched.supplier_code &&
                 errors.supplier_code}
             </div>
-            <div className="form-group">
+            <div className="mt-3 form-group">
               <button
                 className="btn btn-primary"
                 type="submit"

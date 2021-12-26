@@ -116,10 +116,12 @@ const Label = ({ eanCode, form, pictogramContainerSize, pictogramGutter }) => {
         }}
       >
         <View style={styles.batchContainer}>
-          <Image
-            source={eanCode}
-            style={{ width: "30%", height: "auto", marginRight: "5px" }}
-          />
+          {eanCode && (
+            <Image
+              source={eanCode}
+              style={{ width: "30%", height: "auto", marginRight: "5px" }}
+            />
+          )}
           <PictogramDisplay
             containerStyles={{
               marginLeft: "5px",

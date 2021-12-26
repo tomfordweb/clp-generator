@@ -129,12 +129,21 @@ function LabelForm({ fragrances, propagateFormChange }) {
           initialValues={form}
           validate={(values) => {
             const errors = {};
+            if (!values.ean || values.ean.length < 1) {
+              errors.ean = "EAN Required";
+            }
             if (
               values &&
               values.ean &&
               (values.ean.length < 12 || values.ean.length > 13)
             ) {
               errors.ean = "EAN must be 12 or 13 characters";
+            }
+            if (!values.ufi || values.ufi.length < 1) {
+              errors.ufi = "UFI number required!";
+            }
+            if (!values.batch || values.batch.length < 1) {
+              errors.batch = "Batch number required!";
             }
             return errors;
           }}
@@ -166,6 +175,7 @@ function LabelForm({ fragrances, propagateFormChange }) {
                     name="batch"
                     value={values.batch}
                     handleChange={handleChange}
+                    error={errors && errors.batch}
                     label="Batch#"
                   />
                 </div>
@@ -174,6 +184,7 @@ function LabelForm({ fragrances, propagateFormChange }) {
                     name="ufi"
                     value={values.ufi}
                     handleChange={handleChange}
+                    error={errors && errors.ufi}
                     label="UFI#"
                   />
                 </div>
@@ -183,8 +194,8 @@ function LabelForm({ fragrances, propagateFormChange }) {
                 value={values.ean}
                 handleChange={handleChange}
                 label="EAN"
+                error={errors && errors.ean}
               />
-              {errors && errors.ean}
               <h2>Design Options</h2>
 
               <TextInput

@@ -15,7 +15,6 @@ function App() {
   const [form, setForm] = useState(null);
   const [eanCode, setEanCode] = useState(null);
   const [activeTab, setActiveTab] = useState("label");
-  const [formValue] = useDebounce(form, 1000);
 
   const getFragrances = () =>
     fetchProductList().then(function (myJson) {
@@ -26,9 +25,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // The return value is the canvas element
     try {
-      console.log("canvas", form);
       let canvas =
         form &&
         form.ean &&
@@ -50,8 +47,8 @@ function App() {
   return (
     <main className="App">
       <header className="row bg-dark mb-5 py-3">
-        <h1 className="col-md-8 text-light m-0">CLP Generator</h1>
-        <nav className="col-md-4 text-right">
+        <h1 className="col-12 col-md-8 text-light m-0">CLP Generator</h1>
+        <nav className="col-12 col-md-4 text-right">
           <ul className="nav nav-pills m-0 mt-1">
             <li className="nav-item">
               <span
@@ -79,28 +76,28 @@ function App() {
       </header>
       {activeTab === "label" ? (
         <section className="row">
-          <article className="PdfViewer col-12 col-md-8">
-            {" "}
-            {formValue ? (
+          <article className="PdfViewer col-12 col-md-6">
+            {form ? (
               <div>
-                <PDFViewer style={{ height: "500px" }}>
+                <PDFViewer style={{ height: "500px", width: "100%" }}>
                   <LabelDisplay
                     eanBase64={eanCode}
                     labelCount={1}
                     orientation="portrait"
                     size={[190, 190]}
-                    form={formValue}
+                    form={form}
                   />
                 </PDFViewer>
               </div>
             ) : (
               <div className="alert alert-secondary" role="alert">
-                Selct a Fragrance and product!
+                Before viewing the label, you must first select a Fragrance and
+                Product!
               </div>
             )}
             <canvas style={{ display: "none" }} id="eandisplay"></canvas>
           </article>
-          <aside className="col-12 col-md-4">
+          <aside className="col-12 col-md-6">
             <LabelForm
               fragrances={fragrances}
               propagateFormChange={(value) => {

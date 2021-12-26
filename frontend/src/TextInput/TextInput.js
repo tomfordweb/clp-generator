@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const TextInput = ({ value, label, name, type, handleChange }) => {
+const TextInput = ({ value, label, name, type, error, handleChange }) => {
   return (
     <div className="mb-3">
       <label className="form-label" htmlFor={name}>
@@ -16,6 +16,7 @@ const TextInput = ({ value, label, name, type, handleChange }) => {
         id={name}
         type={type}
       />
+      {error && <div className="text-danger">{error}</div>}
     </div>
   );
 };
@@ -28,6 +29,7 @@ const TextInput = ({ value, label, name, type, handleChange }) => {
 // }
 
 TextInput.propTypes = {
+  error: PropTypes.string,
   name: PropTypes.string,
   label: PropTypes.string,
   value: PropTypes.string,
