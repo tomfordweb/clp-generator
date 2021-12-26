@@ -110,7 +110,7 @@ jobs:
         run: ssh ${{ secrets.dev_server_user }}@${{ secrets.dev_server}} "cd /srv/docker/devonwick-clp && docker-compose pull"
 
       - name: Stop the project
-        run: ssh ${{ secrets.dev_server_user }}@${{ secrets.dev_server}} "cd /srv/docker/devonwick-clp && docker-compose down"
+        run: ssh ${{ secrets.dev_server_user }}@${{ secrets.dev_server}} "cd /srv/docker/devonwick-clp && docker-compose down || true"
 
       - name: Start the updated project
         run: ssh ${{ secrets.dev_server_user }}@${{ secrets.dev_server}} "docker-compose -f /srv/docker/devonwick-clp/docker-compose.yml up -d"
