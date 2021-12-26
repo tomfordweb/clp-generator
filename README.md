@@ -12,7 +12,6 @@ Or to test the production build...
 
 ```
 docker-compose -f docker-compose.yml up --build
-
 ```
 
 # CI/CD

@@ -9,8 +9,6 @@ services:
         REACT_APP_CI_BUILD: "production"
     networks:
       - app-network
-    ports:
-      - 3000:3000
 
   backend:
     networks:
@@ -26,8 +24,6 @@ services:
         "--root-path",
         "/api/v1",
       ]
-    ports:
-      - 8000:8000
 
   proxy:
     image: nginx:stable-alpine
