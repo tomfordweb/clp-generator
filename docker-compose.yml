@@ -3,11 +3,6 @@ version: "3.7"
 services:
   frontend:
     image: tomfordweb/devonwick-clp-frontend:lastest
-    build:
-      context: ./frontend
-      dockerfile: frontend.Dockerfile
-      args:
-        REACT_APP_CI_BUILD: "production"
     networks:
       - app-network
 
@@ -17,8 +12,6 @@ services:
     restart: unless-stopped
     networks:
       - app-network
-    build:
-      context: ./backend
     entrypoint:
       [
         "uvicorn",
@@ -33,8 +26,6 @@ services:
 
   proxy:
     image: tomfordweb/devonwick-clp-proxy:lastest
-    build:
-      context: ./proxy
     networks:
       - app-network
     ports:
@@ -43,6 +34,3 @@ services:
 networks:
   app-network:
     driver: bridge
-
-volumes:
-  appdb:

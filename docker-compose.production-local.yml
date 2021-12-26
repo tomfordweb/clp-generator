@@ -1,0 +1,17 @@
+version: "3.7"
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: frontend.Dockerfile
+      args:
+        REACT_APP_CI_BUILD: "production"
+
+  backend:
+    build:
+      context: ./backend
+
+  proxy:
+    build:
+      context: ./proxy

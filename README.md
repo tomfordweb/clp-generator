@@ -11,7 +11,7 @@ docker-compose up --build
 Or to test the production build...
 
 ```
-docker-compose -f docker-compose.yml up --build
+docker-compose -f docker-compose.production-local.yml -f docker-compose.yml up --build
 ```
 
 # CI/CD
