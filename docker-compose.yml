@@ -10,6 +10,8 @@ services:
     image: tomfordweb/devonwick-clp-backend:latest
     container_name: devonwick-backend
     restart: unless-stopped
+    volumes:
+      - ./sql_app.db:/clp/sql_app.db
     networks:
       - app-network
     entrypoint:
