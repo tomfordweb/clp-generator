@@ -4,7 +4,7 @@ import "@testing-library/jest-dom/extend-expect";
 import PictogramDisplay from "./PictogramDisplay";
 
 test("it should mount", () => {
-  render(<PictogramDisplay images={[1]} />);
+  render(<PictogramDisplay images={["fish"]} />);
 
   const pd = screen.getByTestId("PictogramDisplay");
 
