@@ -100,6 +100,9 @@ jobs:
       - name: Login to docker registry
         run: ssh ${{ secrets.DEV_SERVER_USER }}@${{ secrets.DEV_SERVER}} "docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}"
 
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+
       - name: SCP the file to the server
         run: scp docker-compose.yml ${{ secrets.dev_server_user }}@${{ secrets.dev_server}}:/srv/docker/devonwick-clp
 
