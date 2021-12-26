@@ -16,7 +16,6 @@ const FragranceProductEditor = ({ onFormUpdate, fragranceId, product }) => {
         initialValues={product}
         validate={(values) => {
           let errors = [];
-          console.log(values);
           return errors;
         }}
         onSubmit={(values, { setSubmitting }) => {

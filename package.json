@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "bwip-js": "^3.0.4",
+    "react-barcode": "^1.4.1"
+  }
+}

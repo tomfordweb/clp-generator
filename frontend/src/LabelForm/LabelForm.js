@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import { Formik } from "formik";
 import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
+
 import CheckInput from "../CheckInput/CheckInput";
 import IterableOptions from "../IterableOptions/IterableOptions";
-import SelectInput from "../SelectInput/SelectInput";
-import TextInput from "../TextInput/TextInput";
-import { Formik } from "formik";
-import TextAreaInput from "../TextAreaInput/TextAreaInput";
 import LabelAddressForm from "../LabelAddressForm/LabelAddressForm";
+import SelectInput from "../SelectInput/SelectInput";
+import TextAreaInput from "../TextAreaInput/TextAreaInput";
+import TextInput from "../TextInput/TextInput";
 import { fetchFragranceProductList } from "../utility";
 
 /**
@@ -26,8 +27,9 @@ export const DEFAULT_FORM_STATE = {
   mass: "",
   pictograms: [],
   display_product: "Display Product Name",
-  custom_text: "Follow me on instagram",
-  ean: "1234567890",
+  custom_title: "DEVONWICK",
+  custom_text: "Follow us on Instagram @devonwickcandles",
+  ean: "5056496100170",
   ufi: "1234567890",
   batch: "12345",
   ...DEFAULT_BUSINESS_ADDRESS,
@@ -35,25 +37,30 @@ export const DEFAULT_FORM_STATE = {
 function LabelForm({ fragrances, propagateFormChange }) {
   const [fragrance, setFragrance] = useState(null);
   const [fragranceProducts, setFragranceProducts] = useState([]);
+  const [product, setProduct] = useState(null);
 
   const SquareShapeRadioIcon = () => <div className="square-icon"></div>;
   const CircleShapeRadioIcon = () => <div className="circle-icon"></div>;
+
+  const productValues = (fragrance, product) => ({
+    fragrance: fragrance.name,
+    pictograms: product.pictograms,
+    product: product.name,
+    mass: product.mass,
+    productText: product.description,
+  });
 
   /**
    * After selecting a product of a specific fragrance
    * We can fill in the label with many fields
    */
-  const selectProduct = (product) => {
-    console.log(fragrance, product);
+  const selectProduct = (inputProduct) => {
     fragrance &&
-      product &&
+      inputProduct &&
+      setProduct(inputProduct) &&
       updateForm({
         ...DEFAULT_FORM_STATE,
-        fragrance: fragrance.name,
-        pictograms: product.pictograms,
-        product: product.name,
-        mass: product.mass,
-        productText: product.description,
+        ...productValues(fragrance, inputProduct),
       });
   };
 
@@ -65,11 +72,23 @@ function LabelForm({ fragrances, propagateFormChange }) {
    */
   const [form, updateForm] = useState(DEFAULT_FORM_STATE);
 
+  useEffect(() => {}, []);
+
   useEffect(() => {
     fragrance &&
       fragrance.id &&
       fetchFragranceProductList(fragrance.id).then((data) => {
         setFragranceProducts(data);
+        // The return value is the canvas element
+        // let canvas = bwipjs.toCanvas("mycanvas", {
+        //   bcid: "code128", // Barcode type
+        //   text: "0123456789", // Text to encode
+        //   scale: 3, // 3x scaling factor
+        //   height: 10, // Bar height, in millimeters
+        //   includetext: true, // Show human-readable text
+        //   textxalign: "center", // Always good to set this
+        // });
+        // console.log(canvas.toDataURL("image/png"));
       });
   }, [fragrance]);
 
@@ -115,16 +134,27 @@ function LabelForm({ fragrances, propagateFormChange }) {
           );
         }}
       />
-      {fragrance && fragranceProducts && (
+      {fragrance && product && (
         <Formik
           initialValues={form}
           validate={(values) => {
             const errors = {};
+            if (
+              values &&
+              values.ean &&
+              (values.ean.length < 12 || values.ean.length > 13)
+            ) {
+              errors.ean = "EAN must be 12 or 13 characters";
+            }
             return errors;
           }}
           onSubmit={(values, { setSubmitting }) => {
             console.log("form values", values);
-            propagateFormChange({ ...form, values });
+            propagateFormChange({
+              ...form,
+              ...values,
+              ...productValues(fragrance, product),
+            });
             setSubmitting(false);
           }}
         >
@@ -171,6 +201,7 @@ function LabelForm({ fragrances, propagateFormChange }) {
                 handleChange={handleChange}
                 label="EAN"
               />
+              {errors && errors.ean}
               <h2>Design Options</h2>
               <LabelAddressForm form={values} handleChange={handleChange} />
               <IterableOptions

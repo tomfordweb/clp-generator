@@ -3,12 +3,23 @@ import PropTypes from "prop-types";
 import { Page, Document } from "@react-pdf/renderer";
 import Label from "../Label/Label";
 
-const LabelDisplay = ({ form, size, orientation, wrapperStyles }) => {
-  console.log("ld", form);
+const LabelDisplay = ({
+  form,
+  eanBase64,
+  size,
+  orientation,
+  wrapperStyles,
+}) => {
   return (
     <Document data-testid="LabelDisplay">
       <Page size={size} orientation={orientation} style={wrapperStyles}>
-        {form && <Label pictogramContainerSize={size[0] / 3} form={form} />}
+        {form && (
+          <Label
+            eanCode={eanBase64}
+            pictogramContainerSize={size[0] / 5}
+            form={form}
+          />
+        )}
       </Page>
     </Document>
   );
@@ -23,7 +34,7 @@ LabelDisplay.propTypes = {
 LabelDisplay.defaultProps = {
   orientation: "portrait",
   form: {},
-  size: [180, 180],
+  size: [190, 190],
 };
 
 export default LabelDisplay;

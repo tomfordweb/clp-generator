@@ -5,7 +5,7 @@ import FragranceEditForm from "../FragranceEditForm/FragranceEditForm";
 import FragranceProductEditor from "../FragranceProductEditor/FragranceProductEditor";
 import SelectInput from "../SelectInput/SelectInput";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { fetchFragranceProductList } from "../utility";
 
 const customStyles = {
@@ -24,15 +24,19 @@ const FragranceEditor = ({ fragrances, onFormUpdate }) => {
   const [fragranceModalIsOpen, setFragranceModalIsOpen] = useState(false);
   const [productModalIsOpen, setProductModalIsOpen] = useState(false);
 
-  const updateProductList = () =>
-    fetchFragranceProductList(activeFragrance.id).then((data) => {
-      setActiveFragranceProducts(data);
-    });
+  const updateProductList = useCallback(
+    () =>
+      fetchFragranceProductList(activeFragrance.id).then((data) => {
+        setActiveFragranceProducts(data);
+      }),
+    [activeFragrance]
+  );
+
   useEffect(() => {
     activeFragrance &&
       activeFragrance.id &&
       updateProductList(activeFragrance.id);
-  }, [activeFragrance]);
+  }, [updateProductList, activeFragrance]);
 
   return (
     <section className="row" data-testid="FragranceEditor">
