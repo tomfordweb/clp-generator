@@ -1,56 +1,111 @@
+import { Formik } from "formik";
+import PropTypes from "prop-types";
+
 import IterableOptions from "../IterableOptions/IterableOptions";
 import PictogramDisplay from "../PictogramDisplay/PictogramDisplay";
 import TextAreaInput from "../TextAreaInput/TextAreaInput";
 import TextInput from "../TextInput/TextInput";
-import PropTypes from "prop-types";
 
-const FragranceProductEditor = ({ product }) => {
+const FragranceProductEditor = ({
+  wrapperClass,
+  onFormUpdate,
+  fragranceId,
+  product,
+}) => {
   return (
-    <div
-      className="card col-12 col-md-6 mb-4"
-      data-testid="FragranceProductEditor"
-      style={{ border: "1px solid #ddd" }}
-    >
-      <div className="card-body">
-        <TextInput
-          label="Product Name"
-          value={product.name}
-          name={`product.name`}
-        />
+    <div data-testid="FragranceProductEditor" className={wrapperClass}>
+      <div className="card">
+        <Formik
+          initialValues={product}
+          validate={(values) => {
+            let errors = [];
+            return errors;
+          }}
+          onSubmit={(values, { setSubmitting }) => {
+            const url = values.id
+              ? `/api/v1/fragrances/${fragranceId}/products/${values.id}`
+              : `/api/v1/fragrances/${fragranceId}/products`;
+            const method = values.id ? "PUT" : "POST";
 
-        <TextAreaInput
-          name={`product-${product.id}-text`}
-          value={product.text}
-          handleChange={(data) => {}}
-          label="Description"
-        />
+            fetch(url, {
+              method: method,
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(values),
+            }).then((response) => setSubmitting(false), onFormUpdate());
+          }}
+        >
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            isSubmitting,
+            /* and other goodies */
+          }) => (
+            <form onSubmit={handleSubmit}>
+              <div className="card-body">
+                <TextInput
+                  label="Product Name"
+                  value={values.name}
+                  name="name"
+                  handleChange={handleChange}
+                />
+                <TextInput
+                  label="Mass"
+                  value={values.mass}
+                  name="mass"
+                  handleChange={handleChange}
+                />
 
-        <IterableOptions
-          title="Pictograms"
-          options={[
-            {
-              name: "pictograms",
-              value: 1,
-              type: "checkbox",
-              checked: product.pictograms.includes(1),
-              icon: <PictogramDisplay images={[1]} />,
-            },
-            {
-              name: "pictograms",
-              value: 2,
-              type: "checkbox",
-              checked: product.pictograms.includes(2),
-              icon: <PictogramDisplay images={[2]} />,
-            },
-            {
-              name: "pictograms",
-              value: 3,
-              type: "checkbox",
-              checked: product.pictograms.includes(3),
-              icon: <PictogramDisplay images={[3]} />,
-            },
-          ]}
-        />
+                <TextAreaInput
+                  name="description"
+                  value={values.description}
+                  handleChange={handleChange}
+                  label="Description"
+                />
+                <IterableOptions
+                  title="Pictograms"
+                  options={[
+                    {
+                      name: "pictograms",
+                      value: "danger",
+                      type: "checkbox",
+                      checked: values.pictograms.includes("danger"),
+                      handleChange: handleChange,
+                      icon: <PictogramDisplay images={["danger"]} />,
+                    },
+                    {
+                      name: "pictograms",
+                      value: "fire",
+                      type: "checkbox",
+                      checked: values.pictograms.includes("fire"),
+                      handleChange: handleChange,
+                      icon: <PictogramDisplay images={["fire"]} />,
+                    },
+                    {
+                      name: "pictograms",
+                      value: "fish",
+                      type: "checkbox",
+                      checked: values.pictograms.includes("fish"),
+                      handleChange: handleChange,
+                      icon: <PictogramDisplay images={["fish"]} />,
+                    },
+                  ]}
+                />
+
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={isSubmitting}
+                >
+                  Update Fragrance Product Details
+                </button>
+              </div>
+            </form>
+          )}
+        </Formik>
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import React from "react";
 
 import CheckInput from "../CheckInput/CheckInput";
 
-const IterableOptions = ({ title, options, handleChange }) => {
+const IterableOptions = ({ title, options }) => {
   const radioHtml = options.map((option, i) => {
     return (
       <div
@@ -12,17 +12,10 @@ const IterableOptions = ({ title, options, handleChange }) => {
       >
         <CheckInput
           checked={option.checked}
+          handleChange={option.handleChange}
           name={option.name}
           type={option.type}
           value={option.value}
-          handleChange={(e) => {
-            handleChange({
-              type: option.type === "checkbox" ? "checkbox-group" : option.type,
-              name: e.name,
-              value: e.value,
-              checked: e.checked,
-            });
-          }}
         />
         {option.icon}
         <span>{option.label}</span>

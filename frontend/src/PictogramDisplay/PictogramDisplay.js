@@ -8,9 +8,9 @@ import warning from "../images/pictograms/warning.png";
 
 const PictogramDisplay = ({ type, images, imageStyles, containerStyles }) => {
   const imageSrcs = {
-    1: warning,
-    2: flamable,
-    3: fish,
+    danger: warning,
+    fire: flamable,
+    fish: fish,
   };
 
   const imageHelper = (index) => {
@@ -58,7 +58,7 @@ const PictogramDisplay = ({ type, images, imageStyles, containerStyles }) => {
 
 PictogramDisplay.propTypes = {
   type: PropTypes.string,
-  images: PropTypes.arrayOf(PropTypes.number),
+  images: PropTypes.arrayOf(PropTypes.oneOf(["danger", "fire", "fish"])),
   imageStyles: PropTypes.array,
   containerStyles: PropTypes.object,
 };

@@ -1,73 +1,120 @@
 import "./App.scss";
 
 import { PDFViewer } from "@react-pdf/renderer";
+import bwipjs from "bwip-js";
 import { useEffect, useState } from "react";
 
 import FragranceEditor from "./FragranceEditor/FragranceEditor";
 import LabelDisplay from "./LabelDisplay/LabelDisplay";
 import LabelForm from "./LabelForm/LabelForm";
-import { useDebounce } from "use-debounce/lib";
+import { fetchProductList } from "./utility";
 
 function App() {
   const [fragrances, updateFragranceList] = useState([]);
   const [form, setForm] = useState(null);
-  const [formValue] = useDebounce(form, 1000);
+  const [eanCode, setEanCode] = useState(null);
+  const [activeTab, setActiveTab] = useState("label");
 
-  const getAllFragrances = () => {
-    fetch("products.json", {
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    })
-      .then(function (response) {
-        return response.json();
-      })
-      .then(function (myJson) {
-        updateFragranceList(myJson.payload);
-      });
-  };
-
+  const getFragrances = () =>
+    fetchProductList().then(function (myJson) {
+      updateFragranceList(myJson);
+    });
   useEffect(() => {
-    getAllFragrances();
+    getFragrances();
   }, []);
 
+  useEffect(() => {
+    try {
+      let canvas =
+        form &&
+        form.ean &&
+        bwipjs.toCanvas("eandisplay", {
+          bcid: "ean13", // Barcode type
+          text: form.ean,
+          scale: 3, // 3x scaling factor
+          height: 10, // Bar height, in millimeters
+          includetext: true, // Show human-readable text
+          textxalign: "center", // Always good to set this
+        });
+      if (canvas) {
+        setEanCode(canvas.toDataURL("image/png"));
+      }
+    } catch (error) {
+      alert(error);
+    }
+  }, [form]);
   return (
     <main className="App">
-      <section className="row">
-        <header className="col-12">
-          <h1>CLP Generator</h1>
-        </header>
-        <article className="PdfViewer col-12 col-md-8">
-          {formValue ? (
-            <PDFViewer>
-              <LabelDisplay
-                labelCount={1}
-                orientation="portrait"
-                size={[190, 190]}
-                form={formValue}
-              />
-            </PDFViewer>
-          ) : (
-            <div className="alert alert-secondary" role="alert">
-              Selct a Fragrance and product!
-            </div>
-          )}
-        </article>
-        <aside className="col-12 col-md-4">
-          <LabelForm
-            products={fragrances}
-            propagateFormChange={(value) => {
-              setForm({
-                ...value,
-              });
-            }}
-          />
-        </aside>
+      <header className="row bg-dark mb-5 py-3">
+        <h1 className="col-12 col-md-8 text-light m-0">CLP Generator</h1>
+        <nav className="col-12 col-md-4 text-right">
+          <ul className="nav nav-pills m-0 mt-1">
+            <li className="nav-item">
+              <span
+                className={`text-light nav-link ${
+                  activeTab === "label" ? "active" : ""
+                }`}
+                aria-current="page"
+                onClick={() => setActiveTab("label")}
+              >
+                Label Editor
+              </span>
+            </li>
+            <li className="nav-item">
+              <span
+                onClick={() => setActiveTab("fragrance")}
+                className={`text-light nav-link ${
+                  activeTab === "fragrance" ? "active" : ""
+                }`}
+              >
+                Product Editor
+              </span>
+            </li>
+          </ul>
+        </nav>
+      </header>
+      {activeTab === "label" ? (
+        <section className="row">
+          <article className="PdfViewer col-12 col-md-6">
+            {form ? (
+              <div>
+                <PDFViewer style={{ height: "500px", width: "100%" }}>
+                  <LabelDisplay
+                    eanBase64={eanCode}
+                    labelCount={1}
+                    orientation="portrait"
+                    size={[190, 190]}
+                    form={form}
+                  />
+                </PDFViewer>
+              </div>
+            ) : (
+              <div className="alert alert-secondary" role="alert">
+                Before viewing the label, you must first select a Fragrance and
+                Product!
+              </div>
+            )}
+            <canvas style={{ display: "none" }} id="eandisplay"></canvas>
+          </article>
+          <aside className="col-12 col-md-6">
+            <LabelForm
+              fragrances={fragrances}
+              propagateFormChange={(value) => {
+                setForm({
+                  ...value,
+                });
+              }}
+            />
+          </aside>
+        </section>
+      ) : (
         <div className="col-12">
-          <FragranceEditor fragrances={fragrances} />
+          <FragranceEditor
+            onFormUpdate={getFragrances}
+            fragrances={fragrances}
+          />
         </div>
-      </section>
+      )}
     </main>
   );
 }

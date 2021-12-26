@@ -8,13 +8,9 @@ const TextAreaInput = ({ name, value, handleChange, height, label }) => (
     </label>
     <textarea
       id={name}
+      name={name}
+      onChange={handleChange}
       defaultValue={value}
-      onChange={(e) =>
-        handleChange({
-          name: name,
-          value: e.target.value,
-        })
-      }
       style={{ minHeight: height }}
       className="form-control"
     ></textarea>
@@ -23,10 +19,17 @@ const TextAreaInput = ({ name, value, handleChange, height, label }) => (
 
 TextAreaInput.propTypes = {
   height: PropTypes.string,
+  name: PropTypes.string,
+  value: PropTypes.any,
+  label: PropTypes.string,
 };
 
 TextAreaInput.defaultProps = {
   height: "200px",
+  label: null,
+  name: null,
+  value: null,
+
   handleChange: () => {},
 };
 

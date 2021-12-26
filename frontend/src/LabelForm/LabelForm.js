@@ -1,12 +1,14 @@
-import { useCallback, useState } from "react";
+import { Formik } from "formik";
 import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
+
 import CheckInput from "../CheckInput/CheckInput";
 import IterableOptions from "../IterableOptions/IterableOptions";
-import PictogramDisplay from "../PictogramDisplay/PictogramDisplay";
-import SelectInput from "../SelectInput/SelectInput";
-import TextInput from "../TextInput/TextInput";
-import TextAreaInput from "../TextAreaInput/TextAreaInput";
 import LabelAddressForm from "../LabelAddressForm/LabelAddressForm";
+import SelectInput from "../SelectInput/SelectInput";
+import TextAreaInput from "../TextAreaInput/TextAreaInput";
+import TextInput from "../TextInput/TextInput";
+import { fetchFragranceProductList } from "../utility";
 
 /**
  * TODO: move to the environment or something
@@ -25,39 +27,41 @@ export const DEFAULT_FORM_STATE = {
   mass: "",
   pictograms: [],
   display_product: "Display Product Name",
-  custom_text: "Follow me on instagram",
-  ean: "1234567890",
-  ufi: "1234567890",
-  batch: "12345",
+  custom_title: "DEVONWICK",
+  custom_text: "Follow us on Instagram @devonwickcandles",
+  ean: "5056496100170",
+  ufi: "",
+  batch: "",
   ...DEFAULT_BUSINESS_ADDRESS,
 };
-function LabelForm({ products, propagateFormChange }) {
+function LabelForm({ fragrances, propagateFormChange }) {
   const [fragrance, setFragrance] = useState(null);
+  const [fragranceProducts, setFragranceProducts] = useState([]);
+  const [product, setProduct] = useState(null);
+
   const SquareShapeRadioIcon = () => <div className="square-icon"></div>;
   const CircleShapeRadioIcon = () => <div className="circle-icon"></div>;
+
+  const productValues = (fragrance, product) => ({
+    fragrance: fragrance.name,
+    pictograms: product.pictograms,
+    product: product.name,
+    mass: product.mass || "",
+    productText: product.description,
+  });
 
   /**
    * After selecting a product of a specific fragrance
    * We can fill in the label with many fields
    */
-  const selectProduct = (productKey) => {
-    const product = fragrance.products.filter(
-      (product) => parseInt(product.id) === parseInt(productKey)
-    )[0];
-
-    if (product) {
-      const finalValue = {
-        ...form,
-        pictograms: product.pictograms,
-        fragrance: fragrance.fragrance,
-        product: product.name,
-        mass: product.mass,
-        productText: product.text,
-      };
-
-      updateForm(finalValue);
-      propagateFormChange(finalValue);
-    }
+  const selectProduct = (inputProduct) => {
+    fragrance &&
+      inputProduct &&
+      setProduct(inputProduct) &&
+      updateForm({
+        ...DEFAULT_FORM_STATE,
+        ...productValues(fragrance, inputProduct),
+      });
   };
 
   /**
@@ -68,59 +72,33 @@ function LabelForm({ products, propagateFormChange }) {
    */
   const [form, updateForm] = useState(DEFAULT_FORM_STATE);
 
-  /**
-   * Update internal state of form to the value of the changed input
-   */
-  const handleChange = useCallback(
-    ({ value, name, checked, type }) => {
-      let returnValue = value;
-      if (type === "checkbox-group") {
-        if (checked) {
-          // Push to the array
-          returnValue = [...(form[name] || []), value];
-        } else {
-          // Remove from the array
-          returnValue = (form[name] || []).filter((val) => val !== value);
-        }
-      }
+  useEffect(() => {}, []);
 
-      const finalValue = {
-        ...form,
-        [name]: returnValue,
-      };
+  useEffect(() => {
+    fragrance &&
+      fragrance.id &&
+      fetchFragranceProductList(fragrance.id).then((data) => {
+        setFragranceProducts(data);
+      });
+  }, [fragrance]);
 
-      updateForm(finalValue);
-      propagateFormChange(finalValue);
-    },
-    [form, propagateFormChange]
-  );
-
-  const setForm = useCallback(
-    (data) => {
-      const finalValue = {
-        ...form,
-        ...data,
-      };
-      updateForm(finalValue);
-      propagateFormChange(finalValue);
-    },
-    [form, propagateFormChange]
-  );
   return (
     <div data-testid="LabelForm">
       <SelectInput
         label="Fragrance"
         value={null}
         name="fragrance"
-        options={products.map((product) => ({
+        options={fragrances.map((product) => ({
           value: product.id,
-          label: `${product.supplierName} ${product.fragrance}`,
+          label: product.supplier
+            ? `${product.supplier} ${product.name}`
+            : product.name,
           key: product.id,
         }))}
-        handleChange={(value) =>
+        handleChange={(e) =>
           setFragrance(
-            products.filter(
-              (product) => parseInt(product.id) === parseInt(value)
+            fragrances.filter(
+              (product) => parseInt(product.id) === parseInt(e.target.value)
             )[0]
           )
         }
@@ -130,129 +108,162 @@ function LabelForm({ products, propagateFormChange }) {
         value={null}
         name="product"
         options={
-          (fragrance &&
-            fragrance.products.map((product) => ({
+          (fragranceProducts &&
+            fragranceProducts.map((product) => ({
               value: product.id,
               label: product.name,
               key: product.id,
             }))) ||
           []
         }
-        handleChange={(value) => selectProduct(value)}
+        handleChange={(e) => {
+          selectProduct(
+            fragranceProducts.filter(
+              (product) => parseInt(product.id) === parseInt(e.target.value)
+            )[0]
+          );
+        }}
       />
-      <IterableOptions
-        title="Pictograms"
-        handleChange={handleChange}
-        options={[
-          {
-            name: "pictograms",
-            value: 1,
-            type: "checkbox",
-            checked: (form.pictograms && form.pictograms.includes(1)) || false,
-            icon: <PictogramDisplay images={[1]} />,
-          },
-          {
-            name: "pictograms",
-            value: 2,
-            type: "checkbox",
-            checked: (form.pictograms && form.pictograms.includes(2)) || false,
-            icon: <PictogramDisplay images={[2]} />,
-          },
-          {
-            name: "pictograms",
-            value: 3,
-            type: "checkbox",
-            checked: (form.pictograms && form.pictograms.includes(3)) || false,
-            icon: <PictogramDisplay images={[3]} />,
-          },
-        ]}
-      />
-      <TextInput
-        name="mass"
-        value={form.mass}
-        handleChange={handleChange}
-        label="Mass/Volume"
-      />
-      <TextAreaInput
-        name="custom_text"
-        value={form.custom_text}
-        handleChange={handleChange}
-        label="Custom Text"
-        height="50px"
-      />
+      {fragrance && product && (
+        <Formik
+          initialValues={form}
+          validate={(values) => {
+            const errors = {};
+            if (!values.ean || values.ean.length < 1) {
+              errors.ean = "EAN Required";
+            }
+            if (
+              values &&
+              values.ean &&
+              (values.ean.length < 12 || values.ean.length > 13)
+            ) {
+              errors.ean = "EAN must be 12 or 13 characters";
+            }
+            if (!values.ufi || values.ufi.length < 1) {
+              errors.ufi = "UFI number required!";
+            }
+            if (!values.batch || values.batch.length < 1) {
+              errors.batch = "Batch number required!";
+            }
+            return errors;
+          }}
+          onSubmit={(values, { setSubmitting }) => {
+            propagateFormChange({
+              ...form,
+              ...values,
+              ...productValues(fragrance, product),
+            });
+            setSubmitting(false);
+          }}
+        >
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            isSubmitting,
+            /* and other goodies */
+          }) => (
+            <form onSubmit={handleSubmit}>
+              <h2>Product Options</h2>
+              <div className="row">
+                <div className="col-6">
+                  <TextInput
+                    name="batch"
+                    value={values.batch}
+                    handleChange={handleChange}
+                    error={errors && errors.batch}
+                    label="Batch#"
+                  />
+                </div>
+                <div className="col-6">
+                  <TextInput
+                    name="ufi"
+                    value={values.ufi}
+                    handleChange={handleChange}
+                    error={errors && errors.ufi}
+                    label="UFI#"
+                  />
+                </div>
+              </div>
+              <TextInput
+                name="ean"
+                value={values.ean}
+                handleChange={handleChange}
+                label="EAN"
+                error={errors && errors.ean}
+              />
+              <h2>Design Options</h2>
 
-      <div className="row">
-        <div className="col-6">
-          <TextInput
-            name="batch"
-            value={form.batch}
-            handleChange={handleChange}
-            label="Batch#"
-          />
-        </div>
-        <div className="col-6">
-          <TextInput
-            name="ufi"
-            value={form.ufi}
-            handleChange={handleChange}
-            label="UFI#"
-          />
-        </div>
-      </div>
-      <TextInput
-        name="ean"
-        value={form.ean}
-        handleChange={handleChange}
-        label="EAN"
-      />
-      <LabelAddressForm
-        form={form}
-        handleChange={handleChange}
-        defaultValues={DEFAULT_BUSINESS_ADDRESS}
-        handleFormChange={setForm}
-      />
-      <h1>Design Options</h1>
-      <IterableOptions
-        handleChange={handleChange}
-        title="Label Style"
-        options={[
-          {
-            name: "labelStyle",
-            value: "square",
-            type: "radio",
-            checked: form.labelStyle === "square",
-            icon: <SquareShapeRadioIcon />,
-            label: "Square",
-          },
-          {
-            name: "labelStyle",
-            value: "round",
-            checked: form.labelStyle === "round",
-            type: "radio",
-            icon: <CircleShapeRadioIcon />,
-            label: "Circle",
-          },
-        ]}
-      />
-      <CheckInput
-        name="showBorder"
-        value={form.showBorder}
-        checked={form.showBorder}
-        handleChange={(data) =>
-          handleChange({ name: "showBorder", value: data.checked })
-        }
-        label="Show Trim lines"
-      />
+              <TextInput
+                name="custom_title"
+                value={values.custom_title}
+                handleChange={handleChange}
+                label="Custom Title"
+              />
+              <TextAreaInput
+                name="custom_text"
+                value={values.custom_text}
+                handleChange={handleChange}
+                label="Custom Text"
+                height="50px"
+              />
+              <LabelAddressForm form={values} handleChange={handleChange} />
+              <IterableOptions
+                title="Label Style"
+                options={[
+                  {
+                    name: "labelStyle",
+                    value: "square",
+                    handleChange: handleChange,
+                    type: "radio",
+                    checked: values.labelStyle === "square",
+                    icon: <SquareShapeRadioIcon />,
+                    label: "Square",
+                  },
+                  {
+                    name: "labelStyle",
+                    value: "round",
+                    handleChange: handleChange,
+                    checked: values.labelStyle === "round",
+                    type: "radio",
+                    icon: <CircleShapeRadioIcon />,
+                    label: "Circle",
+                  },
+                ]}
+              />
+              <CheckInput
+                name="showBorder"
+                value={values.showBorder}
+                checked={values.showBorder}
+                handleChange={handleChange}
+                label="Show Trim lines"
+              />
+              <div className="mt-3">
+                <button
+                  className="btn btn-primary"
+                  type="submit"
+                  disabled={isSubmitting}
+                >
+                  Update Label PDF
+                </button>
+              </div>
+            </form>
+          )}
+        </Formik>
+      )}
     </div>
   );
 }
 
 LabelForm.prototype = {
-  products: PropTypes.arrayOf(PropTypes.any),
+  fragrances: PropTypes.arrayOf(PropTypes.any),
 };
 
 LabelForm.defaultProps = {
-  products: [],
+  fragrances: [],
 };
 
 export default LabelForm;
