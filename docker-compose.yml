@@ -2,12 +2,12 @@ version: "3.7"
 
 services:
   frontend:
-    image: tomfordweb/devonwick-clp-frontend:lastest
+    image: tomfordweb/devonwick-clp-frontend:latest
     networks:
       - app-network
 
   backend:
-    image: tomfordweb/devonwick-clp-backend:lastest
+    image: tomfordweb/devonwick-clp-backend:latest
     container_name: devonwick-backend
     restart: unless-stopped
     networks:
@@ -25,7 +25,7 @@ services:
       ]
 
   proxy:
-    image: tomfordweb/devonwick-clp-proxy:lastest
+    image: tomfordweb/devonwick-clp-proxy:latest
     networks:
       - app-network
     ports:
