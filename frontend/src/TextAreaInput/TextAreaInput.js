@@ -1,12 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-// onChange={(e) =>
-//   handleChange({
-//     name: name,
-//     value: e.target.value,
-//   })
-// }
 const TextAreaInput = ({ name, value, handleChange, height, label }) => (
   <div className="mb-3" data-testid="TextAreaInput">
     <label className="form-label" htmlFor={name}>
@@ -25,10 +19,17 @@ const TextAreaInput = ({ name, value, handleChange, height, label }) => (
 
 TextAreaInput.propTypes = {
   height: PropTypes.string,
+  name: PropTypes.string,
+  value: PropTypes.any,
+  label: PropTypes.string,
 };
 
 TextAreaInput.defaultProps = {
   height: "200px",
+  label: null,
+  name: null,
+  value: null,
+
   handleChange: () => {},
 };
 

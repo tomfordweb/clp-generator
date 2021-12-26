@@ -20,13 +20,6 @@ const TextInput = ({ value, label, name, type, error, handleChange }) => {
     </div>
   );
 };
-// onChange={(e) =>
-//   handleChange({
-//     name: name,
-//     value: e.target.value,
-//     type: type,
-//   })
-// }
 
 TextInput.propTypes = {
   error: PropTypes.string,

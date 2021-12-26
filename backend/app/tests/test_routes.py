@@ -8,7 +8,7 @@ from ..database import Base
 from ..dependencies import get_db
 from ..main import app
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///.testing_db2.db"
+SQLALCHEMY_DATABASE_URL = "sqlite:///testing_db.db"
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}

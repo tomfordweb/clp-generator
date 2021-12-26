@@ -15,14 +15,6 @@ const CheckInput = ({ type, label, value, name, checked, handleChange }) => (
     </label>
   </div>
 );
-// onChange={(e) =>
-//   handleChange({
-//     name: name,
-//     type: type,
-//     value: value,
-//     checked: type === "radio" ? value : e.target.checked,
-//   })
-// }
 
 CheckInput.prototypes = {
   label: PropTypes.string,

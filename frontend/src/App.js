@@ -3,7 +3,6 @@ import "./App.scss";
 import { PDFViewer } from "@react-pdf/renderer";
 import bwipjs from "bwip-js";
 import { useEffect, useState } from "react";
-import { useDebounce } from "use-debounce/lib";
 
 import FragranceEditor from "./FragranceEditor/FragranceEditor";
 import LabelDisplay from "./LabelDisplay/LabelDisplay";
