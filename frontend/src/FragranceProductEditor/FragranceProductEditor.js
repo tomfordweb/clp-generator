@@ -1,9 +1,10 @@
+import { Formik } from "formik";
+import PropTypes from "prop-types";
+
 import IterableOptions from "../IterableOptions/IterableOptions";
 import PictogramDisplay from "../PictogramDisplay/PictogramDisplay";
 import TextAreaInput from "../TextAreaInput/TextAreaInput";
 import TextInput from "../TextInput/TextInput";
-import PropTypes from "prop-types";
-import { Formik } from "formik";
 
 const FragranceProductEditor = ({ onFormUpdate, fragranceId, product }) => {
   return (
@@ -15,6 +16,7 @@ const FragranceProductEditor = ({ onFormUpdate, fragranceId, product }) => {
         initialValues={product}
         validate={(values) => {
           let errors = [];
+          console.log(values);
           return errors;
         }}
         onSubmit={(values, { setSubmitting }) => {
@@ -22,10 +24,6 @@ const FragranceProductEditor = ({ onFormUpdate, fragranceId, product }) => {
             ? `/api/v1/fragrances/${fragranceId}/products/${values.id}`
             : `/api/v1/fragrances/${fragranceId}/products`;
           const method = values.id ? "PUT" : "POST";
-
-          values.pictograms = values.pictograms.filter(
-            (v, i, a) => a.indexOf(parseInt(v)) === i
-          );
 
           fetch(url, {
             method: method,
@@ -64,33 +62,27 @@ const FragranceProductEditor = ({ onFormUpdate, fragranceId, product }) => {
                 options={[
                   {
                     name: "pictograms",
-                    value: "1",
+                    value: "danger",
                     type: "checkbox",
-                    checked:
-                      values.pictograms.includes("1") ||
-                      values.pictograms.includes(1),
+                    checked: values.pictograms.includes("danger"),
                     handleChange: handleChange,
-                    icon: <PictogramDisplay images={[1]} />,
+                    icon: <PictogramDisplay images={["danger"]} />,
                   },
                   {
                     name: "pictograms",
-                    value: "2",
+                    value: "fire",
                     type: "checkbox",
-                    checked:
-                      values.pictograms.includes("2") ||
-                      values.pictograms.includes(2),
+                    checked: values.pictograms.includes("fire"),
                     handleChange: handleChange,
-                    icon: <PictogramDisplay images={[2]} />,
+                    icon: <PictogramDisplay images={["fire"]} />,
                   },
                   {
                     name: "pictograms",
-                    value: "3",
+                    value: "fish",
                     type: "checkbox",
-                    checked:
-                      values.pictograms.includes("3") ||
-                      values.pictograms.includes(3),
+                    checked: values.pictograms.includes("fish"),
                     handleChange: handleChange,
-                    icon: <PictogramDisplay images={[3]} />,
+                    icon: <PictogramDisplay images={["fish"]} />,
                   },
                 ]}
               />

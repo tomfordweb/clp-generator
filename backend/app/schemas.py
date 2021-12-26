@@ -20,7 +20,7 @@ class Fragrance(FragranceBase):
 class ProductBase(BaseModel):
     name: str
     description: str
-    pictograms: Optional[List[int]] = []
+    pictograms: Optional[List[str]] = []
     mass: Optional[str] = None
 
 class ProductCreate(ProductBase):

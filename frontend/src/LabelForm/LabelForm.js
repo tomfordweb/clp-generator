@@ -115,99 +115,101 @@ function LabelForm({ fragrances, propagateFormChange }) {
           );
         }}
       />
-      <Formik
-        initialValues={form}
-        validate={(values) => {
-          const errors = {};
-          return errors;
-        }}
-        onSubmit={(values, { setSubmitting }) => {
-          console.log("form values", values);
-          propagateFormChange({ ...form, values });
-          setSubmitting(false);
-        }}
-      >
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          isSubmitting,
-          /* and other goodies */
-        }) => (
-          <form onSubmit={handleSubmit}>
-            <TextAreaInput
-              name="custom_text"
-              value={values.custom_text}
-              handleChange={handleChange}
-              label="Custom Text"
-              height="50px"
-            />
+      {fragrance && fragranceProducts && (
+        <Formik
+          initialValues={form}
+          validate={(values) => {
+            const errors = {};
+            return errors;
+          }}
+          onSubmit={(values, { setSubmitting }) => {
+            console.log("form values", values);
+            propagateFormChange({ ...form, values });
+            setSubmitting(false);
+          }}
+        >
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            isSubmitting,
+            /* and other goodies */
+          }) => (
+            <form onSubmit={handleSubmit}>
+              <TextAreaInput
+                name="custom_text"
+                value={values.custom_text}
+                handleChange={handleChange}
+                label="Custom Text"
+                height="50px"
+              />
 
-            <div className="row">
-              <div className="col-6">
-                <TextInput
-                  name="batch"
-                  value={form.batch}
-                  handleChange={handleChange}
-                  label="Batch#"
-                />
+              <div className="row">
+                <div className="col-6">
+                  <TextInput
+                    name="batch"
+                    value={form.batch}
+                    handleChange={handleChange}
+                    label="Batch#"
+                  />
+                </div>
+                <div className="col-6">
+                  <TextInput
+                    name="ufi"
+                    value={values.ufi}
+                    handleChange={handleChange}
+                    label="UFI#"
+                  />
+                </div>
               </div>
-              <div className="col-6">
-                <TextInput
-                  name="ufi"
-                  value={values.ufi}
-                  handleChange={handleChange}
-                  label="UFI#"
-                />
-              </div>
-            </div>
-            <TextInput
-              name="ean"
-              value={values.ean}
-              handleChange={handleChange}
-              label="EAN"
-            />
-            <LabelAddressForm form={values} handleChange={handleChange} />
-            <IterableOptions
-              title="Label Style"
-              options={[
-                {
-                  name: "labelStyle",
-                  value: "square",
-                  handleChange: handleChange,
-                  type: "radio",
-                  checked: values.labelStyle === "square",
-                  icon: <SquareShapeRadioIcon />,
-                  label: "Square",
-                },
-                {
-                  name: "labelStyle",
-                  value: "round",
-                  handleChange: handleChange,
-                  checked: values.labelStyle === "round",
-                  type: "radio",
-                  icon: <CircleShapeRadioIcon />,
-                  label: "Circle",
-                },
-              ]}
-            />
-            <CheckInput
-              name="showBorder"
-              value={values.showBorder}
-              checked={values.showBorder}
-              handleChange={handleChange}
-              label="Show Trim lines"
-            />
-            <button type="submit" disabled={isSubmitting}>
-              Submit
-            </button>
-          </form>
-        )}
-      </Formik>
-      <h1>Design Options</h1>
+              <TextInput
+                name="ean"
+                value={values.ean}
+                handleChange={handleChange}
+                label="EAN"
+              />
+              <h2>Design Options</h2>
+              <LabelAddressForm form={values} handleChange={handleChange} />
+              <IterableOptions
+                title="Label Style"
+                options={[
+                  {
+                    name: "labelStyle",
+                    value: "square",
+                    handleChange: handleChange,
+                    type: "radio",
+                    checked: values.labelStyle === "square",
+                    icon: <SquareShapeRadioIcon />,
+                    label: "Square",
+                  },
+                  {
+                    name: "labelStyle",
+                    value: "round",
+                    handleChange: handleChange,
+                    checked: values.labelStyle === "round",
+                    type: "radio",
+                    icon: <CircleShapeRadioIcon />,
+                    label: "Circle",
+                  },
+                ]}
+              />
+              <CheckInput
+                name="showBorder"
+                value={values.showBorder}
+                checked={values.showBorder}
+                handleChange={handleChange}
+                label="Show Trim lines"
+              />
+              <button type="submit" disabled={isSubmitting}>
+                Submit
+              </button>
+            </form>
+          )}
+        </Formik>
+      )}
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { Page, Document } from "@react-pdf/renderer";
 import Label from "../Label/Label";
 
 const LabelDisplay = ({ form, size, orientation, wrapperStyles }) => {
+  console.log("ld", form);
   return (
     <Document data-testid="LabelDisplay">
       <Page size={size} orientation={orientation} style={wrapperStyles}>

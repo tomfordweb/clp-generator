@@ -25,14 +25,15 @@ function App() {
 
   return (
     <main className="App">
-      <section className="row">
-        <header className="col-12">
-          <h1>CLP Generator</h1>
-
-          <ul className="nav nav-pills">
+      <header className="row bg-dark mb-5 py-3">
+        <h1 className="col-md-8 text-light m-0">CLP Generator</h1>
+        <nav className="col-md-4 text-right">
+          <ul className="nav nav-pills m-0 mt-1">
             <li className="nav-item">
               <span
-                className={`nav-link ${activeTab == "label" ? "active" : ""}`}
+                className={`text-light nav-link ${
+                  activeTab == "label" ? "active" : ""
+                }`}
                 aria-current="page"
                 onClick={() => setActiveTab("label")}
               >
@@ -42,7 +43,7 @@ function App() {
             <li className="nav-item">
               <span
                 onClick={() => setActiveTab("fragrance")}
-                className={`nav-link ${
+                className={`text-light nav-link ${
                   activeTab == "fragrance" ? "active" : ""
                 }`}
               >
@@ -50,45 +51,45 @@ function App() {
               </span>
             </li>
           </ul>
-        </header>
-        {activeTab === "label" ? (
-          <section>
-            <article className="PdfViewer col-12 col-md-8">
-              {formValue ? (
-                <PDFViewer>
-                  <LabelDisplay
-                    labelCount={1}
-                    orientation="portrait"
-                    size={[190, 190]}
-                    form={formValue}
-                  />
-                </PDFViewer>
-              ) : (
-                <div className="alert alert-secondary" role="alert">
-                  Selct a Fragrance and product!
-                </div>
-              )}
-            </article>
-            <aside className="col-12 col-md-4">
-              <LabelForm
-                fragrances={fragrances}
-                propagateFormChange={(value) => {
-                  setForm({
-                    ...value,
-                  });
-                }}
-              />
-            </aside>
-          </section>
-        ) : (
-          <div className="col-12">
-            <FragranceEditor
-              onFormUpdate={getFragrances}
+        </nav>
+      </header>
+      {activeTab === "label" ? (
+        <section className="row">
+          <article className="PdfViewer col-12 col-md-8">
+            {formValue ? (
+              <PDFViewer>
+                <LabelDisplay
+                  labelCount={1}
+                  orientation="portrait"
+                  size={[190, 190]}
+                  form={formValue}
+                />
+              </PDFViewer>
+            ) : (
+              <div className="alert alert-secondary" role="alert">
+                Selct a Fragrance and product!
+              </div>
+            )}
+          </article>
+          <aside className="col-12 col-md-4">
+            <LabelForm
               fragrances={fragrances}
+              propagateFormChange={(value) => {
+                setForm({
+                  ...value,
+                });
+              }}
             />
-          </div>
-        )}
-      </section>
+          </aside>
+        </section>
+      ) : (
+        <div className="col-12">
+          <FragranceEditor
+            onFormUpdate={getFragrances}
+            fragrances={fragrances}
+          />
+        </div>
+      )}
     </main>
   );
 }
