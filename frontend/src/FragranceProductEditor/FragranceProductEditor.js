@@ -49,6 +49,12 @@ const FragranceProductEditor = ({ onFormUpdate, fragranceId, product }) => {
                 name="name"
                 handleChange={handleChange}
               />
+              <TextInput
+                label="Mass"
+                value={values.mass}
+                name="mass"
+                handleChange={handleChange}
+              />
 
               <TextAreaInput
                 name="description"

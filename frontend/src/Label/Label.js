@@ -1,7 +1,8 @@
-import { Font, StyleSheet, Image, Text, View } from "@react-pdf/renderer";
+import { Font, Image, StyleSheet, Text, View } from "@react-pdf/renderer";
 import React from "react";
 
 import sourceSansProBold from "../fonts/SourceSansPro-Bold.ttf";
+import sourceSansProExtraLight from "../fonts/SourceSansPro-ExtraLight.ttf";
 import sourceSansProItalic from "../fonts/SourceSansPro-Italic.ttf";
 import sourceSansProRegular from "../fonts/SourceSansPro-Regular.ttf";
 import PictogramDisplay from "../PictogramDisplay/PictogramDisplay";
@@ -21,6 +22,11 @@ Font.register({
       fontWeight: "normal",
       fontStyle: "italic",
     },
+    {
+      src: sourceSansProExtraLight,
+      fontWeight: 100,
+      fontStyle: "regular",
+    },
   ],
 });
 
@@ -30,28 +36,39 @@ const styles = StyleSheet.create({
   },
   roundContainer: {
     borderRadius: "50%",
-    padding: "20px",
     height: "100%",
     width: "100%",
   },
   container: {
     fontSize: "5px",
     width: "100%",
+    height: "100%",
     display: "flex",
     alignItems: "center",
     overflow: "hidden",
   },
-  title: {
-    fontWeight: "bold",
-    fontSize: "14px",
+  customTitle: {
+    fontWeight: 100,
+    fontSize: "16px",
     fontFamily: "SourceSansPro",
+  },
+  specialText: {
+    fontWeight: "bold",
+    fontFamily: "SourceSansPro",
+  },
+  title: {
+    fontSize: "14px",
   },
   batchContainer: {
     textAlign: "center",
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-evenly",
     alignItems: "center",
+  },
+  batchItemSpacing: {
+    marginLeft: "5px",
+    marginRight: "5px",
   },
   section: {
     margin: 10,
@@ -64,7 +81,12 @@ const styles = StyleSheet.create({
 });
 const Label = ({ eanCode, form, pictogramContainerSize, pictogramGutter }) => {
   const sharedDynamicContainerStyles = {
-    border: form.showBorder ? "3px dashed #000" : "none",
+    border: form.showBorder ? "1px dashed #ddd" : "none",
+    // there is no "box sizing: border-box" here so
+    // we need to subtract the width of the border from
+    // padding to make sure item alignment doesn't change...welcome to my hell
+    padding:
+      form.labelStyle === "round" ? (form.showBorder ? "19px" : "20px") : "5px",
   };
 
   return (
@@ -80,7 +102,10 @@ const Label = ({ eanCode, form, pictogramContainerSize, pictogramGutter }) => {
           : { ...sharedDynamicContainerStyles, ...styles.container }
       }
     >
-      <Text style={styles.title}>{form.fragrance}</Text>
+      <Text style={styles.customTitle}>{form.custom_title}</Text>
+      <Text style={{ ...styles.specialText, ...styles.title }}>
+        {form.fragrance}
+      </Text>
       <View
         style={{
           display: "flex",
@@ -100,6 +125,7 @@ const Label = ({ eanCode, form, pictogramContainerSize, pictogramGutter }) => {
               marginLeft: "5px",
               marginTop: "5px",
               position: "relative",
+              overflow: "hidden",
               width: `${pictogramContainerSize}px`,
               height: `${pictogramContainerSize}px`,
             }}
@@ -129,27 +155,29 @@ const Label = ({ eanCode, form, pictogramContainerSize, pictogramGutter }) => {
           />
         </View>
       </View>
-      <Text style={{ ...styles.tinyText, ...styles.bottomMargin }}>
-        {form.productText}
-      </Text>
       <View style={{ ...styles.batchContainer, ...styles.bottomMargin }}>
-        <Text>
-          <strong>BN: </strong>
-          {form.batch}
+        <Text style={{ ...styles.specialText, ...styles.batchItemSpacing }}>
+          {form.batch ? `BN: ${form.batch}` : " "}
         </Text>
         <Text
           style={{
-            marginLeft: "10px",
+            ...styles.batchItemSpacing,
+            ...styles.specialText,
           }}
         >
-          <strong>UFI:</strong>
-          {form.ufi}
+          {form.ufi ? `UFI: ${form.ufi}` : " "}
         </Text>
-        <Text style={{ marginLeft: "10px" }}>~{form.mass} Net</Text>
+        <Text style={{ ...styles.specialText, ...styles.batchItemSpacing }}>
+          {form.mass || " "}
+        </Text>
       </View>
+      <Text style={{ ...styles.tinyText, ...styles.bottomMargin }}>
+        {form.productText}
+      </Text>
       <View
         style={{
           ...styles.tinyText,
+          ...styles.bottomMargin,
           ...{ display: "flex", alignItems: "center" },
         }}
       >
@@ -158,6 +186,9 @@ const Label = ({ eanCode, form, pictogramContainerSize, pictogramGutter }) => {
         <Text>{form.business_address_2}</Text>
         <Text>{form.business_telephone}</Text>
       </View>
+      <Text style={{ ...styles.specialText, ...{ fontSize: "5px" } }}>
+        {form.custom_text}
+      </Text>
     </View>
   );
 };

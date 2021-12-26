@@ -30,8 +30,8 @@ export const DEFAULT_FORM_STATE = {
   custom_title: "DEVONWICK",
   custom_text: "Follow us on Instagram @devonwickcandles",
   ean: "5056496100170",
-  ufi: "1234567890",
-  batch: "12345",
+  ufi: "",
+  batch: "",
   ...DEFAULT_BUSINESS_ADDRESS,
 };
 function LabelForm({ fragrances, propagateFormChange }) {
@@ -46,7 +46,7 @@ function LabelForm({ fragrances, propagateFormChange }) {
     fragrance: fragrance.name,
     pictograms: product.pictograms,
     product: product.name,
-    mass: product.mass,
+    mass: product.mass || "",
     productText: product.description,
   });
 
@@ -79,16 +79,6 @@ function LabelForm({ fragrances, propagateFormChange }) {
       fragrance.id &&
       fetchFragranceProductList(fragrance.id).then((data) => {
         setFragranceProducts(data);
-        // The return value is the canvas element
-        // let canvas = bwipjs.toCanvas("mycanvas", {
-        //   bcid: "code128", // Barcode type
-        //   text: "0123456789", // Text to encode
-        //   scale: 3, // 3x scaling factor
-        //   height: 10, // Bar height, in millimeters
-        //   includetext: true, // Show human-readable text
-        //   textxalign: "center", // Always good to set this
-        // });
-        // console.log(canvas.toDataURL("image/png"));
       });
   }, [fragrance]);
 
@@ -169,19 +159,12 @@ function LabelForm({ fragrances, propagateFormChange }) {
             /* and other goodies */
           }) => (
             <form onSubmit={handleSubmit}>
-              <TextAreaInput
-                name="custom_text"
-                value={values.custom_text}
-                handleChange={handleChange}
-                label="Custom Text"
-                height="50px"
-              />
-
+              <h2>Product Options</h2>
               <div className="row">
                 <div className="col-6">
                   <TextInput
                     name="batch"
-                    value={form.batch}
+                    value={values.batch}
                     handleChange={handleChange}
                     label="Batch#"
                   />
@@ -203,6 +186,20 @@ function LabelForm({ fragrances, propagateFormChange }) {
               />
               {errors && errors.ean}
               <h2>Design Options</h2>
+
+              <TextInput
+                name="custom_title"
+                value={values.custom_title}
+                handleChange={handleChange}
+                label="Custom Title"
+              />
+              <TextAreaInput
+                name="custom_text"
+                value={values.custom_text}
+                handleChange={handleChange}
+                label="Custom Text"
+                height="50px"
+              />
               <LabelAddressForm form={values} handleChange={handleChange} />
               <IterableOptions
                 title="Label Style"
@@ -234,9 +231,15 @@ function LabelForm({ fragrances, propagateFormChange }) {
                 handleChange={handleChange}
                 label="Show Trim lines"
               />
-              <button type="submit" disabled={isSubmitting}>
-                Submit
-              </button>
+              <div className="mt-3">
+                <button
+                  className="btn btn-primary"
+                  type="submit"
+                  disabled={isSubmitting}
+                >
+                  Update Label PDF
+                </button>
+              </div>
             </form>
           )}
         </Formik>

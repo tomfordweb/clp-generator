@@ -47,8 +47,8 @@ const FragranceEditor = ({ fragrances, onFormUpdate }) => {
         <SelectInput
           options={fragrances.map((fragrance) => ({
             value: fragrance.id,
-            label: fragrance.supplierName
-              ? `${fragrance.supplierName} - ${fragrance.name}`
+            label: fragrance.supplier
+              ? `${fragrance.supplier} - ${fragrance.name}`
               : fragrance.name,
             key: fragrance.id,
           }))}
