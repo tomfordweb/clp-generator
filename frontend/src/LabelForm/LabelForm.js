@@ -148,7 +148,6 @@ function LabelForm({ fragrances, propagateFormChange }) {
             return errors;
           }}
           onSubmit={(values, { setSubmitting }) => {
-            console.log("form values", values);
             propagateFormChange({
               ...form,
               ...values,
