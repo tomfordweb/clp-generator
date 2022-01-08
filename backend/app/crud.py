@@ -54,6 +54,7 @@ def get_product(db: Session, fragrance_id:int, product_id: int):
 def update_fragrance_product(db:Session, fragrance_id:int, product_id:int, product_data:schemas.ProductCreate):
     product = get_product(db, fragrance_id, product_id)
     product.name = product_data.name
+    product.custom_name = product_data.custom_name
     product.description = product_data.description
     product.pictograms = product_data.pictograms
     product.mass = product_data.mass

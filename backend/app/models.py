@@ -19,6 +19,7 @@ class Product(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
+    custom_name = Column(String, index=True)
     description = Column(String, index=True)
     pictograms = Column(JSON)
     mass = Column(String, nullable=True)

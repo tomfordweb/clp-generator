@@ -1,10 +1,14 @@
 import { Formik } from "formik";
 import PropTypes from "prop-types";
+import { useContext } from "react";
 
 import IterableOptions from "../IterableOptions/IterableOptions";
 import PictogramDisplay from "../PictogramDisplay/PictogramDisplay";
+import { store } from "../StateProvider";
 import TextAreaInput from "../TextAreaInput/TextAreaInput";
 import TextInput from "../TextInput/TextInput";
+
+import { useParams } from "react-router-dom";
 
 const FragranceProductEditor = ({
   wrapperClass,
@@ -12,6 +16,8 @@ const FragranceProductEditor = ({
   fragranceId,
   product,
 }) => {
+  const globalState = useContext(store);
+
   return (
     <div data-testid="FragranceProductEditor" className={wrapperClass}>
       <div className="card">
@@ -42,7 +48,6 @@ const FragranceProductEditor = ({
             handleBlur,
             handleSubmit,
             isSubmitting,
-            /* and other goodies */
           }) => (
             <form onSubmit={handleSubmit}>
               <div className="card-body">
@@ -50,6 +55,12 @@ const FragranceProductEditor = ({
                   label="Product Name"
                   value={values.name}
                   name="name"
+                  handleChange={handleChange}
+                />
+                <TextInput
+                  label="Customer Facing Name"
+                  value={values.custom_name}
+                  name="custom_name"
                   handleChange={handleChange}
                 />
                 <TextInput

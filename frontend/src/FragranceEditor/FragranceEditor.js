@@ -5,10 +5,12 @@ import FragranceEditForm from "../FragranceEditForm/FragranceEditForm";
 import FragranceProductEditor from "../FragranceProductEditor/FragranceProductEditor";
 import SelectInput from "../SelectInput/SelectInput";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { fetchFragranceProductList } from "../utility";
+import { store } from "../StateProvider";
+import { useNavigate, Outlet, Link } from "react-router-dom";
 
-const customStyles = {
+export const modalStyles = {
   content: {
     top: "50%",
     left: "50%",
@@ -19,24 +21,14 @@ const customStyles = {
   },
 };
 const FragranceEditor = ({ fragrances, onFormUpdate }) => {
+  const globalState = useContext(store);
+  const { state, dispatch } = globalState;
+  const navigate = useNavigate();
+
   const [activeFragrance, setActiveFragrance] = useState(null);
   const [activeFragranceProducts, setActiveFragranceProducts] = useState([]);
   const [fragranceModalIsOpen, setFragranceModalIsOpen] = useState(false);
   const [productModalIsOpen, setProductModalIsOpen] = useState(false);
-
-  const updateProductList = useCallback(
-    () =>
-      fetchFragranceProductList(activeFragrance.id).then((data) => {
-        setActiveFragranceProducts(data);
-      }),
-    [activeFragrance]
-  );
-
-  useEffect(() => {
-    activeFragrance &&
-      activeFragrance.id &&
-      updateProductList(activeFragrance.id);
-  }, [updateProductList, activeFragrance]);
 
   return (
     <section className="row" data-testid="FragranceEditor">
@@ -45,7 +37,7 @@ const FragranceEditor = ({ fragrances, onFormUpdate }) => {
       </header>
       <article className="col-12 col-sm-4 col-md-2">
         <SelectInput
-          options={fragrances.map((fragrance) => ({
+          options={state.fragrances.map((fragrance) => ({
             value: fragrance.id,
             label: fragrance.supplier
               ? `${fragrance.supplier} - ${fragrance.name}`
@@ -53,11 +45,7 @@ const FragranceEditor = ({ fragrances, onFormUpdate }) => {
             key: fragrance.id,
           }))}
           handleChange={(e) => {
-            setActiveFragrance(
-              fragrances.filter(
-                (f) => parseInt(f.id) === parseInt(e.target.value)
-              )[0]
-            );
+            navigate(`/fragrances/${e.target.value}`);
           }}
         />
         <button
@@ -69,78 +57,9 @@ const FragranceEditor = ({ fragrances, onFormUpdate }) => {
         </button>
       </article>
 
-      {activeFragrance && (
-        <article className="col-12 col-sm-8 col-md-10">
-          <div className="card">
-            <div className="card-body">
-              <FragranceEditForm
-                fragrance={activeFragrance}
-                onFormUpdate={onFormUpdate}
-              />
-            </div>
-          </div>
-          <h4>Product List</h4>
-          <div className="row">
-            {activeFragrance &&
-              activeFragranceProducts &&
-              activeFragranceProducts.map((product, index) => (
-                <FragranceProductEditor
-                  wrapperClass="col-12 col-md-6 mb-3"
-                  onFormUpdate={(e) => {
-                    onFormUpdate();
-                    updateProductList(activeFragrance.id);
-                  }}
-                  fragranceId={activeFragrance.id}
-                  product={product}
-                  key={index}
-                />
-              ))}
-          </div>
-          <button
-            onClick={() => setProductModalIsOpen(true)}
-            type="button"
-            className="btn btn-success"
-          >
-            Add product
-          </button>
-          <Modal
-            isOpen={productModalIsOpen}
-            onRequestClose={() => setProductModalIsOpen(false)}
-            style={customStyles}
-            contentLabel="Example Modal"
-          >
-            <FragranceProductEditor
-              onFormUpdate={(e) => {
-                onFormUpdate();
-                updateProductList(activeFragrance.id);
-                setProductModalIsOpen(false);
-              }}
-              fragranceId={activeFragrance.id}
-              product={{
-                name: "",
-                description: "",
-                pictograms: [],
-                mass: "",
-              }}
-            />
-          </Modal>
-        </article>
-      )}
-      <Modal
-        isOpen={fragranceModalIsOpen}
-        onRequestClose={() => setFragranceModalIsOpen(false)}
-        style={customStyles}
-        contentLabel="Example Modal"
-      >
-        <FragranceEditForm
-          fragrance={{ name: "", supplier: "", supplier_code: "" }}
-          onFormUpdate={(values) => {
-            onFormUpdate(values);
-            setActiveFragrance(null);
-            setFragranceModalIsOpen(false);
-          }}
-        />
-      </Modal>
+      <article className="col-12 col-sm-8 col-md-10">
+        <Outlet />
+      </article>
     </section>
   );
 };

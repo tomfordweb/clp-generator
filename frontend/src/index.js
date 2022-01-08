@@ -1,16 +1,37 @@
+import "./index.css";
+
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
+import Modal from "react-modal";
+
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import Modal from "react-modal";
+
+import FragranceEditor from "./FragranceEditor/FragranceEditor";
+import LabelEditor from "./LabelEditor/LabelEditor";
+import { StateProvider } from "./StateProvider";
+import FragranceProductEditor from "./FragranceProductEditor/FragranceProductEditor";
+import FragranceEditForm from "./FragranceEditForm/FragranceEditForm";
 
 Modal.setAppElement("#root");
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <BrowserRouter>
+    <StateProvider>
+      <Routes>
+        <Route path="/" element={<App />}>
+          <Route path="" element={<LabelEditor />} />
+          <Route path="fragrances" element={<FragranceEditor />}>
+            <Route path="create" element={<FragranceEditForm />} />
+            <Route path=":fragranceId" element={<FragranceEditForm />}>
+              <Route path="create" element={<FragranceEditForm />} />
+            </Route>
+          </Route>
+        </Route>
+      </Routes>
+    </StateProvider>
+  </BrowserRouter>,
   document.getElementById("root")
 );
 

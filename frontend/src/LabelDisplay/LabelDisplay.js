@@ -16,7 +16,7 @@ const LabelDisplay = ({
         {form && (
           <Label
             eanCode={eanBase64}
-            pictogramContainerSize={size[0] / 5}
+            pictogramContainerSize={size[0] / 2.5}
             form={form}
           />
         )}

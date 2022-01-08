@@ -114,3 +114,6 @@ jobs:
 
       - name: Start the updated project
         run: ssh ${{ secrets.dev_server_user }}@${{ secrets.dev_server}} "docker-compose -f /srv/docker/devonwick-clp/docker-compose.yml up -d"
+
+      - name: Run migrations
+        run: ssh ${{ secrets.dev_server_user }}@${{ secrets.dev_server}} "cd /srv/docker/devonwick-clp && docker-compose run --entrypoint alembic backend upgrade head"

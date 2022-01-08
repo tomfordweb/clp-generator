@@ -2,25 +2,27 @@ import "./App.scss";
 
 import { PDFViewer } from "@react-pdf/renderer";
 import bwipjs from "bwip-js";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import FragranceEditor from "./FragranceEditor/FragranceEditor";
 import LabelDisplay from "./LabelDisplay/LabelDisplay";
 import LabelForm from "./LabelForm/LabelForm";
 import { fetchProductList } from "./utility";
+import { Outlet, NavLink } from "react-router-dom";
+import { store } from "./StateProvider";
 
 function App() {
   const [fragrances, updateFragranceList] = useState([]);
   const [form, setForm] = useState(null);
   const [eanCode, setEanCode] = useState(null);
   const [activeTab, setActiveTab] = useState("label");
+  const globalState = useContext(store);
+  const { dispatch } = globalState;
 
-  const getFragrances = () =>
-    fetchProductList().then(function (myJson) {
-      updateFragranceList(myJson);
-    });
   useEffect(() => {
-    getFragrances();
+    fetchProductList().then(function (myJson) {
+      dispatch({ type: "setFragrances", value: myJson });
+    });
   }, []);
 
   useEffect(() => {
@@ -43,6 +45,7 @@ function App() {
       alert(error);
     }
   }, [form]);
+
   return (
     <main className="App">
       <header className="row bg-dark mb-5 py-3">
@@ -50,71 +53,29 @@ function App() {
         <nav className="col-12 col-md-4 text-right">
           <ul className="nav nav-pills m-0 mt-1">
             <li className="nav-item">
-              <span
-                className={`text-light nav-link ${
-                  activeTab === "label" ? "active" : ""
-                }`}
-                aria-current="page"
-                onClick={() => setActiveTab("label")}
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  (isActive ? "active" : "") + " text-light nav-link"
+                }
               >
                 Label Editor
-              </span>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <span
-                onClick={() => setActiveTab("fragrance")}
-                className={`text-light nav-link ${
-                  activeTab === "fragrance" ? "active" : ""
-                }`}
+              <NavLink
+                to="/fragrances"
+                className={({ isActive }) =>
+                  (isActive ? "active" : "") + " text-light nav-link"
+                }
               >
                 Product Editor
-              </span>
+              </NavLink>
             </li>
           </ul>
         </nav>
       </header>
-      {activeTab === "label" ? (
-        <section className="row">
-          <article className="PdfViewer col-12 col-md-6">
-            {form ? (
-              <div>
-                <PDFViewer style={{ height: "500px", width: "100%" }}>
-                  <LabelDisplay
-                    eanBase64={eanCode}
-                    labelCount={1}
-                    orientation="portrait"
-                    size={[190, 190]}
-                    form={form}
-                  />
-                </PDFViewer>
-              </div>
-            ) : (
-              <div className="alert alert-secondary" role="alert">
-                Before viewing the label, you must first select a Fragrance and
-                Product!
-              </div>
-            )}
-            <canvas style={{ display: "none" }} id="eandisplay"></canvas>
-          </article>
-          <aside className="col-12 col-md-6">
-            <LabelForm
-              fragrances={fragrances}
-              propagateFormChange={(value) => {
-                setForm({
-                  ...value,
-                });
-              }}
-            />
-          </aside>
-        </section>
-      ) : (
-        <div className="col-12">
-          <FragranceEditor
-            onFormUpdate={getFragrances}
-            fragrances={fragrances}
-          />
-        </div>
-      )}
+      <Outlet />
     </main>
   );
 }

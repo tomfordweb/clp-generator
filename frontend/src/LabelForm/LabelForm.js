@@ -1,11 +1,12 @@
 import { Formik } from "formik";
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import CheckInput from "../CheckInput/CheckInput";
 import IterableOptions from "../IterableOptions/IterableOptions";
 import LabelAddressForm from "../LabelAddressForm/LabelAddressForm";
 import SelectInput from "../SelectInput/SelectInput";
+import { store } from "../StateProvider";
 import TextAreaInput from "../TextAreaInput/TextAreaInput";
 import TextInput from "../TextInput/TextInput";
 import { fetchFragranceProductList } from "../utility";
@@ -27,7 +28,7 @@ export const DEFAULT_FORM_STATE = {
   mass: "",
   pictograms: [],
   display_product: "Display Product Name",
-  custom_title: "",
+  alternate_title: "",
   custom_text: "Follow us on Instagram @devonwickcandles",
   ean: "5056496100170",
   ufi: "",
@@ -38,6 +39,9 @@ function LabelForm({ fragrances, propagateFormChange }) {
   const [fragrance, setFragrance] = useState(null);
   const [fragranceProducts, setFragranceProducts] = useState([]);
   const [product, setProduct] = useState(null);
+  const globalState = useContext(store);
+
+  const { state, dispatch } = globalState;
 
   const SquareShapeRadioIcon = () => <div className="square-icon"></div>;
   const CircleShapeRadioIcon = () => <div className="circle-icon"></div>;
@@ -54,15 +58,12 @@ function LabelForm({ fragrances, propagateFormChange }) {
    * After selecting a product of a specific fragrance
    * We can fill in the label with many fields
    */
-  const selectProduct = (inputProduct) => {
-    fragrance &&
-      inputProduct &&
-      setProduct(inputProduct) &&
-      updateForm({
-        ...DEFAULT_FORM_STATE,
-        ...productValues(fragrance, inputProduct),
-      });
-  };
+  const selectProduct = (inputProduct) =>
+    dispatch({
+      type: "selectFragranceProductForForm",
+      product: inputProduct,
+      fragrance: fragrance,
+    });
 
   /**
    * The internal state of the form. This contains the default values
@@ -70,7 +71,7 @@ function LabelForm({ fragrances, propagateFormChange }) {
    * Whenever the form is updated we
    * fire a debounced event to propagate the change to the app
    */
-  const [form, updateForm] = useState(DEFAULT_FORM_STATE);
+  // const [form, updateForm] = useState(DEFAULT_FORM_STATE);
 
   useEffect(() => {}, []);
 
@@ -124,9 +125,9 @@ function LabelForm({ fragrances, propagateFormChange }) {
           );
         }}
       />
-      {fragrance && product && (
+      {state.form && state.form.product && (
         <Formik
-          initialValues={form}
+          initialValues={state.form}
           validate={(values) => {
             const errors = {};
             if (!values.ean || values.ean.length < 1) {
@@ -139,20 +140,11 @@ function LabelForm({ fragrances, propagateFormChange }) {
             ) {
               errors.ean = "EAN must be 12 or 13 characters";
             }
-            // if (!values.ufi || values.ufi.length < 1) {
-            //   errors.ufi = "UFI number required!";
-            // }
-            // if (!values.batch || values.batch.length < 1) {
-            //   errors.batch = "Batch number required!";
-            // }
             return errors;
           }}
           onSubmit={(values, { setSubmitting }) => {
-            propagateFormChange({
-              ...form,
-              ...values,
-              ...productValues(fragrance, product),
-            });
+            dispatch({ type: "updateForm", value: values });
+            propagateFormChange(state.form);
             setSubmitting(false);
           }}
         >
@@ -167,10 +159,11 @@ function LabelForm({ fragrances, propagateFormChange }) {
             /* and other goodies */
           }) => (
             <form onSubmit={handleSubmit}>
-              <TextInput
-                name="custom_title"
-                value={values.custom_title}
+              <TextAreaInput
+                name="alternate_title"
+                value={values.alternate_title}
                 handleChange={handleChange}
+                height="50px"
                 label="Custom Fragrance Title"
               />
               <h2>Product Options</h2>
@@ -203,6 +196,14 @@ function LabelForm({ fragrances, propagateFormChange }) {
               />
               <h2>Design Options</h2>
 
+              <TextInput
+                name="fontSize"
+                value={values.fontSize}
+                handleChange={handleChange}
+                error={errors && errors.batch}
+                label="Title Font Size"
+                type="number"
+              />
               <TextAreaInput
                 name="custom_text"
                 value={values.custom_text}
