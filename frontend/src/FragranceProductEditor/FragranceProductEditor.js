@@ -58,6 +58,12 @@ const FragranceProductEditor = ({
                   handleChange={handleChange}
                 />
                 <TextInput
+                  label="Customer Facing Name"
+                  value={values.custom_name}
+                  name="custom_name"
+                  handleChange={handleChange}
+                />
+                <TextInput
                   label="Mass"
                   value={values.mass}
                   name="mass"
