@@ -40,41 +40,44 @@ function LabelEditor() {
   }, [form]);
 
   return (
-    <section className="row">
-      <article className="PdfViewer col-12 col-md-6">
-        {form ? (
-          <div>
-            <PDFViewer style={{ height: "500px", width: "100%" }}>
-              {" "}
-              <LabelDisplay
-                eanBase64={eanCode}
-                labelCount={1}
-                orientation="portrait"
-                size={[190, 190]}
-                form={state.form}
-              />
-            </PDFViewer>
-          </div>
-        ) : (
-          <div className="alert alert-secondary" role="alert">
-            Before viewing the label, you must first select a Fragrance and
-            Product!
-          </div>
-        )}
-        <canvas style={{ display: "none" }} id="eandisplay"></canvas>
-      </article>
-      <aside className="col-12 col-md-6">
-        <LabelForm
-          fragrances={state.fragrances}
-          propagateFormChange={(value) => {
-            setForm({
-              ...value,
-              ...state.form,
-            });
-          }}
-        />
-      </aside>{" "}
-    </section>
+    state &&
+    state.fragrances(
+      <section className="row">
+        <article className="PdfViewer col-12 col-md-6">
+          {form ? (
+            <div>
+              <PDFViewer style={{ height: "500px", width: "100%" }}>
+                {" "}
+                <LabelDisplay
+                  eanBase64={eanCode}
+                  labelCount={1}
+                  orientation="portrait"
+                  size={[190, 190]}
+                  form={state.form}
+                />
+              </PDFViewer>
+            </div>
+          ) : (
+            <div className="alert alert-secondary" role="alert">
+              Before viewing the label, you must first select a Fragrance and
+              Product!
+            </div>
+          )}
+          <canvas style={{ display: "none" }} id="eandisplay"></canvas>
+        </article>
+        <aside className="col-12 col-md-6">
+          <LabelForm
+            fragrances={state.fragrances}
+            propagateFormChange={(value) => {
+              setForm({
+                ...value,
+                ...state.form,
+              });
+            }}
+          />
+        </aside>{" "}
+      </section>
+    )
   );
 }
 
