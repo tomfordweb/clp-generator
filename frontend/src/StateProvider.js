@@ -84,22 +84,11 @@ const StateProvider = ({ children }) => {
           ...state,
           form: { ...state.form, ...action.value },
         };
-        // const productValues = (fragrance, product) => ({
-        //   fragrance: fragrance.name,
-        //   pictograms: product.pictograms,
-        //   product: product.name,
-        //   mass: product.mass || "",
-        //   productText: product.description,
-        // });
-        // updateForm({
-        //   ...globalState.form,
-        //   ...productValues(fragrance, inputProduct),
-        // });
         break;
       default:
         throw new Error(`unhandled action ${action.type}`);
     }
-    console.log(newState);
+    // console.log(newState);
     return newState;
   }, initialState);
 
