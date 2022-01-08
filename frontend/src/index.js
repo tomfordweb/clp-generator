@@ -10,17 +10,22 @@ import reportWebVitals from "./reportWebVitals";
 
 import FragranceEditor from "./FragranceEditor/FragranceEditor";
 import LabelEditor from "./LabelEditor/LabelEditor";
+import { StateProvider } from "./StateProvider";
 
 Modal.setAppElement("#root");
 
 ReactDOM.render(
   <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<App />}>
-        <Route path="" element={<LabelEditor />} />
-        <Route path="backend" element={<FragranceEditor />} />
-      </Route>
-    </Routes>
+    <StateProvider>
+      <Routes>
+        <Route path="/" element={<App />}>
+          <Route path="" element={<LabelEditor />} />
+          <Route path="backend" element={<FragranceEditor />}>
+            <Route path=":fragranceId" element={<LabelEditor />} />
+          </Route>
+        </Route>
+      </Routes>
+    </StateProvider>
   </BrowserRouter>,
   document.getElementById("root")
 );

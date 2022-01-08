@@ -2,26 +2,27 @@ import "./App.scss";
 
 import { PDFViewer } from "@react-pdf/renderer";
 import bwipjs from "bwip-js";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import FragranceEditor from "./FragranceEditor/FragranceEditor";
 import LabelDisplay from "./LabelDisplay/LabelDisplay";
 import LabelForm from "./LabelForm/LabelForm";
 import { fetchProductList } from "./utility";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, NavLink } from "react-router-dom";
+import { store } from "./StateProvider";
 
 function App() {
   const [fragrances, updateFragranceList] = useState([]);
   const [form, setForm] = useState(null);
   const [eanCode, setEanCode] = useState(null);
   const [activeTab, setActiveTab] = useState("label");
+  const globalState = useContext(store);
+  const { dispatch } = globalState;
 
-  const getFragrances = () =>
-    fetchProductList().then(function (myJson) {
-      updateFragranceList(myJson);
-    });
   useEffect(() => {
-    getFragrances();
+    fetchProductList().then(function (myJson) {
+      dispatch({ type: "setFragrances", value: myJson });
+    });
   }, []);
 
   useEffect(() => {
@@ -44,6 +45,7 @@ function App() {
       alert(error);
     }
   }, [form]);
+
   return (
     <main className="App">
       <header className="row bg-dark mb-5 py-3">
@@ -51,26 +53,24 @@ function App() {
         <nav className="col-12 col-md-4 text-right">
           <ul className="nav nav-pills m-0 mt-1">
             <li className="nav-item">
-              <Link
+              <NavLink
                 to="/"
-                className={`text-light nav-link ${
-                  activeTab === "label" ? "active" : ""
-                }`}
-                aria-current="page"
+                className={({ isActive }) =>
+                  (isActive ? "active" : "") + " text-light nav-link"
+                }
               >
                 Label Editor
-              </Link>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <Link
+              <NavLink
                 to="/backend"
-                onClick={() => setActiveTab("fragrance")}
-                className={`text-light nav-link ${
-                  activeTab === "fragrance" ? "active" : ""
-                }`}
+                className={({ isActive }) =>
+                  (isActive ? "active" : "") + " text-light nav-link"
+                }
               >
                 Product Editor
-              </Link>
+              </NavLink>
             </li>
           </ul>
         </nav>

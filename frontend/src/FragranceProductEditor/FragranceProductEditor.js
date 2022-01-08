@@ -1,8 +1,10 @@
 import { Formik } from "formik";
 import PropTypes from "prop-types";
+import { useContext } from "react";
 
 import IterableOptions from "../IterableOptions/IterableOptions";
 import PictogramDisplay from "../PictogramDisplay/PictogramDisplay";
+import { store } from "../StateProvider";
 import TextAreaInput from "../TextAreaInput/TextAreaInput";
 import TextInput from "../TextInput/TextInput";
 
@@ -12,6 +14,8 @@ const FragranceProductEditor = ({
   fragranceId,
   product,
 }) => {
+  const globalState = useContext(store);
+  console.log(globalState);
   return (
     <div data-testid="FragranceProductEditor" className={wrapperClass}>
       <div className="card">

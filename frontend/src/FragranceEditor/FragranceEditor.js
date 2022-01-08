@@ -5,8 +5,9 @@ import FragranceEditForm from "../FragranceEditForm/FragranceEditForm";
 import FragranceProductEditor from "../FragranceProductEditor/FragranceProductEditor";
 import SelectInput from "../SelectInput/SelectInput";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { fetchFragranceProductList } from "../utility";
+import { store } from "../StateProvider";
 
 const customStyles = {
   content: {
@@ -19,6 +20,9 @@ const customStyles = {
   },
 };
 const FragranceEditor = ({ fragrances, onFormUpdate }) => {
+  const globalState = useContext(store);
+  const { state, dispatch } = globalState;
+  console.log(state);
   const [activeFragrance, setActiveFragrance] = useState(null);
   const [activeFragranceProducts, setActiveFragranceProducts] = useState([]);
   const [fragranceModalIsOpen, setFragranceModalIsOpen] = useState(false);
@@ -45,7 +49,7 @@ const FragranceEditor = ({ fragrances, onFormUpdate }) => {
       </header>
       <article className="col-12 col-sm-4 col-md-2">
         <SelectInput
-          options={fragrances.map((fragrance) => ({
+          options={state.fragrances.map((fragrance) => ({
             value: fragrance.id,
             label: fragrance.supplier
               ? `${fragrance.supplier} - ${fragrance.name}`
@@ -54,7 +58,7 @@ const FragranceEditor = ({ fragrances, onFormUpdate }) => {
           }))}
           handleChange={(e) => {
             setActiveFragrance(
-              fragrances.filter(
+              state.fragrances.filter(
                 (f) => parseInt(f.id) === parseInt(e.target.value)
               )[0]
             );

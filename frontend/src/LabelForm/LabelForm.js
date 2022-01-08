@@ -22,7 +22,6 @@ const DEFAULT_BUSINESS_ADDRESS = {
 export const DEFAULT_FORM_STATE = {
   labelStyle: "round",
   showBorder: false,
-  fontSize: 14,
   fragrance: "",
   product: "",
   mass: "",
