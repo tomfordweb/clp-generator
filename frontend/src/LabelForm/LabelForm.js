@@ -22,6 +22,7 @@ const DEFAULT_BUSINESS_ADDRESS = {
 export const DEFAULT_FORM_STATE = {
   labelStyle: "round",
   showBorder: false,
+  fontSize: 14,
   fragrance: "",
   product: "",
   mass: "",
@@ -203,6 +204,14 @@ function LabelForm({ fragrances, propagateFormChange }) {
               />
               <h2>Design Options</h2>
 
+              <TextInput
+                name="fontSize"
+                value={values.fontSize}
+                handleChange={handleChange}
+                error={errors && errors.batch}
+                label="Title Font Size"
+                type="number"
+              />
               <TextAreaInput
                 name="custom_text"
                 value={values.custom_text}

@@ -56,9 +56,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontFamily: "SourceSansPro",
   },
-  title: {
-    fontSize: "14px",
-  },
   batchContainer: {
     textAlign: "center",
     display: "flex",
@@ -104,7 +101,11 @@ const Label = ({ eanCode, form, pictogramContainerSize, pictogramGutter }) => {
           : { ...sharedDynamicContainerStyles, ...styles.container }
       }
     >
-      <Text style={{ ...styles.specialText, ...styles.title }}>{label}</Text>
+      <Text
+        style={{ ...styles.specialText, ...{ fontSize: `${form.fontSize}px` } }}
+      >
+        {label}
+      </Text>
       <View
         style={{
           display: "flex",
