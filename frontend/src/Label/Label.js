@@ -86,7 +86,11 @@ const Label = ({ eanCode, form, pictogramContainerSize, pictogramGutter }) => {
       form.labelStyle === "round" ? (form.showBorder ? "19px" : "20px") : "5px",
   };
 
-  const label = form.custom_title ? form.custom_title : form.fragrance;
+  const label = form.alternate_title
+    ? form.alternate_title
+    : form.custom_title
+    ? form.custom_title
+    : form.fragrance;
 
   return (
     <View

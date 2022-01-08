@@ -72,6 +72,7 @@ const StateProvider = ({ children }) => {
               fragrance: action.fragrance.name,
               pictograms: action.product.pictograms,
               product: action.product.name,
+              custom_title: action.product.custom_name,
               mass: action.product.mass || "",
               productText: action.product.description,
             },

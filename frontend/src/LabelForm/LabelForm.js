@@ -28,7 +28,7 @@ export const DEFAULT_FORM_STATE = {
   mass: "",
   pictograms: [],
   display_product: "Display Product Name",
-  custom_title: "",
+  alternate_title: "",
   custom_text: "Follow us on Instagram @devonwickcandles",
   ean: "5056496100170",
   ufi: "",
@@ -160,8 +160,8 @@ function LabelForm({ fragrances, propagateFormChange }) {
           }) => (
             <form onSubmit={handleSubmit}>
               <TextAreaInput
-                name="custom_title"
-                value={values.custom_title}
+                name="alternate_title"
+                value={values.alternate_title}
                 handleChange={handleChange}
                 height="50px"
                 label="Custom Fragrance Title"
