@@ -89,6 +89,8 @@ const Label = ({ eanCode, form, pictogramContainerSize, pictogramGutter }) => {
       form.labelStyle === "round" ? (form.showBorder ? "19px" : "20px") : "5px",
   };
 
+  const label = form.custom_title ? form.custom_title : form.fragrance;
+
   return (
     <View
       data-testid="Label"
@@ -102,10 +104,7 @@ const Label = ({ eanCode, form, pictogramContainerSize, pictogramGutter }) => {
           : { ...sharedDynamicContainerStyles, ...styles.container }
       }
     >
-      <Text style={styles.customTitle}>{form.custom_title}</Text>
-      <Text style={{ ...styles.specialText, ...styles.title }}>
-        {form.fragrance}
-      </Text>
+      <Text style={{ ...styles.specialText, ...styles.title }}>{label}</Text>
       <View
         style={{
           display: "flex",

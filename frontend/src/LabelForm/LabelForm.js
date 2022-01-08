@@ -27,7 +27,7 @@ export const DEFAULT_FORM_STATE = {
   mass: "",
   pictograms: [],
   display_product: "Display Product Name",
-  custom_title: "DEVONWICK",
+  custom_title: "",
   custom_text: "Follow us on Instagram @devonwickcandles",
   ean: "5056496100170",
   ufi: "",
@@ -139,12 +139,12 @@ function LabelForm({ fragrances, propagateFormChange }) {
             ) {
               errors.ean = "EAN must be 12 or 13 characters";
             }
-            if (!values.ufi || values.ufi.length < 1) {
-              errors.ufi = "UFI number required!";
-            }
-            if (!values.batch || values.batch.length < 1) {
-              errors.batch = "Batch number required!";
-            }
+            // if (!values.ufi || values.ufi.length < 1) {
+            //   errors.ufi = "UFI number required!";
+            // }
+            // if (!values.batch || values.batch.length < 1) {
+            //   errors.batch = "Batch number required!";
+            // }
             return errors;
           }}
           onSubmit={(values, { setSubmitting }) => {
@@ -167,6 +167,12 @@ function LabelForm({ fragrances, propagateFormChange }) {
             /* and other goodies */
           }) => (
             <form onSubmit={handleSubmit}>
+              <TextInput
+                name="custom_title"
+                value={values.custom_title}
+                handleChange={handleChange}
+                label="Custom Fragrance Title"
+              />
               <h2>Product Options</h2>
               <div className="row">
                 <div className="col-6">
@@ -197,12 +203,6 @@ function LabelForm({ fragrances, propagateFormChange }) {
               />
               <h2>Design Options</h2>
 
-              <TextInput
-                name="custom_title"
-                value={values.custom_title}
-                handleChange={handleChange}
-                label="Custom Title"
-              />
               <TextAreaInput
                 name="custom_text"
                 value={values.custom_text}
