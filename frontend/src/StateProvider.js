@@ -9,13 +9,15 @@ const DEFAULT_BUSINESS_ADDRESS = {
   business_telephone: "(123) 456-7890",
 };
 
+const DEFAULT_PRODUCT_VALUES = {
+  fragrance: "",
+  pictograms: [],
+  product: "",
+  mass: "",
+};
 const initialState = {
   fragrances: [],
   form: {
-    fragrance: "",
-    pictograms: "",
-    product: "",
-    mass: "",
     productText: "",
     labelStyle: "round",
     showBorder: false,
@@ -30,6 +32,7 @@ const initialState = {
     ean: "5056496100170",
     ufi: "",
     batch: "",
+    ...DEFAULT_PRODUCT_VALUES,
     ...DEFAULT_BUSINESS_ADDRESS,
   },
 };
@@ -60,7 +63,26 @@ const StateProvider = ({ children }) => {
           fragrances: [...state.fragrances, action.value],
         };
         break;
-      case "setFormProduct":
+      case "selectFragranceProductForForm":
+        newState = {
+          ...state,
+          form: {
+            ...state.form,
+            ...{
+              fragrance: action.fragrance.name,
+              pictograms: action.product.pictograms,
+              product: action.product.name,
+              mass: action.product.mass || "",
+              productText: action.product.description,
+            },
+          },
+        };
+        break;
+      case "updateForm":
+        newState = {
+          ...state,
+          form: { ...state.form, ...action.value },
+        };
         // const productValues = (fragrance, product) => ({
         //   fragrance: fragrance.name,
         //   pictograms: product.pictograms,
@@ -74,7 +96,7 @@ const StateProvider = ({ children }) => {
         // });
         break;
       default:
-        throw new Error();
+        throw new Error(`unhandled action ${action.type}`);
     }
     console.log(newState);
     return newState;
