@@ -32,7 +32,7 @@ Font.register({
 
 const styles = StyleSheet.create({
   bottomMargin: {
-    marginBottom: "5px",
+    marginBottom: "10px",
   },
   roundContainer: {
     borderRadius: "50%",
@@ -106,7 +106,11 @@ const Label = ({ eanCode, form, pictogramContainerSize, pictogramGutter }) => {
       }
     >
       <Text
-        style={{ ...styles.specialText, ...{ fontSize: `${form.fontSize}px` } }}
+        style={{
+          ...styles.specialText,
+          ...{ fontSize: `${form.fontSize}px` },
+          ...styles.bottomMargin,
+        }}
       >
         {label}
       </Text>
@@ -114,8 +118,7 @@ const Label = ({ eanCode, form, pictogramContainerSize, pictogramGutter }) => {
         style={{
           display: "flex",
           justifyContent: "center",
-          alignItems: "center",
-          overflow: "hidden",
+          alignItems: "flex-start",
           marginBottom: styles.bottomMargin.marginBottom,
         }}
       >
@@ -128,16 +131,16 @@ const Label = ({ eanCode, form, pictogramContainerSize, pictogramGutter }) => {
           )}
           <PictogramDisplay
             containerStyles={{
-              marginLeft: "5px",
-              marginTop: "5px",
               position: "relative",
-              overflow: "hidden",
+              display: "block",
               width: `${pictogramContainerSize}px`,
-              height: `${pictogramContainerSize}px`,
+              // height: `${pictogramContainerSize + pictogramGutter / 5}px`,
+              height: "75px",
             }}
             imageStyles={[
               {
-                left: "0",
+                left: "1%",
+                top: "38%",
                 height: `${pictogramContainerSize / 2 - pictogramGutter}px`,
                 width: `${pictogramContainerSize / 2 - pictogramGutter}px`,
                 position: "absolute",
@@ -145,14 +148,15 @@ const Label = ({ eanCode, form, pictogramContainerSize, pictogramGutter }) => {
               {
                 height: `${pictogramContainerSize / 2 - pictogramGutter}px`,
                 width: `${pictogramContainerSize / 2 - pictogramGutter}px`,
-                top: "29%",
-                left: "27%",
+                top: `10%`,
+                left: "25.8%",
                 position: "absolute",
               },
               {
                 height: `${pictogramContainerSize / 2 - pictogramGutter}px`,
                 width: `${pictogramContainerSize / 2 - pictogramGutter}px`,
                 right: "0",
+                top: "38%",
                 position: "absolute",
               },
             ]}
@@ -160,22 +164,6 @@ const Label = ({ eanCode, form, pictogramContainerSize, pictogramGutter }) => {
             images={form.pictograms}
           />
         </View>
-      </View>
-      <View style={{ ...styles.batchContainer, ...styles.bottomMargin }}>
-        <Text style={{ ...styles.specialText, ...styles.batchItemSpacing }}>
-          {form.batch ? `BN: ${form.batch}` : " "}
-        </Text>
-        <Text
-          style={{
-            ...styles.batchItemSpacing,
-            ...styles.specialText,
-          }}
-        >
-          {form.ufi ? `UFI: ${form.ufi}` : " "}
-        </Text>
-        <Text style={{ ...styles.specialText, ...styles.batchItemSpacing }}>
-          {form.mass || " "}
-        </Text>
       </View>
       <Text style={{ ...styles.tinyText, ...styles.bottomMargin }}>
         {form.productText}
@@ -192,9 +180,31 @@ const Label = ({ eanCode, form, pictogramContainerSize, pictogramGutter }) => {
         <Text>{form.business_address_2}</Text>
         <Text>{form.business_telephone}</Text>
       </View>
-      <Text style={{ ...styles.specialText, ...{ fontSize: "5px" } }}>
+      <Text
+        style={{
+          ...styles.bottomMargin,
+          ...styles.specialText,
+          ...{ fontSize: "5px" },
+        }}
+      >
         {form.custom_text}
       </Text>
+      <View style={{ ...styles.batchContainer }}>
+        <Text style={{ ...styles.specialText, ...styles.batchItemSpacing }}>
+          {form.batch ? `BN: ${form.batch}` : " "}
+        </Text>
+        <Text
+          style={{
+            ...styles.batchItemSpacing,
+            ...styles.specialText,
+          }}
+        >
+          {form.ufi ? `UFI: ${form.ufi}` : " "}
+        </Text>
+        <Text style={{ ...styles.specialText, ...styles.batchItemSpacing }}>
+          {form.mass || " "}
+        </Text>
+      </View>
     </View>
   );
 };
