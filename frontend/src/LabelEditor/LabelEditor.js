@@ -41,7 +41,7 @@ function LabelEditor() {
 
   return (
     state &&
-    state.fragrances(
+    state.fragrances && (
       <section className="row">
         <article className="PdfViewer col-12 col-md-6">
           {form ? (
