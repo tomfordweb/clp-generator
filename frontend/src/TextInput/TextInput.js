@@ -25,7 +25,7 @@ TextInput.propTypes = {
   error: PropTypes.string,
   name: PropTypes.string,
   label: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   handleChange: PropTypes.func,
   type: PropTypes.oneOf(["text", "number"]),
 };

@@ -127,7 +127,6 @@ function LabelForm({ fragrances, propagateFormChange }) {
       />
       {state.form && state.form.product && (
         <Formik
-          enableReinitialize={true}
           initialValues={state.form}
           validate={(values) => {
             const errors = {};
@@ -160,10 +159,11 @@ function LabelForm({ fragrances, propagateFormChange }) {
             /* and other goodies */
           }) => (
             <form onSubmit={handleSubmit}>
-              <TextInput
+              <TextAreaInput
                 name="custom_title"
                 value={values.custom_title}
                 handleChange={handleChange}
+                height="50px"
                 label="Custom Fragrance Title"
               />
               <h2>Product Options</h2>

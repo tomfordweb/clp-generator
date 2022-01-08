@@ -18,9 +18,10 @@ function LabelEditor() {
 
   useEffect(() => {
     try {
-      let canvas =
-        form &&
-        form.ean &&
+      const canvas =
+        state &&
+        state.form &&
+        state.form.ean &&
         bwipjs.toCanvas("eandisplay", {
           bcid: "ean13", // Barcode type
           text: form.ean,
@@ -29,25 +30,28 @@ function LabelEditor() {
           includetext: true, // Show human-readable text
           textxalign: "center", // Always good to set this
         });
+
       if (canvas) {
         setEanCode(canvas.toDataURL("image/png"));
       }
     } catch (error) {
-      alert(error);
+      // alert(error);
     }
   }, [form]);
+
   return (
     <section className="row">
       <article className="PdfViewer col-12 col-md-6">
         {form ? (
           <div>
             <PDFViewer style={{ height: "500px", width: "100%" }}>
+              {" "}
               <LabelDisplay
                 eanBase64={eanCode}
                 labelCount={1}
                 orientation="portrait"
                 size={[190, 190]}
-                form={form}
+                form={state.form}
               />
             </PDFViewer>
           </div>
@@ -65,10 +69,11 @@ function LabelEditor() {
           propagateFormChange={(value) => {
             setForm({
               ...value,
+              ...state.form,
             });
           }}
         />
-      </aside>
+      </aside>{" "}
     </section>
   );
 }
