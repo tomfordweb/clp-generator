@@ -1,9 +1,48 @@
 import { Formik } from "formik";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import Modal from "react-modal";
 
-const FragranceEditForm = ({ fragrance, onFormUpdate }) => {
+import FragranceProductEditor from "../FragranceProductEditor/FragranceProductEditor";
+import { store } from "../StateProvider";
+import {
+  createFragrance,
+  fetchFragranceProductList,
+  updateFragrance,
+} from "../utility";
+import { modalStyles } from "../FragranceEditor/FragranceEditor";
+
+const FragranceEditForm = () => {
+  const params = useParams();
+  const navigate = useNavigate();
+  const globalState = useContext(store);
+  const { state, dispatch } = globalState;
+  const [activeFragranceProducts, setActiveFragranceProducts] = useState([]);
+  const [productModalIsOpen, setProductModalIsOpen] = useState(false);
+
+  const fragrance = (state &&
+    state.fragrances &&
+    params.fragranceId &&
+    state.fragrances.filter(
+      (fragrance) => parseInt(fragrance.id) === parseInt(params.fragranceId)
+    )[0]) || { name: "", supplier: "", supplier_code: "" };
+
+  const updateProductList = useCallback(
+    () =>
+      fetchFragranceProductList(fragrance.id).then((data) => {
+        setActiveFragranceProducts(data);
+      }),
+    [fragrance]
+  );
+
+  useEffect(() => {
+    fragrance && fragrance.id && updateProductList(fragrance.id);
+  }, [updateProductList, fragrance]);
+
   return (
     <div className="row" data-testid="FragranceEditForm">
       <Formik
+        enableReinitialize={true}
         initialValues={fragrance}
         validate={(values) => {
           const errors = {};
@@ -13,15 +52,18 @@ const FragranceEditForm = ({ fragrance, onFormUpdate }) => {
           return errors;
         }}
         onSubmit={(values, { setSubmitting }) => {
-          const url = values.id
-            ? `/api/v1/fragrances/${values.id}`
-            : "/api/v1/fragrances";
-          const method = values.id ? "PUT" : "POST";
-          fetch(url, {
-            method: method,
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(values),
-          }).then((response) => setSubmitting(false), onFormUpdate());
+          const response = values.id
+            ? updateFragrance(values.id, values)
+            : createFragrance(values);
+
+          const action = values.id ? "updateFragrance" : "appendFragrance";
+          response.then((data) => {
+            dispatch({ type: action, value: data });
+            setSubmitting(false);
+            if (action === "appendFragrance") {
+              navigate(`/fragrances/${data.id}`);
+            }
+          });
         }}
       >
         {({
@@ -85,6 +127,53 @@ const FragranceEditForm = ({ fragrance, onFormUpdate }) => {
           </form>
         )}
       </Formik>
+      <h4>Product List</h4>
+      <div className="row">
+        {fragrance &&
+          activeFragranceProducts &&
+          activeFragranceProducts.map((product, index) => (
+            <FragranceProductEditor
+              wrapperClass="col-12 col-md-6 mb-3"
+              onFormUpdate={(e) => {
+                updateProductList(fragrance.id);
+              }}
+              fragranceId={fragrance.id}
+              product={product}
+              key={index}
+            />
+          ))}
+        {fragrance && (
+          <div>
+            <button
+              onClick={() => setProductModalIsOpen(true)}
+              type="button"
+              className="btn btn-success"
+            >
+              Add product
+            </button>
+            <Modal
+              isOpen={productModalIsOpen}
+              onRequestClose={() => setProductModalIsOpen(false)}
+              style={modalStyles}
+              contentLabel="Example Modal"
+            >
+              <FragranceProductEditor
+                onFormUpdate={(e) => {
+                  updateProductList(fragrance.id);
+                  setProductModalIsOpen(false);
+                }}
+                fragranceId={fragrance.id}
+                product={{
+                  name: "",
+                  description: "",
+                  pictograms: [],
+                  mass: "",
+                }}
+              />
+            </Modal>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

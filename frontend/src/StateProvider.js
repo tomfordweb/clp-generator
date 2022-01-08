@@ -44,6 +44,22 @@ const StateProvider = ({ children }) => {
       case "setFragrances":
         newState = { ...state, fragrances: action.value };
         break;
+      case "appendFragrance":
+        newState = {
+          ...state,
+          fragrances: state.fragrances.map((fragrance) =>
+            parseInt(fragrance.id) === parseInt(action.value.id)
+              ? action.value
+              : fragrance
+          ),
+        };
+        break;
+      case "updateFragrance":
+        newState = {
+          ...state,
+          fragrances: [...state.fragrances, action.value],
+        };
+        break;
       case "setFormProduct":
         // const productValues = (fragrance, product) => ({
         //   fragrance: fragrance.name,

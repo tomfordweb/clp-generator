@@ -64,7 +64,7 @@ function App() {
             </li>
             <li className="nav-item">
               <NavLink
-                to="/backend"
+                to="/fragrances"
                 className={({ isActive }) =>
                   (isActive ? "active" : "") + " text-light nav-link"
                 }

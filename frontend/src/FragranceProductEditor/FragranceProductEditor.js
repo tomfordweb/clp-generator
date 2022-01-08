@@ -8,6 +8,8 @@ import { store } from "../StateProvider";
 import TextAreaInput from "../TextAreaInput/TextAreaInput";
 import TextInput from "../TextInput/TextInput";
 
+import { useParams } from "react-router-dom";
+
 const FragranceProductEditor = ({
   wrapperClass,
   onFormUpdate,
@@ -15,7 +17,7 @@ const FragranceProductEditor = ({
   product,
 }) => {
   const globalState = useContext(store);
-  console.log(globalState);
+
   return (
     <div data-testid="FragranceProductEditor" className={wrapperClass}>
       <div className="card">
@@ -46,7 +48,6 @@ const FragranceProductEditor = ({
             handleBlur,
             handleSubmit,
             isSubmitting,
-            /* and other goodies */
           }) => (
             <form onSubmit={handleSubmit}>
               <div className="card-body">
