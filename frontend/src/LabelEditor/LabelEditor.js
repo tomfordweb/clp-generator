@@ -1,26 +1,20 @@
 import { PDFViewer } from "@react-pdf/renderer";
 import bwipjs from "bwip-js";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
-import FragranceEditor from "../FragranceEditor/FragranceEditor";
 import LabelDisplay from "../LabelDisplay/LabelDisplay";
 import LabelForm from "../LabelForm/LabelForm";
-import { fetchProductList } from "../utility";
-import { Link } from "react-router-dom";
+import { store } from "../StateProvider";
 
 function LabelEditor() {
-  const [fragrances, updateFragranceList] = useState([]);
+  // stored in a variable so it does not update realtime
   const [form, setForm] = useState(null);
-  const [eanCode, setEanCode] = useState(null);
-  const [activeTab, setActiveTab] = useState("label");
 
-  const getFragrances = () =>
-    fetchProductList().then(function (myJson) {
-      updateFragranceList(myJson);
-    });
-  useEffect(() => {
-    getFragrances();
-  }, []);
+  // a base64 string of the EAN barcode
+  const [eanCode, setEanCode] = useState(null);
+
+  const globalState = useContext(store);
+  const { state, dispatch } = globalState;
 
   useEffect(() => {
     try {
@@ -67,7 +61,7 @@ function LabelEditor() {
       </article>
       <aside className="col-12 col-md-6">
         <LabelForm
-          fragrances={fragrances}
+          fragrances={state.fragrances}
           propagateFormChange={(value) => {
             setForm({
               ...value,
