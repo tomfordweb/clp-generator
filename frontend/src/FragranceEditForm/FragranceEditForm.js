@@ -38,7 +38,6 @@ const FragranceEditForm = () => {
   );
 
   const handleDelete = (fragranceId) => {
-    console.log("deleting", fragranceId);
     deleteFragrance(fragranceId).then(() => {
       dispatch({ type: "deleteFragrance", value: fragranceId });
       navigate("/fragrances");

@@ -48,8 +48,6 @@ const StateProvider = ({ children }) => {
     let newState = state;
     switch (action.type) {
       case "deleteFragrance":
-        console.log(state.fragrances);
-        console.log(action.value);
         newState = {
           ...state,
           fragrances: state.fragrances.filter(
@@ -97,7 +95,7 @@ const StateProvider = ({ children }) => {
       default:
         throw new Error(`unhandled action ${action.type}`);
     }
-    console.log(newState);
+    // console.log(newState);
     return newState;
   }, initialState);
 
