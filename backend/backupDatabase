@@ -1,10 +1,9 @@
 #!/bin/bash
 
 
-RECIPIENTS="me+infrastructure@tomfordweb.net"
 DATABASE=$1
 
-zip /tmp/database_backup.zip $DATABASE
+zip database_backup.zip $DATABASE
 
 echo "
 Backup Date:
@@ -12,10 +11,11 @@ $(date)
 
 Size:
 $(du -h $DATABASE)
-" > /tmp/clp_backup_message
+" > clp_backup_message
 
-for recipient in $recipients; do
-  mpack -s "Devonwick CLP Database Backup" -d /tmp/clp_backup_message /tmp/database_backup.zip $recipient
-done;
+mpack -s "Devonwick CLP Database Backup" -d clp_backup_message database_backup.zip me+backups@tomfordweb.net
+
+rm database_backup.zip
+rm clp_backup_message
 
 
