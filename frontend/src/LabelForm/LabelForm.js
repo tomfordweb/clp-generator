@@ -205,18 +205,20 @@ function LabelForm({ fragrances, propagateFormChange }) {
                 label="Custom Text"
                 height="50px"
               />
-              <h2>Address Information</h2>
-              <button
-                className="btn btn-danger"
-                onClick={() => {
-                  setFieldValue("business_name", " ");
-                  setFieldValue("business_address_1", " ");
-                  setFieldValue("business_address_2", " ");
-                  setFieldValue("business_telephone", " ");
-                }}
-              >
-                Clear Address Fields
-              </button>
+              <div className="d-flex justify-content-between">
+                <h2>Address Information</h2>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => {
+                    setFieldValue("business_name", " ");
+                    setFieldValue("business_address_1", " ");
+                    setFieldValue("business_address_2", " ");
+                    setFieldValue("business_telephone", " ");
+                  }}
+                >
+                  Clear Address Fields
+                </button>
+              </div>
               <TextInput
                 name="business_name"
                 value={values.business_name}
