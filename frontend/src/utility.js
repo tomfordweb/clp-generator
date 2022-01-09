@@ -3,7 +3,7 @@ export const convertObjectNullValuesToStr = (object) => {
 
   for (const key in object) {
     if (object.hasOwnProperty(key)) {
-      ret[key] = object[key] === null ? "" : object[key];
+      ret[key] = object[key] ?? "";
     }
   }
   return ret;

@@ -199,14 +199,6 @@ function LabelForm({ fragrances, propagateFormChange }) {
               />
               <h2>Design Options</h2>
 
-              <TextInput
-                name="fontSize"
-                value={values.fontSize}
-                handleChange={handleChange}
-                error={errors && errors.batch}
-                label="Title Font Size"
-                type="number"
-              />
               <TextAreaInput
                 name="custom_text"
                 value={values.custom_text}
@@ -215,36 +207,75 @@ function LabelForm({ fragrances, propagateFormChange }) {
                 height="50px"
               />
               <LabelAddressForm form={values} handleChange={handleChange} />
-              <IterableOptions
-                title="Label Style"
-                options={[
-                  {
-                    name: "labelStyle",
-                    value: "square",
-                    handleChange: handleChange,
-                    type: "radio",
-                    checked: values.labelStyle === "square",
-                    icon: <SquareShapeRadioIcon />,
-                    label: "Square",
-                  },
-                  {
-                    name: "labelStyle",
-                    value: "round",
-                    handleChange: handleChange,
-                    checked: values.labelStyle === "round",
-                    type: "radio",
-                    icon: <CircleShapeRadioIcon />,
-                    label: "Circle",
-                  },
-                ]}
-              />
-              <CheckInput
-                name="showBorder"
-                value={values.showBorder}
-                checked={values.showBorder}
-                handleChange={handleChange}
-                label="Show Trim lines"
-              />
+              <div className="row">
+                <div className="col-12 col-sm-6">
+                  <IterableOptions
+                    title="Label Style"
+                    options={[
+                      {
+                        name: "labelStyle",
+                        value: "square",
+                        handleChange: handleChange,
+                        type: "radio",
+                        checked: values.labelStyle === "square",
+                        icon: <SquareShapeRadioIcon />,
+                        label: "Square",
+                      },
+                      {
+                        name: "labelStyle",
+                        value: "round",
+                        handleChange: handleChange,
+                        checked: values.labelStyle === "round",
+                        type: "radio",
+                        icon: <CircleShapeRadioIcon />,
+                        label: "Circle",
+                      },
+                    ]}
+                  />
+
+                  <CheckInput
+                    name="showBorder"
+                    value={values.showBorder}
+                    checked={values.showBorder}
+                    handleChange={handleChange}
+                    label="Show Trim lines"
+                  />
+                </div>
+                <div className="col-12 col-sm-6">
+                  <TextInput
+                    name="titleFontSize"
+                    value={values.titleFontSize}
+                    handleChange={handleChange}
+                    error={errors && errors.batch}
+                    label="Title Font Size"
+                    type="number"
+                  />
+                  <TextInput
+                    name="titlePaddingTop"
+                    value={values.titlePaddingTop}
+                    handleChange={handleChange}
+                    error={errors && errors.batch}
+                    label="Title Top Padding"
+                    type="number"
+                  />
+                  <TextInput
+                    name="warningTextFontSize"
+                    value={values.warningTextFontSize}
+                    handleChange={handleChange}
+                    error={errors && errors.batch}
+                    label="Product Warning Text Font Size"
+                    type="number"
+                  />
+                  <TextInput
+                    name="textFontSize"
+                    value={values.textFontSize}
+                    handleChange={handleChange}
+                    error={errors && errors.batch}
+                    label="Regular text font size"
+                    type="number"
+                  />
+                </div>
+              </div>
               <div className="mt-3">
                 <button
                   className="btn btn-primary"
