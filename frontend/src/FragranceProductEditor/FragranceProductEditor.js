@@ -9,6 +9,7 @@ import TextAreaInput from "../TextAreaInput/TextAreaInput";
 import TextInput from "../TextInput/TextInput";
 
 import { useParams } from "react-router-dom";
+import { convertObjectNullValuesToStr } from "../utility";
 
 const FragranceProductEditor = ({
   wrapperClass,
@@ -22,12 +23,14 @@ const FragranceProductEditor = ({
     <div data-testid="FragranceProductEditor" className={wrapperClass}>
       <div className="card">
         <Formik
-          initialValues={product}
+          enableReinitialize={true}
+          initialValues={convertObjectNullValuesToStr(product)}
           validate={(values) => {
             let errors = [];
             return errors;
           }}
           onSubmit={(values, { setSubmitting }) => {
+            console.log(values);
             const url = values.id
               ? `/api/v1/fragrances/${fragranceId}/products/${values.id}`
               : `/api/v1/fragrances/${fragranceId}/products`;

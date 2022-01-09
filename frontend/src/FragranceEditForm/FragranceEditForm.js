@@ -6,6 +6,7 @@ import Modal from "react-modal";
 import FragranceProductEditor from "../FragranceProductEditor/FragranceProductEditor";
 import { store } from "../StateProvider";
 import {
+  convertObjectNullValuesToStr,
   createFragrance,
   fetchFragranceProductList,
   updateFragrance,
@@ -43,7 +44,7 @@ const FragranceEditForm = () => {
     <div className="row" data-testid="FragranceEditForm">
       <Formik
         enableReinitialize={true}
-        initialValues={fragrance}
+        initialValues={convertObjectNullValuesToStr(fragrance)}
         validate={(values) => {
           const errors = {};
           if (!values.name) {

@@ -9,7 +9,10 @@ import SelectInput from "../SelectInput/SelectInput";
 import { store } from "../StateProvider";
 import TextAreaInput from "../TextAreaInput/TextAreaInput";
 import TextInput from "../TextInput/TextInput";
-import { fetchFragranceProductList } from "../utility";
+import {
+  convertObjectNullValuesToStr,
+  fetchFragranceProductList,
+} from "../utility";
 
 /**
  * TODO: move to the environment or something
@@ -127,7 +130,7 @@ function LabelForm({ fragrances, propagateFormChange }) {
       />
       {state.form && state.form.product && (
         <Formik
-          initialValues={state.form}
+          initialValues={convertObjectNullValuesToStr(state.form)}
           validate={(values) => {
             const errors = {};
             if (!values.ean || values.ean.length < 1) {

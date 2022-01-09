@@ -1,3 +1,14 @@
+export const convertObjectNullValuesToStr = (object) => {
+  const ret = {};
+
+  for (const key in object) {
+    if (object.hasOwnProperty(key)) {
+      ret[key] = object[key] === null ? "" : object[key];
+    }
+  }
+  return ret;
+};
+
 export const fetchProductList = () =>
   fetch("/api/v1/fragrances", {
     headers: {
