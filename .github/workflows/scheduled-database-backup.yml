@@ -1,7 +1,7 @@
 name: Scheduled database backup
 on:
   schedule:
-    - cron: "0 * * * *"
+    - cron: "17 8 */7 * *"
 
 jobs:
   backup-primary-db:
