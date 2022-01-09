@@ -35,21 +35,21 @@ const styles = StyleSheet.create({
     marginBottom: "10px",
   },
   roundContainer: {
+    textAlign: "center",
     borderRadius: "50%",
     height: "100%",
     width: "100%",
   },
   container: {
-    fontSize: "5px",
     width: "100%",
     height: "100%",
     display: "flex",
     alignItems: "center",
+    justifyContent: "flex-start",
     overflow: "hidden",
   },
   customTitle: {
     fontWeight: 100,
-    fontSize: "16px",
     fontFamily: "SourceSansPro",
   },
   specialText: {
@@ -72,9 +72,6 @@ const styles = StyleSheet.create({
     padding: 10,
     flexGrow: 1,
   },
-  tinyText: {
-    fontSize: "3px",
-  },
 });
 const Label = ({ eanCode, form, pictogramContainerSize, pictogramGutter }) => {
   const sharedDynamicContainerStyles = {
@@ -82,8 +79,9 @@ const Label = ({ eanCode, form, pictogramContainerSize, pictogramGutter }) => {
     // there is no "box sizing: border-box" here so
     // we need to subtract the width of the border from
     // padding to make sure item alignment doesn't change...welcome to my hell
-    padding:
-      form.labelStyle === "round" ? (form.showBorder ? "19px" : "20px") : "5px",
+    padding: "10px",
+    // padding:
+    //   form.labelStyle === "round" ? (form.showBorder ? "14px" : "15px") : "5px",
   };
 
   const label = form.alternate_title
@@ -108,8 +106,9 @@ const Label = ({ eanCode, form, pictogramContainerSize, pictogramGutter }) => {
       <Text
         style={{
           ...styles.specialText,
-          ...{ fontSize: `${form.fontSize}px` },
           ...styles.bottomMargin,
+          fontSize: `${form.titleFontSize}px`,
+          paddingTop: `${form.titlePaddingTop}px`,
         }}
       >
         {label}
@@ -148,7 +147,7 @@ const Label = ({ eanCode, form, pictogramContainerSize, pictogramGutter }) => {
               {
                 height: `${pictogramContainerSize / 2 - pictogramGutter}px`,
                 width: `${pictogramContainerSize / 2 - pictogramGutter}px`,
-                top: `10%`,
+                top: `11%`,
                 left: "25.8%",
                 position: "absolute",
               },
@@ -165,14 +164,20 @@ const Label = ({ eanCode, form, pictogramContainerSize, pictogramGutter }) => {
           />
         </View>
       </View>
-      <Text style={{ ...styles.tinyText, ...styles.bottomMargin }}>
+      <Text
+        style={{
+          ...styles.bottomMargin,
+          fontSize: `${form.warningTextFontSize}px`,
+        }}
+      >
         {form.productText}
       </Text>
       <View
         style={{
-          ...styles.tinyText,
           ...styles.bottomMargin,
-          ...{ display: "flex", alignItems: "center" },
+          display: "flex",
+          alignItems: "center",
+          fontSize: `${form.textFontSize}px`,
         }}
       >
         <Text>{form.business_name}</Text>
@@ -184,12 +189,12 @@ const Label = ({ eanCode, form, pictogramContainerSize, pictogramGutter }) => {
         style={{
           ...styles.bottomMargin,
           ...styles.specialText,
-          ...{ fontSize: "5px" },
+          fontSize: `${form.textFontSize}px`,
         }}
       >
         {form.custom_text}
       </Text>
-      <View style={{ ...styles.batchContainer }}>
+      <View style={{ ...styles.batchContainer, alignSelf: "flex-end" }}>
         <Text style={{ ...styles.specialText, ...styles.batchItemSpacing }}>
           {form.batch ? `BN: ${form.batch}` : " "}
         </Text>
@@ -201,7 +206,13 @@ const Label = ({ eanCode, form, pictogramContainerSize, pictogramGutter }) => {
         >
           {form.ufi ? `UFI: ${form.ufi}` : " "}
         </Text>
-        <Text style={{ ...styles.specialText, ...styles.batchItemSpacing }}>
+        <Text
+          style={{
+            ...styles.specialText,
+            ...styles.batchItemSpacing,
+            alignSelf: "flex-end",
+          }}
+        >
           {form.mass || " "}
         </Text>
       </View>

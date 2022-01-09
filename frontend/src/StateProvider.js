@@ -21,7 +21,10 @@ const initialState = {
     productText: "",
     labelStyle: "round",
     showBorder: false,
-    fontSize: 14,
+    titleFontSize: 14,
+    textFontSize: 3,
+    warningTextFontSize: 3,
+    titlePaddingTop: 0,
     fragrance: "",
     product: "",
     mass: "",
@@ -44,17 +47,21 @@ const StateProvider = ({ children }) => {
   const [state, dispatch] = useReducer((state, action) => {
     let newState = state;
     switch (action.type) {
+      case "deleteFragrance":
+        newState = {
+          ...state,
+          fragrances: state.fragrances.filter(
+            (fragrance) => parseInt(fragrance.id) !== parseInt(action.value)
+          ),
+        };
+        break;
       case "setFragrances":
         newState = { ...state, fragrances: action.value };
         break;
       case "appendFragrance":
         newState = {
           ...state,
-          fragrances: state.fragrances.map((fragrance) =>
-            parseInt(fragrance.id) === parseInt(action.value.id)
-              ? action.value
-              : fragrance
-          ),
+          fragrances: [...state.fragrances, action.value],
         };
         break;
       case "updateFragrance":

@@ -4,12 +4,14 @@ import { useContext, useEffect, useState } from "react";
 
 import CheckInput from "../CheckInput/CheckInput";
 import IterableOptions from "../IterableOptions/IterableOptions";
-import LabelAddressForm from "../LabelAddressForm/LabelAddressForm";
 import SelectInput from "../SelectInput/SelectInput";
 import { store } from "../StateProvider";
 import TextAreaInput from "../TextAreaInput/TextAreaInput";
 import TextInput from "../TextInput/TextInput";
-import { fetchFragranceProductList } from "../utility";
+import {
+  convertObjectNullValuesToStr,
+  fetchFragranceProductList,
+} from "../utility";
 
 /**
  * TODO: move to the environment or something
@@ -127,7 +129,7 @@ function LabelForm({ fragrances, propagateFormChange }) {
       />
       {state.form && state.form.product && (
         <Formik
-          initialValues={state.form}
+          initialValues={convertObjectNullValuesToStr(state.form)}
           validate={(values) => {
             const errors = {};
             if (!values.ean || values.ean.length < 1) {
@@ -155,8 +157,8 @@ function LabelForm({ fragrances, propagateFormChange }) {
             handleChange,
             handleBlur,
             handleSubmit,
+            setFieldValue,
             isSubmitting,
-            /* and other goodies */
           }) => (
             <form onSubmit={handleSubmit}>
               <TextAreaInput
@@ -196,14 +198,6 @@ function LabelForm({ fragrances, propagateFormChange }) {
               />
               <h2>Design Options</h2>
 
-              <TextInput
-                name="fontSize"
-                value={values.fontSize}
-                handleChange={handleChange}
-                error={errors && errors.batch}
-                label="Title Font Size"
-                type="number"
-              />
               <TextAreaInput
                 name="custom_text"
                 value={values.custom_text}
@@ -211,37 +205,114 @@ function LabelForm({ fragrances, propagateFormChange }) {
                 label="Custom Text"
                 height="50px"
               />
-              <LabelAddressForm form={values} handleChange={handleChange} />
-              <IterableOptions
-                title="Label Style"
-                options={[
-                  {
-                    name: "labelStyle",
-                    value: "square",
-                    handleChange: handleChange,
-                    type: "radio",
-                    checked: values.labelStyle === "square",
-                    icon: <SquareShapeRadioIcon />,
-                    label: "Square",
-                  },
-                  {
-                    name: "labelStyle",
-                    value: "round",
-                    handleChange: handleChange,
-                    checked: values.labelStyle === "round",
-                    type: "radio",
-                    icon: <CircleShapeRadioIcon />,
-                    label: "Circle",
-                  },
-                ]}
-              />
-              <CheckInput
-                name="showBorder"
-                value={values.showBorder}
-                checked={values.showBorder}
+              <div className="d-flex justify-content-between">
+                <h2>Address Information</h2>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => {
+                    setFieldValue("business_name", " ");
+                    setFieldValue("business_address_1", " ");
+                    setFieldValue("business_address_2", " ");
+                    setFieldValue("business_telephone", " ");
+                  }}
+                >
+                  Clear Address Fields
+                </button>
+              </div>
+              <TextInput
+                name="business_name"
+                value={values.business_name}
                 handleChange={handleChange}
-                label="Show Trim lines"
+                label="Business Name"
               />
+              <TextInput
+                name="business_address_1"
+                value={values.business_address_1}
+                handleChange={handleChange}
+                label="Address Line 1"
+              />
+              <TextInput
+                name="business_address_2"
+                value={values.business_address_2}
+                handleChange={handleChange}
+                label="Address Line 2"
+              />
+              <TextInput
+                name="business_telephone"
+                value={values.business_telephone}
+                handleChange={handleChange}
+                label="Business Telephone"
+              />
+              <h2>Layout Options</h2>
+              <div className="row">
+                <div className="col-12 col-sm-6">
+                  <IterableOptions
+                    title="Label Style"
+                    options={[
+                      {
+                        name: "labelStyle",
+                        value: "square",
+                        handleChange: handleChange,
+                        type: "radio",
+                        checked: values.labelStyle === "square",
+                        icon: <SquareShapeRadioIcon />,
+                        label: "Square",
+                      },
+                      {
+                        name: "labelStyle",
+                        value: "round",
+                        handleChange: handleChange,
+                        checked: values.labelStyle === "round",
+                        type: "radio",
+                        icon: <CircleShapeRadioIcon />,
+                        label: "Circle",
+                      },
+                    ]}
+                  />
+
+                  <CheckInput
+                    name="showBorder"
+                    value={values.showBorder}
+                    checked={values.showBorder}
+                    handleChange={handleChange}
+                    label="Show Trim lines"
+                  />
+                </div>
+                <div className="col-12 col-sm-6">
+                  <TextInput
+                    name="titleFontSize"
+                    value={values.titleFontSize}
+                    handleChange={handleChange}
+                    error={errors && errors.batch}
+                    label="Title Font Size"
+                    type="number"
+                  />
+                  <TextInput
+                    name="titlePaddingTop"
+                    value={values.titlePaddingTop}
+                    handleChange={handleChange}
+                    error={errors && errors.batch}
+                    label="Title Top Padding"
+                    type="number"
+                  />
+                  <TextInput
+                    name="warningTextFontSize"
+                    value={values.warningTextFontSize}
+                    handleChange={handleChange}
+                    error={errors && errors.batch}
+                    label="Product Warning Text Font Size"
+                    type="number"
+                  />
+                  <TextInput
+                    name="textFontSize"
+                    value={values.textFontSize}
+                    handleChange={handleChange}
+                    error={errors && errors.batch}
+                    label="Regular text font size"
+                    type="number"
+                  />
+                </div>
+              </div>
               <div className="mt-3">
                 <button
                   className="btn btn-primary"

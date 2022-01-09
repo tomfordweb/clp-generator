@@ -9,6 +9,10 @@ import TextAreaInput from "../TextAreaInput/TextAreaInput";
 import TextInput from "../TextInput/TextInput";
 
 import { useParams } from "react-router-dom";
+import {
+  convertObjectNullValuesToStr,
+  deleteFragranceProduct,
+} from "../utility";
 
 const FragranceProductEditor = ({
   wrapperClass,
@@ -18,11 +22,18 @@ const FragranceProductEditor = ({
 }) => {
   const globalState = useContext(store);
 
+  const handleDelete = () => {
+    deleteFragranceProduct(fragranceId, product.id).then(() => {
+      onFormUpdate();
+    });
+  };
+
   return (
     <div data-testid="FragranceProductEditor" className={wrapperClass}>
       <div className="card">
         <Formik
-          initialValues={product}
+          enableReinitialize={true}
+          initialValues={convertObjectNullValuesToStr(product)}
           validate={(values) => {
             let errors = [];
             return errors;
@@ -106,13 +117,24 @@ const FragranceProductEditor = ({
                   ]}
                 />
 
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  disabled={isSubmitting}
-                >
-                  Update Fragrance Product Details
-                </button>
+                <div className="d-flex justify-content-between">
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={isSubmitting}
+                  >
+                    Update Fragrance Product Details
+                  </button>
+                  {product.id && (
+                    <button
+                      type="button"
+                      className="btn btn-danger"
+                      onClick={() => handleDelete()}
+                    >
+                      Delete
+                    </button>
+                  )}
+                </div>
               </div>
             </form>
           )}

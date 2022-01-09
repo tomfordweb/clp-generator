@@ -6,7 +6,9 @@ import Modal from "react-modal";
 import FragranceProductEditor from "../FragranceProductEditor/FragranceProductEditor";
 import { store } from "../StateProvider";
 import {
+  convertObjectNullValuesToStr,
   createFragrance,
+  deleteFragrance,
   fetchFragranceProductList,
   updateFragrance,
 } from "../utility";
@@ -35,6 +37,13 @@ const FragranceEditForm = () => {
     [fragrance]
   );
 
+  const handleDelete = (fragranceId) => {
+    deleteFragrance(fragranceId).then(() => {
+      dispatch({ type: "deleteFragrance", value: fragranceId });
+      navigate("/fragrances");
+    });
+  };
+
   useEffect(() => {
     fragrance && fragrance.id && updateProductList(fragrance.id);
   }, [updateProductList, fragrance]);
@@ -43,7 +52,7 @@ const FragranceEditForm = () => {
     <div className="row" data-testid="FragranceEditForm">
       <Formik
         enableReinitialize={true}
-        initialValues={fragrance}
+        initialValues={convertObjectNullValuesToStr(fragrance)}
         validate={(values) => {
           const errors = {};
           if (!values.name) {
@@ -115,7 +124,7 @@ const FragranceEditForm = () => {
                 touched.supplier_code &&
                 errors.supplier_code}
             </div>
-            <div className="mt-3 form-group">
+            <div className="mt-3 form-group d-flex justify-content-between">
               <button
                 className="btn btn-primary"
                 type="submit"
@@ -123,14 +132,25 @@ const FragranceEditForm = () => {
               >
                 {values.id ? "Update Fragrance Details" : "Create Fragrance"}
               </button>
+              {values.id && (
+                <button
+                  className="btn btn-danger"
+                  type="button"
+                  onClick={() => handleDelete(fragrance.id)}
+                >
+                  Delete Fragrance and all Products
+                </button>
+              )}
             </div>
           </form>
         )}
       </Formik>
-      <h4>Product List</h4>
+      {fragrance.id && <h4>Product List</h4>}
       <div className="row">
         {fragrance &&
+          fragrance.id &&
           activeFragranceProducts &&
+          activeFragranceProducts.length > 0 &&
           activeFragranceProducts.map((product, index) => (
             <FragranceProductEditor
               wrapperClass="col-12 col-md-6 mb-3"
@@ -142,7 +162,7 @@ const FragranceEditForm = () => {
               key={index}
             />
           ))}
-        {fragrance && (
+        {fragrance && fragrance.id && (
           <div>
             <button
               onClick={() => setProductModalIsOpen(true)}
