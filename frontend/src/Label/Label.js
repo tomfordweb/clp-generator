@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
   },
 });
 const Label = ({ eanCode, form, pictogramContainerSize, pictogramGutter }) => {
+  console.log(form);
   const sharedDynamicContainerStyles = {
     border: form.showBorder ? "1px dashed #ddd" : "none",
     // there is no "box sizing: border-box" here so

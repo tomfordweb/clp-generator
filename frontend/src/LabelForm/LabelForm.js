@@ -4,7 +4,6 @@ import { useContext, useEffect, useState } from "react";
 
 import CheckInput from "../CheckInput/CheckInput";
 import IterableOptions from "../IterableOptions/IterableOptions";
-import LabelAddressForm from "../LabelAddressForm/LabelAddressForm";
 import SelectInput from "../SelectInput/SelectInput";
 import { store } from "../StateProvider";
 import TextAreaInput from "../TextAreaInput/TextAreaInput";
@@ -158,8 +157,8 @@ function LabelForm({ fragrances, propagateFormChange }) {
             handleChange,
             handleBlur,
             handleSubmit,
+            setFieldValue,
             isSubmitting,
-            /* and other goodies */
           }) => (
             <form onSubmit={handleSubmit}>
               <TextAreaInput
@@ -206,7 +205,43 @@ function LabelForm({ fragrances, propagateFormChange }) {
                 label="Custom Text"
                 height="50px"
               />
-              <LabelAddressForm form={values} handleChange={handleChange} />
+              <h2>Address Information</h2>
+              <button
+                className="btn btn-danger"
+                onClick={() => {
+                  setFieldValue("business_name", " ");
+                  setFieldValue("business_address_1", " ");
+                  setFieldValue("business_address_2", " ");
+                  setFieldValue("business_telephone", " ");
+                }}
+              >
+                Clear Address Fields
+              </button>
+              <TextInput
+                name="business_name"
+                value={values.business_name}
+                handleChange={handleChange}
+                label="Business Name"
+              />
+              <TextInput
+                name="business_address_1"
+                value={values.business_address_1}
+                handleChange={handleChange}
+                label="Address Line 1"
+              />
+              <TextInput
+                name="business_address_2"
+                value={values.business_address_2}
+                handleChange={handleChange}
+                label="Address Line 2"
+              />
+              <TextInput
+                name="business_telephone"
+                value={values.business_telephone}
+                handleChange={handleChange}
+                label="Business Telephone"
+              />
+              <h2>Layout Options</h2>
               <div className="row">
                 <div className="col-12 col-sm-6">
                   <IterableOptions
