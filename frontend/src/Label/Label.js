@@ -147,7 +147,7 @@ const Label = ({ eanCode, form, pictogramContainerSize, pictogramGutter }) => {
               {
                 height: `${pictogramContainerSize / 2 - pictogramGutter}px`,
                 width: `${pictogramContainerSize / 2 - pictogramGutter}px`,
-                top: `10%`,
+                top: `11%`,
                 left: "25.8%",
                 position: "absolute",
               },
