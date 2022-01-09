@@ -47,17 +47,23 @@ const StateProvider = ({ children }) => {
   const [state, dispatch] = useReducer((state, action) => {
     let newState = state;
     switch (action.type) {
+      case "deleteFragrance":
+        console.log(state.fragrances);
+        console.log(action.value);
+        newState = {
+          ...state,
+          fragrances: state.fragrances.filter(
+            (fragrance) => parseInt(fragrance.id) !== parseInt(action.value)
+          ),
+        };
+        break;
       case "setFragrances":
         newState = { ...state, fragrances: action.value };
         break;
       case "appendFragrance":
         newState = {
           ...state,
-          fragrances: state.fragrances.map((fragrance) =>
-            parseInt(fragrance.id) === parseInt(action.value.id)
-              ? action.value
-              : fragrance
-          ),
+          fragrances: [...state.fragrances, action.value],
         };
         break;
       case "updateFragrance":
@@ -91,7 +97,7 @@ const StateProvider = ({ children }) => {
       default:
         throw new Error(`unhandled action ${action.type}`);
     }
-    // console.log(newState);
+    console.log(newState);
     return newState;
   }, initialState);
 

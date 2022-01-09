@@ -48,13 +48,9 @@ const FragranceEditor = ({ fragrances, onFormUpdate }) => {
             navigate(`/fragrances/${e.target.value}`);
           }}
         />
-        <button
-          type="button"
-          className="btn btn-success"
-          onClick={() => setFragranceModalIsOpen(true)}
-        >
+        <Link type="button" to="/fragrances/create" className="btn btn-success">
           Create Fragrance
-        </button>
+        </Link>
       </article>
 
       <article className="col-12 col-sm-8 col-md-10">

@@ -2,9 +2,7 @@ export const convertObjectNullValuesToStr = (object) => {
   const ret = {};
 
   for (const key in object) {
-    if (object.hasOwnProperty(key)) {
-      ret[key] = object[key] ?? "";
-    }
+    ret[key] = object[key] ?? "";
   }
   return ret;
 };
@@ -19,6 +17,18 @@ export const fetchProductList = () =>
     return response.json();
   });
 
+export const deleteFragranceProduct = (fragranceId, productId) =>
+  fetch(`/api/v1/fragrances/${fragranceId}/products/${productId}`, {
+    method: "DELETE",
+  }).then(function (response) {
+    return response.json();
+  });
+export const deleteFragrance = (fragranceId) =>
+  fetch(`/api/v1/fragrances/${fragranceId}`, {
+    method: "DELETE",
+  }).then(function (response) {
+    return response.json();
+  });
 export const createFragrance = (values) =>
   fetch(`/api/v1/fragrances`, {
     method: "POST",

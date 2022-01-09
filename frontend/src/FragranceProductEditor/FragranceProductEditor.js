@@ -9,7 +9,10 @@ import TextAreaInput from "../TextAreaInput/TextAreaInput";
 import TextInput from "../TextInput/TextInput";
 
 import { useParams } from "react-router-dom";
-import { convertObjectNullValuesToStr } from "../utility";
+import {
+  convertObjectNullValuesToStr,
+  deleteFragranceProduct,
+} from "../utility";
 
 const FragranceProductEditor = ({
   wrapperClass,
@@ -18,6 +21,12 @@ const FragranceProductEditor = ({
   product,
 }) => {
   const globalState = useContext(store);
+
+  const handleDelete = () => {
+    deleteFragranceProduct(fragranceId, product.id).then(() => {
+      onFormUpdate();
+    });
+  };
 
   return (
     <div data-testid="FragranceProductEditor" className={wrapperClass}>
@@ -30,7 +39,6 @@ const FragranceProductEditor = ({
             return errors;
           }}
           onSubmit={(values, { setSubmitting }) => {
-            console.log(values);
             const url = values.id
               ? `/api/v1/fragrances/${fragranceId}/products/${values.id}`
               : `/api/v1/fragrances/${fragranceId}/products`;
@@ -109,13 +117,24 @@ const FragranceProductEditor = ({
                   ]}
                 />
 
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  disabled={isSubmitting}
-                >
-                  Update Fragrance Product Details
-                </button>
+                <div className="d-flex justify-content-between">
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={isSubmitting}
+                  >
+                    Update Fragrance Product Details
+                  </button>
+                  {product.id && (
+                    <button
+                      type="button"
+                      className="btn btn-danger"
+                      onClick={() => handleDelete()}
+                    >
+                      Delete
+                    </button>
+                  )}
+                </div>
               </div>
             </form>
           )}
