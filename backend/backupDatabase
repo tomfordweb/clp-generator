@@ -14,6 +14,7 @@ $(du -h $DATABASE)
 " > clp_backup_message
 
 mpack -s "Devonwick CLP Database Backup" -d clp_backup_message database_backup.zip me+backups@tomfordweb.net
+mpack -s "Devonwick CLP Database Backup" -d clp_backup_message database_backup.zip devonwick1@gmail.com
 
 rm database_backup.zip
 rm clp_backup_message
