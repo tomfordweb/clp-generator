@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     height: "100%",
     display: "flex",
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     overflow: "hidden",
   },
   customTitle: {
@@ -106,28 +106,58 @@ const Label = ({ eanCode, form, pictogramContainerSize, pictogramGutter }) => {
       <Text
         style={{
           ...styles.specialText,
-          ...styles.bottomMargin,
+          // ...styles.bottomMargin,
           fontSize: `${form.titleFontSize}px`,
           paddingTop: `${form.titlePaddingTop}px`,
         }}
       >
         {label}
       </Text>
+      <Text
+        style={{
+          ...styles.specialText,
+          fontSize: `${form.textFontSize}px`,
+        }}
+      >
+        {form.mass || " "}
+      </Text>
+      <Text
+        style={{
+          fontSize: `${form.warningTextFontSize}px`,
+          marginLeft: form.labelStyle === "round" ? "15px" : "0",
+          marginRight: form.labelStyle === "round" ? "15px" : "0",
+          ...styles.bottomMargin,
+        }}
+      >
+        {form.productText}
+      </Text>
       <View
         style={{
           display: "flex",
           justifyContent: "center",
           alignItems: "flex-start",
-          marginBottom: styles.bottomMargin.marginBottom,
         }}
       >
         <View style={styles.batchContainer}>
-          {eanCode && (
-            <Image
-              source={eanCode}
-              style={{ width: "30%", height: "auto", marginRight: "5px" }}
-            />
-          )}
+          <View
+            style={{
+              ...styles.bottomMargin,
+              display: "flex",
+              alignItems: "center",
+              fontSize: `${form.textFontSize}px`,
+            }}
+          >
+            {eanCode && (
+              <Image
+                source={eanCode}
+                style={{ width: "50%", height: "auto", marginBottom: "10px" }}
+              />
+            )}
+            <Text>{form.business_name}</Text>
+            <Text>{form.business_address_1}</Text>
+            <Text>{form.business_address_2}</Text>
+            <Text>{form.business_telephone}</Text>
+          </View>
           <PictogramDisplay
             containerStyles={{
               position: "relative",
@@ -164,38 +194,10 @@ const Label = ({ eanCode, form, pictogramContainerSize, pictogramGutter }) => {
           />
         </View>
       </View>
-      <Text
-        style={{
-          ...styles.bottomMargin,
-          fontSize: `${form.warningTextFontSize}px`,
-        }}
-      >
-        {form.productText}
-      </Text>
       <View
-        style={{
-          ...styles.bottomMargin,
-          display: "flex",
-          alignItems: "center",
-          fontSize: `${form.textFontSize}px`,
-        }}
+        style={{ ...styles.batchContainer, fontSize: `${form.textFontSize}px` }}
       >
-        <Text>{form.business_name}</Text>
-        <Text>{form.business_address_1}</Text>
-        <Text>{form.business_address_2}</Text>
-        <Text>{form.business_telephone}</Text>
-      </View>
-      <Text
-        style={{
-          ...styles.bottomMargin,
-          ...styles.specialText,
-          fontSize: `${form.textFontSize}px`,
-        }}
-      >
-        {form.custom_text}
-      </Text>
-      <View style={{ ...styles.batchContainer, alignSelf: "flex-end" }}>
-        <Text style={{ ...styles.specialText, ...styles.batchItemSpacing }}>
+        <Text style={{ ...styles.batchItemSpacing }}>
           {form.batch ? `BN: ${form.batch}` : " "}
         </Text>
         <Text
@@ -206,16 +208,16 @@ const Label = ({ eanCode, form, pictogramContainerSize, pictogramGutter }) => {
         >
           {form.ufi ? `UFI: ${form.ufi}` : " "}
         </Text>
-        <Text
-          style={{
-            ...styles.specialText,
-            ...styles.batchItemSpacing,
-            alignSelf: "flex-end",
-          }}
-        >
-          {form.mass || " "}
-        </Text>
       </View>
+      <Text
+        style={{
+          ...styles.bottomMargin,
+          ...styles.specialText,
+          fontSize: `${form.textFontSize}px`,
+        }}
+      >
+        {form.custom_text}
+      </Text>
     </View>
   );
 };
