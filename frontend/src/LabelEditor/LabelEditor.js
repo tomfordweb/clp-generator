@@ -7,21 +7,20 @@ import LabelForm from "../LabelForm/LabelForm";
 import { store } from "../StateProvider";
 
 function LabelEditor() {
-  // stored in a variable so it does not update realtime
-  const [form, setForm] = useState(null);
-
   // a base64 string of the EAN barcode
   const [eanCode, setEanCode] = useState(null);
 
   const globalState = useContext(store);
   const { state, dispatch } = globalState;
 
+  const { form } = state;
+
   useEffect(() => {
+    let eanCode = null;
     try {
       const canvas =
-        state &&
-        state.form &&
-        state.form.ean &&
+        form &&
+        form.ean &&
         bwipjs.toCanvas("eandisplay", {
           bcid: "ean13", // Barcode type
           text: form.ean,
@@ -32,11 +31,12 @@ function LabelEditor() {
         });
 
       if (canvas) {
-        setEanCode(canvas.toDataURL("image/png"));
+        eanCode = canvas.toDataURL("image/png");
       }
     } catch (error) {
-      // alert(error);
+      console.error("EAN GENERATE ERROR", error);
     }
+    setEanCode(eanCode);
   }, [form]);
 
   return (
@@ -53,7 +53,7 @@ function LabelEditor() {
                   labelCount={1}
                   orientation="portrait"
                   size={[190, 190]}
-                  form={state.form}
+                  form={form}
                 />
               </PDFViewer>
             </div>
@@ -68,12 +68,7 @@ function LabelEditor() {
         <aside className="col-12 col-md-6">
           <LabelForm
             fragrances={state.fragrances}
-            propagateFormChange={(value) => {
-              setForm({
-                ...value,
-                ...state.form,
-              });
-            }}
+            propagateFormChange={(value) => {}}
           />
         </aside>{" "}
       </section>
