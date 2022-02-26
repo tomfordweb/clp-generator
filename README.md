@@ -17,3 +17,5 @@ docker-compose -f docker-compose.production-local.yml -f docker-compose.yml up -
 # CI/CD
 
 This is performed via github actions. You can view details via the actions tab.
+
+# User setup
