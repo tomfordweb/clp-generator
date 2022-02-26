@@ -120,3 +120,40 @@ jobs:
 
       - name: Move backup script
         run: scp backend/backupDatabase ${{ secrets.dev_server_user }}@${{ secrets.dev_server}}:/srv/docker/devonwick-clp
+
+  deploy-production:
+    runs-on: ubuntu-latest
+    needs: [build-docker]
+    steps:
+      - name: Install SSH Key for PRO_SERVER
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.DEV_SERVER_SSH_KEY }}
+          known_hosts: "a-placeholder"
+
+      - name: Add Dev server to known hosts
+        run: ssh-keyscan -H ${{ secrets.PRO_SERVER }} >> ~/.ssh/known_hosts
+
+      - name: Login to docker registry
+        run: ssh ${{ secrets.DEV_SERVER_USER }}@${{ secrets.PRO_SERVER}} "docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}"
+
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+
+      - name: SCP the file to the server
+        run: scp docker-compose.yml ${{ secrets.dev_server_user }}@${{ secrets.PRO_SERVER}}:/srv/docker/devonwick-clp
+
+      - name: Pull the project
+        run: ssh ${{ secrets.dev_server_user }}@${{ secrets.PRO_SERVER}} "cd /srv/docker/devonwick-clp && docker-compose pull"
+
+      - name: Stop the project
+        run: ssh ${{ secrets.dev_server_user }}@${{ secrets.PRO_SERVER}} "cd /srv/docker/devonwick-clp && docker-compose down || true"
+
+      - name: Start the updated project
+        run: ssh ${{ secrets.dev_server_user }}@${{ secrets.PRO_SERVER}} "docker-compose -f /srv/docker/devonwick-clp/docker-compose.yml up -d"
+
+      - name: Run migrations
+        run: ssh ${{ secrets.dev_server_user }}@${{ secrets.PRO_SERVER}} "cd /srv/docker/devonwick-clp && docker-compose run --entrypoint alembic backend upgrade head"
+
+      - name: Move backup script
+        run: scp backend/backupDatabase ${{ secrets.dev_server_user }}@${{ secrets.PRO_SERVER}}:/srv/docker/devonwick-clp
