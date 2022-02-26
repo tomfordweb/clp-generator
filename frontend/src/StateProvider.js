@@ -95,7 +95,6 @@ const StateProvider = ({ children }) => {
       default:
         throw new Error(`unhandled action ${action.type}`);
     }
-    // console.log(newState);
     return newState;
   }, initialState);
 

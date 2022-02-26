@@ -67,16 +67,6 @@ function LabelForm({ fragrances, propagateFormChange }) {
       fragrance: fragrance,
     });
 
-  /**
-   * The internal state of the form. This contains the default values
-   *
-   * Whenever the form is updated we
-   * fire a debounced event to propagate the change to the app
-   */
-  // const [form, updateForm] = useState(DEFAULT_FORM_STATE);
-
-  useEffect(() => {}, []);
-
   useEffect(() => {
     fragrance &&
       fragrance.id &&
@@ -132,9 +122,6 @@ function LabelForm({ fragrances, propagateFormChange }) {
           initialValues={convertObjectNullValuesToStr(state.form)}
           validate={(values) => {
             const errors = {};
-            if (!values.ean || values.ean.length < 1) {
-              errors.ean = "EAN Required";
-            }
             if (
               values &&
               values.ean &&
@@ -145,7 +132,6 @@ function LabelForm({ fragrances, propagateFormChange }) {
             return errors;
           }}
           onSubmit={(values, { setSubmitting }) => {
-            dispatch({ type: "updateForm", value: values });
             propagateFormChange(state.form);
             setSubmitting(false);
           }}
@@ -314,11 +300,7 @@ function LabelForm({ fragrances, propagateFormChange }) {
                 </div>
               </div>
               <div className="mt-3">
-                <button
-                  className="btn btn-primary"
-                  type="submit"
-                  disabled={isSubmitting}
-                >
+                <button className="btn btn-primary" type="submit">
                   Update Label PDF
                 </button>
               </div>
