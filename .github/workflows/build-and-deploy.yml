@@ -146,6 +146,9 @@ jobs:
       - name: Pull the project
         run: ssh ${{ secrets.dev_server_user }}@${{ secrets.PRO_SERVER}} "cd /srv/docker/devonwick-clp && docker-compose pull"
 
+      - name: Create the database file
+        run: ssh ${{ secrets.dev_server_user }}@${{ secrets.PRO_SERVER}} "touch /srv/docker/devonwick-clp/sql_app.db"
+
       - name: Stop the project
         run: ssh ${{ secrets.dev_server_user }}@${{ secrets.PRO_SERVER}} "cd /srv/docker/devonwick-clp && docker-compose down || true"
 
